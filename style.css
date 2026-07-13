@@ -79,11 +79,41 @@ body {
   border: 1px dashed rgba(255, 255, 255, 0.1);
   position: relative;
   display: flex;
-  flex-direction: column-reverse; /* 아래서부터 쌓아올리기 */
+  flex-direction: column-reverse;
   align-items: center;
   padding: 1.5rem;
   overflow-y: auto;
   gap: 8px;
+}
+
+/* Decoration Layer */
+.deco-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* 상자 클릭을 방해하지 않음 */
+  z-index: 6;
+}
+
+/* Draggable / Placed Meeple Decorator */
+.deco-meeple {
+  position: absolute;
+  font-size: 2.5rem;
+  cursor: move;
+  pointer-events: auto; /* 드래그할 수 있게 이벤트 활성화 */
+  user-select: none;
+  animation: bounceDeco 1.5s ease-in-out infinite alternate;
+}
+
+.deco-meeple:hover {
+  transform: scale(1.2);
+}
+
+@keyframes bounceDeco {
+  0% { transform: translateY(0); }
+  100% { transform: translateY(-8px); }
 }
 
 /* Custom Scrollbar for Stack Container */
@@ -122,7 +152,13 @@ body {
   font-size: 0.9rem;
 }
 
-/* Total Height Counter */
+/* Total Height Counter & Guide */
+.height-counter-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .height-counter {
   background: rgba(255, 255, 255, 0.07);
   padding: 1rem 1.5rem;
@@ -142,6 +178,12 @@ body {
   font-size: 1.4rem;
   font-weight: 800;
   color: #00cec9;
+}
+
+.deco-guide {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-align: center;
 }
 
 /* Dynamic Box Elements */
@@ -167,7 +209,7 @@ body {
 }
 
 .game-box-item:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
   box-shadow: 0 8px 20px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.3);
   z-index: 5;
 }
@@ -263,7 +305,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1.5rem;
-  margin-bottom: 3rem;
+  margin-bottom: 2rem;
 }
 
 .stat-card {
@@ -318,6 +360,108 @@ body {
   margin-top: 2px;
 }
 
+/* Analysis Grid (Winrate & Best Mate) */
+.analysis-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.analysis-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.analysis-title {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--text-main);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.analysis-title i {
+  width: 18px;
+  height: 18px;
+  color: var(--primary-color);
+}
+
+.winrate-visual {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.winrate-circle {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  border: 6px solid var(--primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.winrate-value {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--primary-color);
+}
+
+.winrate-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.winrate-details strong {
+  color: var(--text-main);
+}
+
+/* Best Mate Area */
+.mate-visual {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: center;
+  min-height: 70px;
+}
+
+.mate-empty {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+.mate-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f8fafc;
+  padding: 8px 12px;
+  border-radius: 8px;
+}
+
+.mate-name {
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-main);
+}
+
+.mate-count {
+  font-size: 0.8rem;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
 /* Character Section (Meeples Unlock) */
 .characters-section {
   margin-bottom: 3rem;
@@ -325,9 +469,15 @@ body {
 
 .characters-section h3 {
   font-size: 1.2rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 2px;
   font-weight: 700;
   color: var(--text-main);
+}
+
+.section-desc {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 1.2rem;
 }
 
 .character-list {
@@ -349,6 +499,7 @@ body {
   filter: grayscale(1);
   opacity: 0.5;
   text-align: center;
+  cursor: not-allowed;
 }
 
 .character-badge.unlocked {
@@ -356,6 +507,12 @@ body {
   opacity: 1;
   border-color: var(--primary-light);
   box-shadow: 0 4px 12px rgba(108, 92, 231, 0.08);
+  cursor: pointer;
+}
+
+.character-badge.unlocked:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-color);
 }
 
 .character-avatar {
@@ -466,6 +623,7 @@ body {
 
 .log-details-row {
   display: flex;
+  flex-wrap: wrap;
   gap: 12px;
   font-size: 0.8rem;
   color: var(--text-muted);
@@ -777,5 +935,9 @@ select:focus {
   .content-panel {
     max-height: none;
     padding: 2rem 1.5rem;
+  }
+  
+  .analysis-grid {
+    grid-template-columns: 1fr;
   }
 }

@@ -25,6 +25,9 @@
 
       <!-- 실제 상자들이 쌓여서 렌더링될 영역 -->
       <div class="stack-container" id="stackContainer">
+        <!-- 데코레이션 미플들이 위치할 절대좌표 레이어 -->
+        <div class="deco-layer" id="decoLayer"></div>
+
         <!-- JS에서 동적으로 보드게임 상자 박스 엘리먼트를 여기에 쌓아 올림 -->
         <div class="empty-stack-placeholder" id="emptyPlaceholder">
           <i data-lucide="package-open" class="placeholder-icon"></i>
@@ -32,10 +35,15 @@
         </div>
       </div>
 
-      <!-- 누적 높이 표시기 -->
-      <div class="height-counter">
-        <span class="label">누적 높이</span>
-        <span class="value" id="totalHeight">0cm</span>
+      <!-- 누적 높이 표시기 및 데코 모드 가이드 -->
+      <div class="height-counter-wrapper">
+        <div class="height-counter">
+          <span class="label">누적 높이</span>
+          <span class="value" id="totalHeight">0cm</span>
+        </div>
+        <div class="deco-guide">
+          <span>💡 해금된 미플을 더블클릭/드래그하여 탑을 꾸며보세요!</span>
+        </div>
       </div>
     </aside>
 
@@ -74,11 +82,34 @@
             </div>
           </div>
         </div>
+
+        <!-- 고급 분석 카드 (승률 및 최고의 동반자) -->
+        <div class="analysis-grid">
+          <div class="analysis-card">
+            <div class="analysis-title"><i data-lucide="trending-up"></i> 승률 분석</div>
+            <div class="winrate-visual">
+              <div class="winrate-circle">
+                <span class="winrate-value" id="winRateVal">0%</span>
+              </div>
+              <div class="winrate-details">
+                <div>승리 <strong id="winCount">0회</strong></div>
+                <div>패배/기타 <strong id="loseCount">0회</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="analysis-card">
+            <div class="analysis-title"><i data-lucide="users"></i> 최고의 게임 메이트</div>
+            <div class="mate-visual" id="bestMateArea">
+              <div class="mate-empty">아직 기록이 부족합니다.</div>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- 미플 캐릭터 도감 영역 (북적북적의 귀여운 캐릭터 해금 모티브) -->
       <section class="characters-section">
         <h3>해금된 보드게임 프렌즈</h3>
+        <p class="section-desc">캐릭터를 더블클릭하면 왼쪽 상자 탑에 생성됩니다!</p>
         <div class="character-list" id="characterList">
           <!-- JS에서 해금 상태에 따라 렌더링 -->
         </div>
@@ -142,6 +173,11 @@
               <option value="none">단순 기록 📝</option>
             </select>
           </div>
+        </div>
+
+        <div class="form-group">
+          <label for="companions">함께 플레이한 사람들</label>
+          <input type="text" id="companions" placeholder="쉼표(,)로 구분해 입력하세요 (예: 홍길동, 김철수)">
         </div>
 
         <div class="form-group">

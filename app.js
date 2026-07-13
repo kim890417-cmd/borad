@@ -1,5 +1,7 @@
 // --- State Management ---
 let logs = [];
+let decos = []; // [{ id, emoji, x, y }] - 데코레이션 캐릭터 위치 저장용
+
 const PRESET_COLORS = [
   '#ff7675', // 파스텔 레드
   '#fdcb6e', // 파스텔 오렌지
@@ -26,12 +28,18 @@ const CHARACTERS = [
 
 // --- DOM Elements ---
 const stackContainer = document.getElementById('stackContainer');
+const decoLayer = document.getElementById('decoLayer');
 const emptyPlaceholder = document.getElementById('emptyPlaceholder');
 const totalHeightEl = document.getElementById('totalHeight');
 
 const statPlaysEl = document.getElementById('statPlays');
 const statTimeEl = document.getElementById('statTime');
 const statGradeEl = document.getElementById('statGrade');
+
+const winRateValEl = document.getElementById('winRateVal');
+const winCountEl = document.getElementById('winCount');
+const loseCountEl = document.getElementById('loseCount');
+const bestMateArea = document.getElementById('bestMateArea');
 
 const characterList = document.getElementById('characterList');
 const logFeed = document.getElementById('logFeed');
@@ -69,20 +77,31 @@ function loadData() {
       logs = [];
     }
   }
+
+  const savedDecos = localStorage.getItem('dadok_dadok_board_decos');
+  if (savedDecos) {
+    try {
+      decos = JSON.parse(savedDecos);
+    } catch (e) {
+      decos = [];
+    }
+  }
 }
 
 function saveData() {
   localStorage.setItem('dadok_dadok_board_logs', JSON.stringify(logs));
+  localStorage.setItem('dadok_dadok_board_decos', JSON.stringify(decos));
 }
 
 // --- Render Core ---
 function render() {
   saveData();
   renderStats();
+  renderAdvancedStats();
   renderStack();
+  renderDecoLayer();
   renderLogFeed();
   renderCharacters();
-  // Lucide 아이콘을 동적으로 다시 로드할 때 필요
   if (window.lucide) {
     window.lucide.createIcons();
   }
@@ -108,9 +127,52 @@ function renderStats() {
   statGradeEl.innerText = grade;
 }
 
+// 1-2. 고급 통계 (승률, 베스트 파트너)
+function renderAdvancedStats() {
+  const total = logs.length;
+  if (total === 0) {
+    winRateValEl.innerText = '0%';
+    winCountEl.innerText = '0회';
+    loseCountEl.innerText = '0회';
+    bestMateArea.innerHTML = '<div class="mate-empty">아직 기록이 없습니다.</div>';
+    return;
+  }
+
+  // 승률 계산
+  const wins = logs.filter(log => log.result === 'win').length;
+  const winRate = Math.round((wins / total) * 100);
+  winRateValEl.innerText = `${winRate}%`;
+  winCountEl.innerText = `${wins}회`;
+  loseCountEl.innerText = `${total - wins}회`;
+
+  // 동반자 분석 (Companions)
+  const companionsMap = {};
+  logs.forEach(log => {
+    if (log.companions) {
+      const list = log.companions.split(',').map(s => s.trim()).filter(s => s.length > 0);
+      list.forEach(name => {
+        companionsMap[name] = (companionsMap[name] || 0) + 1;
+      });
+    }
+  });
+
+  const sortedCompanions = Object.entries(companionsMap).sort((a, b) => b[1] - a[1]);
+
+  if (sortedCompanions.length === 0) {
+    bestMateArea.innerHTML = '<div class="mate-empty">등록된 동반자가 없습니다.</div>';
+  } else {
+    // 상위 2명 렌더링
+    bestMateArea.innerHTML = sortedCompanions.slice(0, 2).map(([name, count]) => `
+      <div class="mate-row">
+        <span class="mate-name">👤 ${name}</span>
+        <span class="mate-count">함께 ${count}회 플레이</span>
+      </div>
+    `).join('');
+  }
+}
+
 // 2. 상자 탑 렌더링
 function renderStack() {
-  // 스택 컨테이너 내부의 game-box-item들 지우기
   const boxes = stackContainer.querySelectorAll('.game-box-item');
   boxes.forEach(box => box.remove());
 
@@ -123,18 +185,15 @@ function renderStack() {
   emptyPlaceholder.style.display = 'none';
 
   let currentHeight = 0;
-  
-  // 오래된 것부터 최신 순으로 스택에 쌓음 (스택은 아래서부터 위로 렌더링)
   const sortedForStack = [...logs].sort((a, b) => new Date(a.playDate) - new Date(b.playDate));
 
   sortedForStack.forEach((log) => {
-    const thicknessCm = Number(log.boxThickness || 25) / 10; // 25 -> 2.5cm
+    const thicknessCm = Number(log.boxThickness || 25) / 10;
     currentHeight += thicknessCm;
 
     const boxEl = document.createElement('div');
     boxEl.className = 'game-box-item';
     boxEl.style.backgroundColor = log.color || '#ff7675';
-    // 두께 비례 높이 할당 (px)
     boxEl.style.height = `${Number(log.boxThickness) + 15}px`; 
     boxEl.title = `${log.gameTitle} (${thicknessCm}cm)`;
 
@@ -143,15 +202,68 @@ function renderStack() {
       <span class="game-box-height-badge">${thicknessCm.toFixed(1)}cm</span>
     `;
 
-    // 상자 클릭 시 디테일 팝업 알림 (또는 기록 카드로 부드럽게 스크롤)
     boxEl.addEventListener('click', () => {
-      alert(`[${log.gameTitle}]\n플레이 날짜: ${log.playDate}\n시간: ${log.playTime}분\n평점: ${'⭐'.repeat(log.rating)}\n메모: ${log.review || '기록 없음'}`);
+      alert(`[${log.gameTitle}]\n플레이 날짜: ${log.playDate}\n시간: ${log.playTime}분\n동반자: ${log.companions || '없음'}\n평점: ${'⭐'.repeat(log.rating)}\n메모: ${log.review || '기록 없음'}`);
     });
 
     stackContainer.appendChild(boxEl);
   });
 
   totalHeightEl.innerText = `${currentHeight.toFixed(1)}cm`;
+}
+
+// 2-2. 데코레이션 레이어 렌더링
+function renderDecoLayer() {
+  decoLayer.innerHTML = '';
+  
+  decos.forEach((deco) => {
+    const meeple = document.createElement('div');
+    meeple.className = 'deco-meeple';
+    meeple.innerText = deco.emoji;
+    meeple.style.left = `${deco.x}%`;
+    meeple.style.top = `${deco.y}%`;
+    meeple.title = '드래그해서 이동 / 더블클릭해서 제거';
+    
+    // 더블클릭 시 삭제
+    meeple.addEventListener('dblclick', (e) => {
+      e.stopPropagation();
+      decos = decos.filter(d => d.id !== deco.id);
+      render();
+    });
+
+    // 드래그 앤 드롭 마우스 이벤트 핸들링 (CSS %로 좌표 계산)
+    meeple.addEventListener('mousedown', (e) => {
+      e.preventDefault();
+      const rect = stackContainer.getBoundingClientRect();
+      
+      const moveHandler = (moveEvent) => {
+        let leftPercent = ((moveEvent.clientX - rect.left) / rect.width) * 100;
+        let topPercent = ((moveEvent.clientY - rect.top) / rect.height) * 100;
+        
+        // 경계 제한 (0% ~ 90%)
+        leftPercent = Math.max(0, Math.min(90, leftPercent));
+        topPercent = Math.max(0, Math.min(90, topPercent));
+
+        meeple.style.left = `${leftPercent}%`;
+        meeple.style.top = `${topPercent}%`;
+        
+        // 상태 업데이트
+        deco.x = leftPercent;
+        deco.y = topPercent;
+      };
+
+      const upHandler = () => {
+        document.removeEventListener('mousemove', moveHandler);
+        document.removeEventListener('mouseup', upHandler);
+        saveData(); // 마우스를 뗄 때 최종 데이터 영구 저장
+      };
+
+      document.addEventListener('mousemove', moveHandler);
+      document.addEventListener('mouseup', upHandler);
+    });
+
+    decoLayer.appendChild(meeple);
+  });
 }
 
 // 3. 로그 목록 피드 렌더링
@@ -182,14 +294,12 @@ function renderLogFeed() {
     const card = document.createElement('div');
     card.className = 'log-card';
     
-    // 결과 뱃지 클래스 맵
     let badgeClass = 'badge-none';
     let badgeText = '단순 기록';
     if (log.result === 'win') { badgeClass = 'badge-win'; badgeText = '승리 🎉'; }
     else if (log.result === 'lose') { badgeClass = 'badge-lose'; badgeText = '패배 😢'; }
     else if (log.result === 'draw') { badgeClass = 'badge-draw'; badgeText = '무승부 🤝'; }
 
-    // 별점 렌더링
     let starsHtml = '';
     for (let i = 0; i < 5; i++) {
       starsHtml += `<i data-lucide="star" style="${i < log.rating ? '' : 'fill: none; color: #dfe6e9;'}"></i>`;
@@ -203,6 +313,7 @@ function renderLogFeed() {
           <div class="log-details-row">
             <span class="log-detail-item"><i data-lucide="clock"></i> ${log.playTime}분</span>
             <span class="log-detail-item"><i data-lucide="users"></i> ${log.playerCount}명</span>
+            ${log.companions ? `<span class="log-detail-item"><i data-lucide="user-plus"></i> ${log.companions}</span>` : ''}
           </div>
           ${log.review ? `<p class="log-review">${log.review}</p>` : ''}
         </div>
@@ -219,7 +330,6 @@ function renderLogFeed() {
       </div>
     `;
 
-    // 삭제 버튼 이벤트 바인딩
     const deleteBtn = card.querySelector('.delete-log-btn');
     deleteBtn.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -247,6 +357,21 @@ function renderCharacters() {
       <span class="character-name">${char.name}</span>
       <span class="character-cond">${char.condText}</span>
     `;
+
+    // 해금된 미플 더블클릭/클릭 시 꾸미기용 스택 배치
+    if (isUnlocked) {
+      badge.addEventListener('dblclick', () => {
+        const newDeco = {
+          id: Date.now().toString(),
+          emoji: char.emoji,
+          x: Math.floor(Math.random() * 80), // 무작위 랜덤 위치 시작
+          y: Math.floor(Math.random() * 80)
+        };
+        decos.push(newDeco);
+        render();
+      });
+    }
+
     characterList.appendChild(badge);
   });
 }
@@ -309,14 +434,11 @@ function setupStarRating() {
     });
   });
 
-  // 초기 평점 별점 설정
   highlightStars(Number(gameRatingInput.value));
 }
 
 function setupEventListeners() {
-  // 모달 제어
   openAddModalBtn.addEventListener('click', () => {
-    // 폼 및 오늘 날짜 디폴트 설정
     recordForm.reset();
     document.getElementById('playDate').value = new Date().toISOString().substring(0, 10);
     gameRatingInput.value = 5;
@@ -334,14 +456,12 @@ function setupEventListeners() {
   closeAddModalBtn.addEventListener('click', closeModal);
   cancelBtn.addEventListener('click', closeModal);
   
-  // 모달 바깥 배경 클릭시 닫기
   addModal.addEventListener('click', (e) => {
     if (e.target === addModal) {
       closeModal();
     }
   });
 
-  // 기록 제출
   recordForm.addEventListener('submit', (e) => {
     e.preventDefault();
 
@@ -350,6 +470,7 @@ function setupEventListeners() {
     const playTime = document.getElementById('playTime').value;
     const playerCount = document.getElementById('playerCount').value;
     const result = document.getElementById('gameResult').value;
+    const companions = document.getElementById('companions').value.trim();
     const boxThickness = document.querySelector('input[name="boxThickness"]:checked').value;
     const color = selectedColorInput.value;
     const rating = Number(gameRatingInput.value);
@@ -362,6 +483,7 @@ function setupEventListeners() {
       playTime,
       playerCount,
       result,
+      companions,
       boxThickness,
       color,
       rating,
@@ -373,7 +495,6 @@ function setupEventListeners() {
     closeModal();
   });
 
-  // 필터 정렬 체인지
   sortBySelect.addEventListener('change', () => {
     renderLogFeed();
   });

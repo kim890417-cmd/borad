@@ -564,6 +564,7 @@ const captureBtn = document.getElementById('captureBtn');
 
 const diffFilterEl = document.getElementById('diffFilter');
 const playerFilterEl = document.getElementById('playerFilter');
+const rankGrid = document.getElementById('rankGrid');
 
 let activeDiffFilter = 'all';
 let activePlayerFilter = 'all';
@@ -618,6 +619,7 @@ function render(isNewAddition = false) {
   renderDecoLayer();
   renderLogFeed();
   renderGameInfoTab();
+  renderRankingTab();
   renderCharacters();
   updateSoundButtonUI();
   
@@ -965,6 +967,161 @@ function renderGameInfoTab() {
 
     gameInfoGrid.appendChild(card);
   });
+}
+
+// 랭킹/통계 탭 렌더링
+function renderRankingTab() {
+  rankGrid.innerHTML = '';
+
+  if (logs.length === 0) {
+    rankGrid.innerHTML = '<div class="rank-empty"><i data-lucide="bar-chart-3"></i><p>기록을 남기면 랭킹이 표시됩니다.</p></div>';
+    return;
+  }
+
+  // --- 게임 플레이 순위 ---
+  const gameCountMap = {};
+  const gameRatingMap = {};
+  const gameDiffMap = {};
+  logs.forEach(log => {
+    const title = log.gameTitle;
+    gameCountMap[title] = (gameCountMap[title] || 0) + 1;
+    if (!gameRatingMap[title]) gameRatingMap[title] = [];
+    gameRatingMap[title].push(log.rating || 0);
+    gameDiffMap[title] = log.boxThickness || 'easy';
+  });
+
+  const topPlayed = Object.entries(gameCountMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const topRated = Object.entries(gameRatingMap)
+    .map(([title, ratings]) => [title, ratings.reduce((a, b) => a + b, 0) / ratings.length])
+    .sort((a, b) => b[1] - a[1]).slice(0, 5);
+
+  const maxCount = topPlayed.length > 0 ? topPlayed[0][1] : 1;
+
+  // --- 동반자 랭킹 ---
+  const companionMap = {};
+  logs.forEach(log => {
+    if (log.companions) {
+      log.companions.split(',').map(s => s.trim()).filter(s => s).forEach(name => {
+        companionMap[name] = (companionMap[name] || 0) + 1;
+      });
+    }
+  });
+  const topCompanions = Object.entries(companionMap).sort((a, b) => b[1] - a[1]).slice(0, 5);
+  const maxComp = topCompanions.length > 0 ? topCompanions[0][1] : 1;
+
+  // --- 난이도 분포 ---
+  const diffCount = { easy: 0, medium: 0, heavy: 0 };
+  logs.forEach(log => {
+    const d = log.boxThickness || 'easy';
+    if (diffCount[d] !== undefined) diffCount[d]++;
+  });
+  const totalLogs = logs.length;
+  const maxDiff = Math.max(diffCount.easy, diffCount.medium, diffCount.heavy, 1);
+
+  // --- 승률 통계 ---
+  const wins = logs.filter(l => l.result === 'win').length;
+  const losses = logs.filter(l => l.result === 'lose').length;
+  const draws = logs.filter(l => l.result === 'draw').length;
+  const winRate = totalLogs > 0 ? Math.round((wins / totalLogs) * 100) : 0;
+
+  // --- 월별 플레이 ---
+  const monthMap = {};
+  logs.forEach(log => {
+    const month = log.playDate.substring(0, 7);
+    monthMap[month] = (monthMap[month] || 0) + 1;
+  });
+  const monthEntries = Object.entries(monthMap).sort((a, b) => a[0].localeCompare(b[0])).slice(-6);
+  const maxMonth = monthEntries.length > 0 ? Math.max(...monthEntries.map(e => e[1])) : 1;
+
+  rankGrid.innerHTML = `
+    <div class="rank-section">
+      <h3 class="rank-section-title"><i data-lucide="trophy"></i> 게임 플레이 순위</h3>
+      <div class="rank-list">
+        ${topPlayed.map(([title, count], i) => `
+          <div class="rank-row">
+            <span class="rank-badge rank-${i + 1}">${i + 1}</span>
+            <span class="rank-name">${title}</span>
+            <div class="rank-bar-wrap"><div class="rank-bar" style="width:${(count / maxCount) * 100}%"></div></div>
+            <span class="rank-value">${count}회</span>
+          </div>
+        `).join('') || '<div class="rank-row rank-empty-row">기록이 없습니다</div>'}
+      </div>
+    </div>
+
+    <div class="rank-section">
+      <h3 class="rank-section-title"><i data-lucide="star"></i> 평점 순위</h3>
+      <div class="rank-list">
+        ${topRated.map(([title, avg], i) => `
+          <div class="rank-row">
+            <span class="rank-badge rank-${i + 1}">${i + 1}</span>
+            <span class="rank-name">${title}</span>
+            <div class="rank-bar-wrap"><div class="rank-bar rank-bar-star" style="width:${(avg / 5) * 100}%"></div></div>
+            <span class="rank-value">${avg.toFixed(1)}점</span>
+          </div>
+        `).join('') || '<div class="rank-row rank-empty-row">기록이 없습니다</div>'}
+      </div>
+    </div>
+
+    <div class="rank-section">
+      <h3 class="rank-section-title"><i data-lucide="users"></i> 동반자 랭킹</h3>
+      <div class="rank-list">
+        ${topCompanions.map(([name, count], i) => `
+          <div class="rank-row">
+            <span class="rank-badge rank-${i + 1}">${i + 1}</span>
+            <span class="rank-name">👤 ${name}</span>
+            <div class="rank-bar-wrap"><div class="rank-bar rank-bar-comp" style="width:${(count / maxComp) * 100}%"></div></div>
+            <span class="rank-value">${count}회</span>
+          </div>
+        `).join('') || '<div class="rank-row rank-empty-row">등록된 동반자가 없습니다</div>'}
+      </div>
+    </div>
+
+    <div class="rank-section">
+      <h3 class="rank-section-title"><i data-lucide="pie-chart"></i> 난이도 분포</h3>
+      <div class="diff-dist">
+        <div class="diff-row">
+          <span class="diff-label">가벼움</span>
+          <div class="rank-bar-wrap"><div class="rank-bar rank-bar-easy" style="width:${(diffCount.easy / maxDiff) * 100}%"></div></div>
+          <span class="diff-count">${diffCount.easy}회</span>
+        </div>
+        <div class="diff-row">
+          <span class="diff-label">보통</span>
+          <div class="rank-bar-wrap"><div class="rank-bar rank-bar-medium" style="width:${(diffCount.medium / maxDiff) * 100}%"></div></div>
+          <span class="diff-count">${diffCount.medium}회</span>
+        </div>
+        <div class="diff-row">
+          <span class="diff-label">묵직함</span>
+          <div class="rank-bar-wrap"><div class="rank-bar rank-bar-heavy" style="width:${(diffCount.heavy / maxDiff) * 100}%"></div></div>
+          <span class="diff-count">${diffCount.heavy}회</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rank-section">
+      <h3 class="rank-section-title"><i data-lucide="activity"></i> 승률 &amp; 통계</h3>
+      <div class="winrate-big">
+        <div class="winrate-ring">${winRate}%</div>
+        <div class="winrate-labels">
+          <span>승리 <strong>${wins}회</strong></span>
+          <span>패배 <strong>${losses}회</strong></span>
+          <span>무승부 <strong>${draws}회</strong></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="rank-section rank-section-wide">
+      <h3 class="rank-section-title"><i data-lucide="calendar"></i> 월별 플레이</h3>
+      <div class="month-chart">
+        ${monthEntries.map(([month, count]) => `
+          <div class="month-col">
+            <span class="month-bar" style="height:${(count / maxMonth) * 100}%"></span>
+            <span class="month-label">${month.replace('-', '.')}</span>
+            <span class="month-count">${count}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
 }
 
 // 3D 카드 뽑기 효과로 모달 열기
@@ -1360,7 +1517,7 @@ function setupEventListeners() {
         }
       });
 
-      if (targetTab === 'info') {
+      if (targetTab === 'info' || targetTab === 'rank') {
         feedFilterControls.style.display = 'none';
       } else {
         feedFilterControls.style.display = 'block';

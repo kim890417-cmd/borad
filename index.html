@@ -133,6 +133,7 @@
           <div class="tab-buttons">
             <button class="tab-btn active" data-tab="logs"><i data-lucide="scroll"></i> 플레이 로그</button>
             <button class="tab-btn" data-tab="info"><i data-lucide="trophy"></i> 보드게임 도감 🏆</button>
+            <button class="tab-btn" data-tab="rank"><i data-lucide="bar-chart-3"></i> 랭킹/통계 📊</button>
           </div>
           <div class="filter-controls" id="feedFilterControls">
             <select id="sortBy" class="select-input">
@@ -175,6 +176,13 @@
           </div>
           <div class="game-info-grid" id="gameInfoGrid">
             <!-- JS로 전체 도감 카드 (잠금/해금) 그려냄 -->
+          </div>
+        </div>
+
+        <!-- 탭 패널 3: 랭킹/통계 -->
+        <div class="tab-panel" id="rankPanel">
+          <div class="rank-grid" id="rankGrid">
+            <!-- JS로 랭킹을 그려냄 -->
           </div>
         </div>
       </section>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>북적북적 보드 - 나만의 보드게임 탑 쌓기</title>
+  <meta name="description" content="플레이한 보드게임을 기록하고 보드게임 상자 탑을 쌓아 올리는 감성적인 보드게임 다이어리">
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts 구글 본고딕 & Outfit 폰트 가져오기 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons 아이콘 폰트 적용 -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- 왼쪽 사이드바: 보드게임 상자가 차곡차곡 쌓이는 영역 -->
+    <aside class="visual-panel">
+      <header class="panel-header">
+        <h1>북적북적 보드 🎲</h1>
+        <p class="subtitle">플레이한 게임이 차곡차곡 쌓여요</p>
+      </header>
+
+      <!-- 실제 상자들이 쌓여서 렌더링될 영역 -->
+      <div class="stack-container" id="stackContainer">
+        <!-- JS에서 동적으로 보드게임 상자 박스 엘리먼트를 여기에 쌓아 올림 -->
+        <div class="empty-stack-placeholder" id="emptyPlaceholder">
+          <i data-lucide="package-open" class="placeholder-icon"></i>
+          <p>아직 기록이 없습니다.<br>첫 보드게임을 기록하고 탑을 쌓아보세요!</p>
+        </div>
+      </div>
+
+      <!-- 누적 높이 표시기 -->
+      <div class="height-counter">
+        <span class="label">누적 높이</span>
+        <span class="value" id="totalHeight">0cm</span>
+      </div>
+    </aside>
+
+    <!-- 오른쪽 콘텐츠 영역: 대시보드 + 기록 피드 + 통계 -->
+    <main class="content-panel">
+      
+      <!-- 상단 네비게이션 및 대시보드 요약 -->
+      <section class="dashboard-section">
+        <div class="dashboard-header">
+          <h2>내 보드게임 아카이브</h2>
+          <button class="btn btn-primary" id="openAddModalBtn">
+            <i data-lucide="plus"></i> 새 게임 기록하기
+          </button>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon icon-plays"><i data-lucide="dices"></i></div>
+            <div class="stat-info">
+              <span class="stat-label">총 플레이</span>
+              <span class="stat-value" id="statPlays">0회</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon icon-time"><i data-lucide="clock"></i></div>
+            <div class="stat-info">
+              <span class="stat-label">누적 플레이 시간</span>
+              <span class="stat-value" id="statTime">0분</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon icon-rank"><i data-lucide="award"></i></div>
+            <div class="stat-info">
+              <span class="stat-label">내 보드게이머 등급</span>
+              <span class="stat-value" id="statGrade">비기너 미플</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 미플 캐릭터 도감 영역 (북적북적의 귀여운 캐릭터 해금 모티브) -->
+      <section class="characters-section">
+        <h3>해금된 보드게임 프렌즈</h3>
+        <div class="character-list" id="characterList">
+          <!-- JS에서 해금 상태에 따라 렌더링 -->
+        </div>
+      </section>
+
+      <!-- 플레이 피드 목록 영역 -->
+      <section class="history-section">
+        <div class="section-title-row">
+          <h3>나의 플레이 로그</h3>
+          <div class="filter-controls">
+            <select id="sortBy" class="select-input">
+              <option value="recent">최근 순</option>
+              <option value="oldest">오래된 순</option>
+              <option value="rating">평점 높은 순</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="log-feed" id="logFeed">
+          <!-- JS로 기록 리스트를 그려냄 -->
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 모달: 새 플레이 기록하기 작성창 -->
+  <div class="modal-backdrop" id="addModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🎲 새 보드게임 플레이 기록</h3>
+        <button class="close-btn" id="closeAddModalBtn"><i data-lucide="x"></i></button>
+      </div>
+      <form id="recordForm" class="modal-body">
+        <div class="form-group">
+          <label for="gameTitle">게임 이름</label>
+          <input type="text" id="gameTitle" placeholder="예: 스플렌더, 루미큐브" required autocomplete="off">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="playDate">플레이 날짜</label>
+            <input type="date" id="playDate" required>
+          </div>
+          <div class="form-group">
+            <label for="playTime">플레이 시간 (분)</label>
+            <input type="number" id="playTime" min="1" placeholder="예: 45" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="playerCount">인원수 (명)</label>
+            <input type="number" id="playerCount" min="1" placeholder="예: 3" required>
+          </div>
+          <div class="form-group">
+            <label for="gameResult">결과</label>
+            <select id="gameResult">
+              <option value="win">승리! 🎉</option>
+              <option value="lose">패배.. 😢</option>
+              <option value="draw">무승부 / 협력성공 🤝</option>
+              <option value="none">단순 기록 📝</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>상자 두께 (난이도 선택)</label>
+          <div class="difficulty-options">
+            <label class="diff-option">
+              <input type="radio" name="boxThickness" value="25" checked>
+              <span class="diff-badge badge-easy">가벼움 (2.5cm)</span>
+            </label>
+            <label class="diff-option">
+              <input type="radio" name="boxThickness" value="40">
+              <span class="diff-badge badge-medium">보통 (4.0cm)</span>
+            </label>
+            <label class="diff-option">
+              <input type="radio" name="boxThickness" value="65">
+              <span class="diff-badge badge-heavy">묵직함 (6.5cm)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>상자 테마 색상</label>
+          <div class="color-picker-grid" id="colorPickerGrid">
+            <!-- JS에서 동적으로 컬러 칩 생성 -->
+          </div>
+          <input type="hidden" id="selectedColor" value="#ff7675">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="gameRating">평점</label>
+            <div class="star-rating" id="starRatingContainer">
+              <i data-lucide="star" class="star-icon" data-value="1"></i>
+              <i data-lucide="star" class="star-icon" data-value="2"></i>
+              <i data-lucide="star" class="star-icon" data-value="3"></i>
+              <i data-lucide="star" class="star-icon" data-value="4"></i>
+              <i data-lucide="star" class="star-icon" data-value="5"></i>
+            </div>
+            <input type="hidden" id="gameRating" value="5">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="gameReview">한 줄 평 / 메모</label>
+          <textarea id="gameReview" rows="3" placeholder="플레이하면서 있었던 에피소드를 적어보세요!"></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelBtn">취소</button>
+          <button type="submit" class="btn btn-primary">상자 탑에 올리기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

@@ -51,7 +51,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '822', 
     name: '카르카손 (Carcassonne)', 
     desc: '타일을 한 장씩 뽑아 성, 길, 초원을 건설하고 내 미플을 놓아 영토를 넓히는 최고의 영향력 타일 배치 게임', 
-    img: 'images/carcassonne.jpg', 
+    img: 'images/카르카손_seo.webp',
     players: '2-5',
     color: '#2ecc71', 
     difficulty: 'easy' 
@@ -60,7 +60,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '13', 
     name: '카탄의 개척자 (Catan)', 
     desc: '자원을 생산하고 다른 개척자들과의 활발한 거래 및 도로, 마을 확장을 통해 10점을 먼저 획득하는 협상 전략 게임', 
-    img: 'images/catan.jpg', 
+    img: 'images/카탄_seo.webp',
     players: '3-4',
     color: '#ff7675', 
     difficulty: 'medium' 
@@ -105,7 +105,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '39856', 
     name: '딕싯 (Dixit)', 
     desc: '추상적인 일러스트 카드를 보고 다채로운 힌트를 제시하여 출제자의 카드를 맞추는 감성 스토리텔링 게임', 
-    img: 'images/dixit.jpg', 
+    img: 'images/딕싯_seo.webp',
     players: '3-6',
     color: '#8e44ad', 
     difficulty: 'easy' 
@@ -114,7 +114,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '131057', 
     name: '스컬 (Skull)', 
     desc: '꽃과 해골이 그려진 디스크를 내고, 해골을 밟지 않으면서 자기가 선언한 장수만큼 뒤집는 고도의 심리 블러핑 포커 게임', 
-    img: 'images/skull.jpg', 
+    img: 'images/스컬_seo.webp',
     players: '3-6',
     color: '#fdcb6e', 
     difficulty: 'easy' 
@@ -123,7 +123,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '31260', 
     name: '아그리콜라 (Agricola)', 
     desc: '17세기 농부가 되어 밭을 일구고 가축을 키우며 내 가족들을 굶기지 않고 농장을 건설하는 명작 일꾼배치 게임', 
-    img: 'images/agricola.jpg', 
+    img: 'images/아그리콜라.webp',
     players: '1-4',
     color: '#d35400', 
     difficulty: 'heavy' 
@@ -132,7 +132,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '129622', 
     name: '러브레터 (Love Letter)', 
     desc: '단 16장의 카드만을 사용하여 공주에게 비밀 편지를 무사히 배달하고 다른 라이벌을 탈락시키는 전략 카드게임', 
-    img: 'images/loveletter.jpg', 
+    img: 'images/러브레터_seo.webp',
     players: '2-4',
     color: '#d63031', 
     difficulty: 'easy' 
@@ -159,7 +159,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '131301', 
     name: '아키올로지 (Archeology)', 
     desc: '사막 유적지를 발굴하여 보물 세트를 모아 상인에게 비싸게 팔아넘기며 모래폭풍과 도둑을 피하는 카드 컬렉션 게임', 
-    img: 'images/archeology.jpg', 
+    img: 'images/아키올로지_seo.jpg',
     players: '2-4',
     color: '#f39c12', 
     difficulty: 'easy' 

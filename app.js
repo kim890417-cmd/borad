@@ -33,7 +33,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '148228', 
     name: '스플렌더 (Splendor)', 
     desc: '보석 칩을 모아 광산을 개발하고 카드 점수를 모아 귀족들의 방문을 유도하는 최고의 셋컬렉션 입문 게임', 
-    img: 'images/splendor.jpg', // 로컬 이미지 경로 지정
+    img: 'images/스플렌더_seo.webp',
     color: '#6c5ce7', 
     difficulty: 'medium' 
   },
@@ -41,7 +41,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '811', 
     name: '루미큐브 (Rummikub)', 
     desc: '숫자 타일들을 연속된 수 또는 같은 숫자의 다른 색 조합으로 맞춰 자신의 타일을 가장 먼저 터는 두뇌 보드게임', 
-    img: 'images/rumikub.jpg', 
+    img: 'images/루미큐브_seo.webp',
     color: '#0984e3', 
     difficulty: 'easy' 
   },
@@ -65,7 +65,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '598', 
     name: '할리갈리 (Halli Galli)', 
     desc: '과일의 합이 정확히 5개가 되는 순간 누구보다 빠르게 종을 쳐서 카드를 쓸어 담는 순발력 과일 게임', 
-    img: 'images/halligalli.jpg', 
+    img: 'images/할리갈리_seo.webp',
     color: '#e74c3c', 
     difficulty: 'easy' 
   },
@@ -73,7 +73,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '8946', 
     name: '다빈치코드 (Da Vinci Code)', 
     desc: '상대방의 흑백 타일 번호를 하나씩 밝혀내고 나의 비밀 숫자 조합은 끝까지 감추는 숫자 추리 게임', 
-    img: 'images/davincicode.jpg', 
+    img: 'images/다빈치코드_seo.webp',
     color: '#34495e', 
     difficulty: 'easy' 
   },
@@ -81,7 +81,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '118', 
     name: '젝스님트 (6 Nimmst!)', 
     desc: '카드를 비공개로 내고 오름차순으로 배치하다가, 6번째 카드를 놓는 불운의 플레이어가 벌점 카드를 먹는 파티 눈치 카드게임', 
-    img: 'images/jecksnimmt.jpg', 
+    img: 'images/젝스님트_seo.webp',
     color: '#e84393', 
     difficulty: 'easy' 
   },
@@ -89,7 +89,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '128839', 
     name: '레지스탕스 아발론 (Avalon)', 
     desc: '선과 악의 진영으로 나뉘어 서로의 정체를 속이고 미션을 성공시키거나 저지하는 최고의 마피아 블러핑 게임', 
-    img: 'images/avalon.jpg', 
+    img: 'images/아발론_seo.webp',
     color: '#16a085', 
     difficulty: 'heavy' 
   },
@@ -129,7 +129,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '3955', 
     name: '뱅! (Bang!)', 
     desc: '보안관, 부관, 무법자, 배신자라는 각자의 비밀 역할을 맡아 서부 총잡이가 되어 쏘고 피하는 정통 서부극 카드게임', 
-    img: 'images/bang.jpg', 
+    img: 'images/뱅_seo.webp',
     color: '#e67e22', 
     difficulty: 'medium' 
   },
@@ -137,7 +137,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '2223', 
     name: '우노 (UNO)', 
     desc: '손에 든 카드와 같은 색상이나 숫자를 내어 패를 털어내고, 마지막 1장이 남았을 때 우노를 외치는 고전 카드게임', 
-    img: 'images/uno.jpg', 
+    img: 'images/우노_seo.webp',
     color: '#27ae60', 
     difficulty: 'easy' 
   },
@@ -148,6 +148,230 @@ const ENCYCLOPEDIA_DB = {
     img: 'images/archeology.jpg', 
     color: '#f39c12', 
     difficulty: 'easy' 
+  },
+  '꼬치의달인': {
+    bggId: '317985',
+    name: '꼬치의달인 (Kebab Chef)',
+    desc: '재료를 골라 꼬치를 완성하고 손님에게 서빙하는 최고의 요리사가 되어보는 순발력 카드게임',
+    img: 'images/꼬치의달인_seo.webp',
+    color: '#ff7675',
+    difficulty: 'easy'
+  },
+  '달무티': {
+    bggId: '',
+    name: '달무티 (Dalmunti)',
+    desc: '토끼와 거북이 캐릭터가 달을 향해 경주하는 귀여운 테마의 전략 보드게임',
+    img: 'images/달무티_seo.webp',
+    color: '#0984e3',
+    difficulty: 'easy'
+  },
+  '노터치크라켄': {
+    bggId: '',
+    name: '노터치크라켄 (No Touch Kraken)',
+    desc: '크라켄을 건드리지 않고 해저 보물을 회수하는 파티용 손놀림 게임',
+    img: 'images/노터치크라켄_seo.webp',
+    color: '#00cec9',
+    difficulty: 'easy'
+  },
+  '스위스사는스미스씨': {
+    bggId: '',
+    name: '스위스사는스미스씨 (Mr. Smith in Switzerland)',
+    desc: '스위스에 사는 스미스 씨가 되어 다양한 에피소드를 해결하는 스토리텔링 카드게임',
+    img: 'images/스위스사는스미스씨_seo.webp',
+    color: '#2ecc71',
+    difficulty: 'easy'
+  },
+  '핸즈업': {
+    bggId: '',
+    name: '핸즈업 (Hands Up)',
+    desc: '손을 빠르게 움직여 주어진 동작을 가장 먼저 완성하는 순발력 파티게임',
+    img: 'images/핸즈업_seo.webp',
+    color: '#e74c3c',
+    difficulty: 'easy'
+  },
+  '한밤의늑대인간': {
+    bggId: '',
+    name: '한밤의늑대인간 (Werewolf at Midnight)',
+    desc: '밤이 되면 늑대인간으로 변하는 마을 사람들 사이에서 정체를 숨기고 살아남는 심리 추리 게임',
+    img: 'images/한밤의늑대인간_seo.webp',
+    color: '#34495e',
+    difficulty: 'easy'
+  },
+  '프레즌트': {
+    bggId: '',
+    name: '프레즌트 (Present)',
+    desc: '선물 상자를 서로 돌리며 누가 가장 멋진 선물을 받을지 내기하는 파티 게임',
+    img: 'images/프레즌트_seo.webp',
+    color: '#e84393',
+    difficulty: 'easy'
+  },
+  '포실리스': {
+    bggId: '',
+    name: '포실리스 (Fossilis)',
+    desc: '고고학자가 되어 화석을 발굴하고 박물관에 전시하는 테마의 카드 게임',
+    img: 'images/포실리스_seo.webp',
+    color: '#d35400',
+    difficulty: 'medium'
+  },
+  '펭귄파티': {
+    bggId: '',
+    name: '펭귄파티 (Penguin Party)',
+    desc: '귀여운 펭귄들이 펼치는 얼음 위 파티! 가장 많은 물고기를 모으는 가족 보드게임',
+    img: 'images/펭귄파티_seo.webp',
+    color: '#16a085',
+    difficulty: 'easy'
+  },
+  '페이퍼사파리': {
+    bggId: '',
+    name: '페이퍼사파리 (Paper Safari)',
+    desc: '접힌 종이를 펼쳐 동물을 완성하고 다양한 동물을 수집하는 어린이 보드게임',
+    img: 'images/페이퍼사파리_seo.webp',
+    color: '#27ae60',
+    difficulty: 'easy'
+  },
+  '타코캣고트치즈피자': {
+    bggId: '372332',
+    name: '타코캣고트치즈피자 (Taco Cat Goat Cheese Pizza)',
+    desc: '카드를 돌며 외치다가 같은 그림이 나오면 손으로 팍! 쳐야 하는 초고속 순발력 파티게임',
+    img: 'images/타코캣고트치즈피자_seo.webp',
+    color: '#ff7675',
+    difficulty: 'easy'
+  },
+  '쿼리도': {
+    bggId: '6249',
+    name: '쿼리도 (Quoridor)',
+    desc: '내 말을 먼저 반대편 끝까지 보내는 전략 미로 게임. 벽을 세워 상대를 막고 길을 개척하라',
+    img: 'images/쿼리도_seo.webp',
+    color: '#6c5ce7',
+    difficulty: 'medium'
+  },
+  '캘리코': {
+    bggId: '355433',
+    name: '캘리코 (Calico)',
+    desc: '패치워크 퀼트를 디자인하여 귀여운 고양이들을 유치하는 퍼즐 전략 게임',
+    img: 'images/캘리코_seo.webp',
+    color: '#fdcb6e',
+    difficulty: 'medium'
+  },
+  '캔트스탑': {
+    bggId: '41',
+    name: "캔트스탑 (Can't Stop)",
+    desc: '주사위를 굴려 숫자를 완성하는데 그만둘지 계속할지 선택의 연속! 짜릿한 푸시유어럭 게임',
+    img: 'images/캔트스탑_seo.webp',
+    color: '#0984e3',
+    difficulty: 'easy'
+  },
+  '카리바': {
+    bggId: '',
+    name: '카리바 (Kariba)',
+    desc: '아프리카 사바나에서 동물 카드를 내며 더 강한 동물로 약한 동물을 덮는 간단한 카드게임',
+    img: 'images/카리바_seo.webp',
+    color: '#e67e22',
+    difficulty: 'easy'
+  },
+  '치킨차차': {
+    bggId: '',
+    name: '치킨차차 (Chicken Cha Cha)',
+    desc: '치킨이 되어 알을 낳고 병아리를 키우는 유쾌한 기억력 게임',
+    img: 'images/치킨차차_seo.webp',
+    color: '#f39c12',
+    difficulty: 'easy'
+  },
+  '익스플로딩키튼': {
+    bggId: '172291',
+    name: '익스플로딩키튼 (Exploding Kittens)',
+    desc: '폭발하는 고양이를 피하고 다양한 액션 카드로 상대를 공격하는 최후의 1인이 되는 러시안룰렛 카드게임',
+    img: 'images/익스플로딩키튼_seo.webp',
+    color: '#e84393',
+    difficulty: 'easy'
+  },
+  '우봉고': {
+    bggId: '29246',
+    name: '우봉고 (Ubongo)',
+    desc: '퍼즐 조각을 제한 시간 안에 맞춰 보석을 획득하는 두뇌 퍼즐 게임',
+    img: 'images/우봉고_seo.webp',
+    color: '#00cec9',
+    difficulty: 'medium'
+  },
+  '시타델': {
+    bggId: '478',
+    name: '시타델 (Citadels)',
+    desc: '왕국을 건설하며 다양한 캐릭터를 선택해 상대보다 먼저 8개 구역을 완성하는 전략 카드게임',
+    img: 'images/시타델_seo.webp',
+    color: '#8e44ad',
+    difficulty: 'medium'
+  },
+  '슬리핑퀸즈': {
+    bggId: '153999',
+    name: '슬리핑퀸즈 (Sleeping Queens)',
+    desc: '잠자는 여왕들을 깨워 왕국을 재건하는 동화 같은 테마의 어린이 카드게임',
+    img: 'images/슬리핑퀸즈_seo.webp',
+    color: '#6c5ce7',
+    difficulty: 'easy'
+  },
+  '스파이폴': {
+    bggId: '131922',
+    name: '스파이폴 (Spyfall)',
+    desc: '스파이를 찾아내거나 스파이로써 정체를 숨기는 심리 블러핑 질문 게임',
+    img: 'images/스파이폴_seo.webp',
+    color: '#2ecc71',
+    difficulty: 'easy'
+  },
+  '스틱스택': {
+    bggId: '',
+    name: '스틱스택 (Stick Stack)',
+    desc: '막대기를 하나씩 빼서 쌓으며 균형을 유지하는 손기술 소근육 발달 게임',
+    img: 'images/스틱스택_seo.webp',
+    color: '#ff7675',
+    difficulty: 'easy'
+  },
+  '스컬킹': {
+    bggId: '',
+    name: '스컬킹 (Skull King)',
+    desc: '트릭을 예측하고 해적왕 스컬킹을 조심하며 승부를 거는 해적 테마 트릭테이킹 게임',
+    img: 'images/스컬킹_seo.webp',
+    color: '#e74c3c',
+    difficulty: 'medium'
+  },
+  '로보77': {
+    bggId: '',
+    name: '로보77 (Robo 77)',
+    desc: '숫자 카드를 전략적으로 사용해 합이 정확히 77이 되지 않도록 조절하는 숫자 카드게임',
+    img: 'images/로보77_seo.webp',
+    color: '#34495e',
+    difficulty: 'easy'
+  },
+  '도블': {
+    bggId: '391163',
+    name: '도블 (Dobble)',
+    desc: '두 카드 사이에 항상 하나의 같은 그림을 가장 먼저 찾아내는 초스피드 관찰력 게임',
+    img: 'images/도블_seo.webp',
+    color: '#27ae60',
+    difficulty: 'easy'
+  },
+  '마네': {
+    bggId: '',
+    name: '마네 (Manee)',
+    desc: '경매와 교환을 통해 원하는 동물 카드를 모으는 한국형 보드게임',
+    img: 'images/마네_seo.webp',
+    color: '#16a085',
+    difficulty: 'easy'
+  },
+  '보난자': {
+    bggId: '425',
+    name: '보난자 (Bohnanza)',
+    desc: '콩 농장을 운영하며 콩을 심고 수확해 가장 많은 수익을 올리는 트레이딩 카드게임의 명작',
+    img: 'images/보난자_seo.webp',
+    color: '#d35400',
+    difficulty: 'medium'
+  },
+  '더마인드': {
+    bggId: '244992',
+    name: '더마인드 (The Mind)',
+    desc: '대화 없이 오직 타이밍만으로 카드를 오름차순으로 내는 신개념 협력 카드게임',
+    img: 'images/더마인드_seo.webp',
+    color: '#fdcb6e',
+    difficulty: 'easy'
   }
 };
 
@@ -745,7 +969,7 @@ function renderCharacters() {
   CHARACTERS.forEach((char) => {
     const isUnlocked = char.unlockFn(playCount);
     const badge = document.createElement('div');
-    badge.className = `character-badge ${isUnlocked ? 'unlocked' : ''}`;
+    badge.className = `character-badge ${isUnlocked ? '' : ''}`;
     
     badge.innerHTML = `
       <div class="character-avatar">${isUnlocked ? char.emoji : '🔒'}</div>

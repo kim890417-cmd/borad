@@ -12,8 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
   <!-- Lucide Icons 아이콘 폰트 적용 -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- HTML2Canvas: 화면 캡처 라이브러리 추가 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+  <!-- HTML2Canvas: CORS 보안 문제 우회가 가능한 최신 html2canvas 라이브러리로 교체 -->
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
   <div class="app-container">
@@ -21,7 +21,9 @@
     <!-- 왼쪽 사이드바: 보드게임 상자가 차곡차곡 쌓이는 영역 -->
     <aside class="visual-panel">
       <header class="panel-header">
-        <h1>다독다독보드 🎲</h1>
+        <h1 class="brand-title">
+          다독다독보드 <i data-lucide="dices" class="brand-icon"></i>
+        </h1>
         <p class="subtitle">플레이한 게임이 차곡차곡 쌓여요</p>
       </header>
 
@@ -60,7 +62,7 @@
         <div class="dashboard-header">
           <h2>내 보드게임 아카이브</h2>
           <div class="header-action-group">
-            <button class="btn btn-sound-toggle" id="soundToggleBtn" title="효과음 켜기/끄기">
+            <button class="btn-sound-toggle" id="soundToggleBtn" title="효과음 켜기/끄기">
               <i data-lucide="volume-2"></i>
             </button>
             <button class="btn btn-primary" id="openAddModalBtn">
@@ -130,7 +132,7 @@
         <div class="tab-header-row">
           <div class="tab-buttons">
             <button class="tab-btn active" data-tab="logs"><i data-lucide="scroll"></i> 플레이 로그</button>
-            <button class="tab-btn" data-tab="info"><i data-lucide="book-open"></i> 보드게임 소개</button>
+            <button class="tab-btn" data-tab="info"><i data-lucide="trophy"></i> 보드게임 도감 🏆</button>
           </div>
           <div class="filter-controls" id="feedFilterControls">
             <select id="sortBy" class="select-input">
@@ -148,10 +150,10 @@
           </div>
         </div>
 
-        <!-- 탭 패널 2: 보드게임 소개 서재 -->
+        <!-- 탭 패널 2: 보드게임 도감 서재 -->
         <div class="tab-panel" id="infoPanel">
           <div class="game-info-grid" id="gameInfoGrid">
-            <!-- JS로 고유 보드게임 설명 카드를 카드형 그리드로 그려냄 -->
+            <!-- JS로 전체 도감 카드 (잠금/해금) 그려냄 -->
           </div>
         </div>
       </section>
@@ -301,7 +303,7 @@
         </div>
       </div>
 
-      <!-- 닫기 버튼 (카드 오픈 완료 후 활성화) -->
+      <!-- 닫기 버튼 -->
       <button class="btn btn-primary close-card-btn" id="closeCardBtn" style="display:none;">서재에 보관하기</button>
     </div>
   </div>

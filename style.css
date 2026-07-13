@@ -55,13 +55,22 @@ body {
   z-index: 10;
 }
 
-.panel-header h1 {
+.brand-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   font-size: 2rem;
   font-weight: 800;
   background: linear-gradient(to right, #a29bfe, #81ecec);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   margin-bottom: 0.5rem;
+}
+
+.brand-icon {
+  width: 28px;
+  height: 28px;
+  color: #81ecec;
 }
 
 .panel-header .subtitle {
@@ -288,7 +297,7 @@ body {
 
 .header-action-group {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   align-items: center;
 }
 
@@ -333,29 +342,37 @@ body {
   background-color: #cbd5e1;
 }
 
+/* Sound volume control design */
 .btn-sound-toggle {
   background: var(--card-bg);
   border: 1.5px solid var(--border-color);
   color: var(--text-muted);
-  width: 46px;
-  height: 46px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 12px;
+  border-radius: 50%;
   cursor: pointer;
   transition: var(--transition-normal);
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-sound-toggle:hover {
   border-color: var(--primary-color);
   color: var(--primary-color);
+  transform: scale(1.05);
 }
 
 .btn-sound-toggle.muted {
   background: rgba(255, 118, 117, 0.1);
   border-color: #ff7675;
   color: #ff7675;
+}
+
+.btn-sound-toggle i {
+  width: 20px;
+  height: 20px;
 }
 
 /* Stats Cards Grid */
@@ -663,6 +680,7 @@ body {
   gap: 1.5rem;
 }
 
+/* Encyclopedia Card styles (Locked vs Unlocked) */
 .info-card {
   background: var(--card-bg);
   border-radius: 20px;
@@ -673,6 +691,7 @@ body {
   flex-direction: column;
   transition: var(--transition-bounce);
   cursor: pointer;
+  position: relative;
 }
 
 .info-card:hover {
@@ -750,6 +769,45 @@ body {
   flex: 1;
 }
 
+/* Locked Card Style Overrides */
+.info-card.locked {
+  cursor: not-allowed;
+}
+
+.info-card.locked .info-card-header {
+  filter: grayscale(1) contrast(0.7);
+  opacity: 0.4;
+}
+
+.info-card.locked .info-card-body {
+  filter: grayscale(1);
+  opacity: 0.55;
+}
+
+.info-card-lock-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(15, 23, 42, 0.04);
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: #64748b;
+  font-weight: 700;
+  font-size: 0.95rem;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.info-card-lock-overlay i {
+  width: 28px;
+  height: 28px;
+}
+
 /* 3D Card Opening / Draw Overlay Layout */
 .card-draw-overlay {
   position: fixed;
@@ -824,7 +882,6 @@ body {
   transform-style: preserve-3d;
 }
 
-/* Trigger flip */
 .flip-card-container.flipped .flip-card-inner {
   transform: rotateY(180deg);
 }

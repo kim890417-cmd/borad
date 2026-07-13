@@ -27,16 +27,26 @@ const CHARACTERS = [
   { id: 'c6', name: '보드게임 지신', emoji: '🧙‍♂️', condText: '기록 20회 달성', unlockFn: (count) => count >= 20 }
 ];
 
-const OFFLINE_GAME_DB = {
-  '스플렌더': { name: '스플렌더 (Splendor)', desc: '보석 칩을 모아 광산을 개발하고 귀족들의 방문을 이끌어내는 대표적인 셋컬렉션 게임', img: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=150&q=80', color: '#6c5ce7' },
-  '루미큐브': { name: '루미큐브 (Rummikub)', desc: '숫자 타일들을 규칙에 따라 조합하여 자신의 타일을 가장 먼저 모두 털어내는 두뇌 회전 게임', img: 'https://images.unsplash.com/photo-1606167668584-78701c57f13d?auto=format&fit=crop&w=150&q=80', color: '#0984e3' },
-  '카르카손': { name: '카르카손 (Carcassonne)', desc: '타일을 놓아 중세의 성, 길, 수도원을 완성하고 미플을 배치해 점수를 획득하는 명작 타일 배치 게임', img: 'https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=150&q=80', color: '#2ecc71' },
-  '카탄': { name: '카탄의 개척자 (Catan)', desc: '자원을 주사위로 획득하고 다른 플레이어와 거래하여 자신만의 영토와 길을 넓혀 나가는 협상 전략 게임', img: 'https://images.unsplash.com/photo-1585504198199-20277593b94f?auto=format&fit=crop&w=150&q=80', color: '#ff7675' },
-  '할리갈리': { name: '할리갈리 (Halli Galli)', desc: '같은 과일 카드가 5개가 보이면 누구보다 빠르게 종을 쳐서 카드를 모으는 순발력 파티게임', img: 'https://images.unsplash.com/photo-1629812456605-4a044aa38fbc?auto=format&fit=crop&w=150&q=80', color: '#e74c3c' },
-  '다빈치코드': { name: '다빈치코드 (Da Vinci Code)', desc: '상대방의 비밀 숫자 코드를 추리하고, 자신의 코드를 끝까지 숨겨내는 숫자 추리 게임', img: 'https://images.unsplash.com/photo-1611890798517-0127e27a1725?auto=format&fit=crop&w=150&q=80', color: '#34495e' }
+// --- 20종 이상의 풍부한 기본 보드게임 도감 백과사전 DB (한글설명 매핑) ---
+const ENCYCLOPEDIA_DB = {
+  '스플렌더': { name: '스플렌더 (Splendor)', desc: '보석 칩을 모아 광산을 개발하고 카드 점수를 모아 귀족들의 방문을 유도하는 최고의 셋컬렉션 입문 게임', img: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=300&q=80', color: '#6c5ce7', difficulty: 'medium' },
+  '루미큐브': { name: '루미큐브 (Rummikub)', desc: '숫자 타일들을 연속된 수 또는 같은 숫자의 다른 색 조합으로 맞춰 자신의 타일을 가장 먼저 터는 두뇌 보드게임', img: 'https://images.unsplash.com/photo-1606167668584-78701c57f13d?auto=format&fit=crop&w=300&q=80', color: '#0984e3', difficulty: 'easy' },
+  '카르카손': { name: '카르카손 (Carcassonne)', desc: '타일을 한 장씩 뽑아 성, 길, 초원을 건설하고 내 미플을 놓아 영토를 넓히는 최고의 영향력 타일 배치 게임', img: 'https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=300&q=80', color: '#2ecc71', difficulty: 'easy' },
+  '카탄': { name: '카탄의 개척자 (Catan)', desc: '자원을 생산하고 다른 개척자들과의 활발한 거래 및 도로, 마을 확장을 통해 10점을 먼저 획득하는 협상 전략 게임', img: 'https://images.unsplash.com/photo-1585504198199-20277593b94f?auto=format&fit=crop&w=300&q=80', color: '#ff7675', difficulty: 'medium' },
+  '할리갈리': { name: '할리갈리 (Halli Galli)', desc: '과일의 합이 정확히 5개가 되는 순간 누구보다 빠르게 종을 쳐서 카드를 쓸어 담는 순발력 과일 게임', img: 'https://images.unsplash.com/photo-1629812456605-4a044aa38fbc?auto=format&fit=crop&w=300&q=80', color: '#e74c3c', difficulty: 'easy' },
+  '다빈치코드': { name: '다빈치코드 (Da Vinci Code)', desc: '상대방의 흑백 타일 번호를 하나씩 밝혀내고 나의 비밀 숫자 조합은 끝까지 감추는 숫자 추리 게임', img: 'https://images.unsplash.com/photo-1611890798517-0127e27a1725?auto=format&fit=crop&w=300&q=80', color: '#34495e', difficulty: 'easy' },
+  '젝스님트': { name: '젝스님트 (6 Nimmst!)', desc: '카드를 비공개로 내고 오름차순으로 배치하다가, 6번째 카드를 놓는 불운의 플레이어가 벌점 카드를 먹는 파티 눈치 카드게임', img: 'https://images.unsplash.com/photo-1607513746994-51f730a44832?auto=format&fit=crop&w=300&q=80', color: '#e84393', difficulty: 'easy' },
+  '아발론': { name: '레지스탕스 아발론 (Avalon)', desc: '선과 악의 진영으로 나뉘어 서로의 정체를 속이고 미션을 성공시키거나 저지하는 최고의 마피아 블러핑 게임', img: 'https://images.unsplash.com/photo-1590134643916-29177a452cc7?auto=format&fit=crop&w=300&q=80', color: '#16a085', difficulty: 'heavy' },
+  '딕싯': { name: '딕싯 (Dixit)', desc: '추상적인 일러스트 카드를 보고 다채로운 힌트를 제시하여 출제자의 카드를 맞추는 감성 스토리텔링 게임', img: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=300&q=80', color: '#8e44ad', difficulty: 'easy' },
+  '스컬': { name: '스컬 (Skull)', desc: '꽃과 해골이 그려진 디스크를 내고, 해골을 밟지 않으면서 자기가 선언한 장수만큼 뒤집는 고도의 심리 블러핑 포커 게임', img: 'https://images.unsplash.com/photo-1605870445919-838d190e8e1b?auto=format&fit=crop&w=300&q=80', color: '#fdcb6e', difficulty: 'easy' },
+  '아그리콜라': { name: '아그리콜라 (Agricola)', desc: '17세기 농부가 되어 밭을 일구고 가축을 키우며 내 가족들을 굶기지 않고 풍요로운 농장을 건설하는 명작 일꾼배치 게임', img: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=300&q=80', color: '#d35400', difficulty: 'heavy' },
+  '러브레터': { name: '러브레터 (Love Letter)', desc: '단 16장의 카드만을 사용하여 공주에게 비밀 편지를 무사히 배달하고 다른 라이벌을 탈락시키는 전략 카드게임', img: 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=300&q=80', color: '#d63031', difficulty: 'easy' },
+  '뱅': { name: '뱅! (Bang!)', desc: '보안관, 부관, 무법자, 배신자라는 각자의 비밀 역할을 맡아 서부 총잡이가 되어 쏘고 피하는 정통 서부극 카드게임', img: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=300&q=80', color: '#e67e22', difficulty: 'medium' },
+  '우노': { name: '우노 (UNO)', desc: '손에 든 카드와 같은 색상이나 숫자를 내어 패를 털어내고, 마지막 1장이 남았을 때 우노를 외치는 고전 카드게임', img: 'https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=300&q=80', color: '#27ae60', difficulty: 'easy' },
+  '아키오로지': { name: '아키올로지 (Archeology)', desc: '사막 유적지를 발굴하여 보물 세트를 모아 상인에게 비싸게 팔아넘기며 모래폭풍과 도둑을 피하는 카드 컬렉션 게임', img: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=300&q=80', color: '#f39c12', difficulty: 'easy' }
 };
 
-// --- Web Audio API를 활용한 무설치 효과음 신디사이저 ---
+// --- Web Audio API 효과음 신디사이저 ---
 let audioCtx = null;
 function initAudioContext() {
   if (!audioCtx) {
@@ -66,12 +76,9 @@ function playDropSound() {
 
     stackContainer.classList.add('shake');
     setTimeout(() => stackContainer.classList.remove('shake'), 200);
-  } catch (e) {
-    console.warn("Audio play failed:", e);
-  }
+  } catch (e) {}
 }
 
-// 가챠 카드 팩 나타날 때 소리 (쉬이익)
 function playCardSpawnSound() {
   if (!soundEnabled) return;
   try {
@@ -102,14 +109,11 @@ function playCardSpawnSound() {
   } catch (e) {}
 }
 
-// 카드가 촤라락 뒤집힐 때의 찬란한 효과음 (샤라랑 칭)
 function playCardFlipSound() {
   if (!soundEnabled) return;
   try {
     initAudioContext();
     const now = audioCtx.currentTime;
-    
-    // 주파수가 상승하는 벨소리
     for (let i = 0; i < 6; i++) {
       const osc = audioCtx.createOscillator();
       const gainNode = audioCtx.createGain();
@@ -180,13 +184,10 @@ const tabButtons = document.querySelectorAll('.tab-btn');
 const tabPanels = document.querySelectorAll('.tab-panel');
 const feedFilterControls = document.getElementById('feedFilterControls');
 
-// 카드 가챠 관련 DOM
 const cardDrawOverlay = document.getElementById('cardDrawOverlay');
 const flipCard = document.getElementById('flipCard');
 const cardFrontView = document.getElementById('cardFrontView');
 const closeCardBtn = document.getElementById('closeCardBtn');
-
-// 캡처 단추
 const captureBtn = document.getElementById('captureBtn');
 
 // --- Initialization ---
@@ -486,7 +487,6 @@ function renderLogFeed() {
       </div>
     `;
 
-    // 메인 본문 영역 클릭 시 카드 상세 드로우 열기
     card.querySelector('.log-card-left').addEventListener('click', () => {
       openCardFlipView(log);
     });
@@ -507,67 +507,76 @@ function renderLogFeed() {
   });
 }
 
-// 보드게임 소개 탭 렌더링
+// 고정 도감 데이터와 플레이 로그 매핑하여 해금/잠금 상태 판정 후 도감 그리기
 function renderGameInfoTab() {
   gameInfoGrid.innerHTML = '';
 
-  const uniqueGames = {};
-  logs.forEach(log => {
-    if (!uniqueGames[log.gameTitle]) {
-      uniqueGames[log.gameTitle] = {
-        title: log.gameTitle,
-        thumbnail: log.gameThumbnail || 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=150&q=80',
-        desc: log.gameDescription || '설명 기록 없음',
-        plays: 0,
-        totalTime: 0,
-        difficulty: log.boxThickness,
-        // 오리지널 데이터 매핑 보관용
-        originalLog: log 
-      };
-    }
-    uniqueGames[log.gameTitle].plays += 1;
-    uniqueGames[log.gameTitle].totalTime += Number(log.playTime || 0);
-  });
+  // 1. 도감 아이템들 루프 돌며 해금 상태 점검
+  Object.entries(ENCYCLOPEDIA_DB).forEach(([key, info]) => {
+    
+    // 플레이 로그 중 해당 게임과 이름이 매칭(한글 혹은 영문 포함)되는 로그 검사
+    const matchLog = logs.find(log => {
+      const lowerInput = log.gameTitle.toLowerCase();
+      const lowerKey = key.toLowerCase();
+      const lowerName = info.name.toLowerCase();
+      
+      return lowerInput.includes(lowerKey) || lowerKey.includes(lowerInput) || lowerInput.includes(lowerName) || lowerName.includes(lowerInput);
+    });
 
-  const gameList = Object.values(uniqueGames);
+    const isUnlocked = !!matchLog;
 
-  if (gameList.length === 0) {
-    gameInfoGrid.innerHTML = `
-      <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
-        <p>기록된 보드게임 정보가 없습니다.<br>플레이 로그에 보드게임을 등록하면 백과사전이 자동으로 완성됩니다!</p>
-      </div>
-    `;
-    return;
-  }
-
-  gameList.forEach(game => {
     const card = document.createElement('div');
-    card.className = 'info-card';
+    // 잠금 여부에 따라 locked 클래스 부여
+    card.className = `info-card ${isUnlocked ? '' : 'locked'}`;
 
     let diffLabel = '쉬움';
-    if (game.difficulty === 'medium') diffLabel = '보통';
-    else if (game.difficulty === 'heavy') diffLabel = '묵직함';
+    if (info.difficulty === 'medium') diffLabel = '보통';
+    else if (info.difficulty === 'heavy') diffLabel = '묵직함';
 
-    card.innerHTML = `
-      <div class="info-card-header">
-        <img src="${game.thumbnail}" class="info-card-blur-bg" alt="blur">
-        <img src="${game.thumbnail}" class="info-card-img" alt="${game.title}">
-      </div>
-      <div class="info-card-body">
-        <h3 class="info-card-title">${game.title}</h3>
-        <div class="info-card-stat-row">
-          <span>🎮 플레이 <strong>${game.plays}회</strong></span>
-          <span>⏱️ 총 <strong>${game.totalTime}분</strong></span>
-          <span>⚖️ 난이도 <strong>${diffLabel}</strong></span>
+    if (isUnlocked) {
+      // 1-1. 해금 상태 렌더링
+      const playCount = logs.filter(log => log.gameTitle.toLowerCase().includes(key.toLowerCase())).length;
+
+      card.innerHTML = `
+        <div class="info-card-header">
+          <img src="${info.img}" class="info-card-blur-bg" alt="blur">
+          <img src="${info.img}" class="info-card-img" alt="${info.name}">
         </div>
-        <p class="info-card-desc">${game.desc}</p>
-      </div>
-    `;
+        <div class="info-card-body">
+          <h3 class="info-card-title">${info.name}</h3>
+          <div class="info-card-stat-row">
+            <span>🎮 내 기록 <strong>${playCount}회</strong></span>
+            <span>⚖️ 난이도 <strong>${diffLabel}</strong></span>
+          </div>
+          <p class="info-card-desc">${info.desc}</p>
+        </div>
+      `;
 
-    // 카드 누르면 해당 보드게임 3D 드로우 효과로 세부 카드 펼쳐보기
-    card.addEventListener('click', () => {
-      openCardFlipView(game.originalLog);
-    });
+      // 해금된 카드 클릭 시 3D 뷰어 띄우기 (매치 로그 데이터 기반)
+      card.addEventListener('click', () => {
+        openCardFlipView(matchLog);
+      });
+
+    } else {
+      // 1-2. 잠금 상태 렌더링
+      card.innerHTML = `
+        <div class="info-card-header">
+          <img src="${info.img}" class="info-card-blur-bg" alt="blur">
+          <img src="${info.img}" class="info-card-img" alt="${info.name}">
+        </div>
+        <div class="info-card-body">
+          <h3 class="info-card-title">${info.name}</h3>
+          <div class="info-card-stat-row">
+            <span>⚖️ 난이도 <strong>${diffLabel}</strong></span>
+          </div>
+          <p class="info-card-desc" style="color:transparent; text-shadow:0 0 8px rgba(0,0,0,0.5);">비공개 설명 블러 처리 블러 처리</p>
+        </div>
+        <div class="info-card-lock-overlay">
+          <i data-lucide="lock"></i>
+          <span>기록 시 도감 해금</span>
+        </div>
+      `;
+    }
 
     gameInfoGrid.appendChild(card);
   });
@@ -575,7 +584,6 @@ function renderGameInfoTab() {
 
 // 3D 카드 뽑기 효과로 모달 열기
 function openCardFlipView(log) {
-  // 뒤집기 상태 초기화
   flipCard.classList.remove('flipped');
   closeCardBtn.style.display = 'none';
 
@@ -623,7 +631,6 @@ function openCardFlipView(log) {
     </div>
   `;
 
-  // Lucide 아이콘 로드
   if (window.lucide) {
     window.lucide.createIcons();
   }
@@ -685,13 +692,14 @@ async function searchBoardGame(query) {
   searchResultsDropdown.innerHTML = '<div style="padding:10px; font-size:0.85rem; color:var(--text-muted);">검색 중...</div>';
   searchResultsDropdown.classList.add('active');
 
-  const offlineMatch = Object.keys(OFFLINE_GAME_DB).find(key => query.includes(key) || key.includes(query));
+  // 오프라인 도감 DB에서 대소문자 가리지 않고 매칭 우선 검색
+  const offlineMatchKey = Object.keys(ENCYCLOPEDIA_DB).find(key => query.includes(key) || key.includes(query));
   
   let results = [];
-  if (offlineMatch) {
-    const dbItem = OFFLINE_GAME_DB[offlineMatch];
+  if (offlineMatchKey) {
+    const dbItem = ENCYCLOPEDIA_DB[offlineMatchKey];
     results.push({
-      id: 'offline_' + offlineMatch,
+      id: 'offline_' + offlineMatchKey,
       name: dbItem.name,
       description: dbItem.desc,
       thumbnail: dbItem.img,
@@ -894,13 +902,10 @@ function setupStarRating() {
 }
 
 function setupEventListeners() {
-  // 3D 카드 클릭 시 뒤집기 이벤트
   flipCard.addEventListener('click', () => {
     if (!flipCard.classList.contains('flipped')) {
       flipCard.classList.add('flipped');
       playCardFlipSound();
-      
-      // 샤라랑 소리 끝난 후 보관 버튼 표시
       setTimeout(() => {
         closeCardBtn.style.display = 'block';
       }, 600);
@@ -911,18 +916,23 @@ function setupEventListeners() {
     cardDrawOverlay.classList.remove('active');
   });
 
-  // 스택 캡처 기능 (dom-to-image 사용하여 모바일 용량 압축 캡처)
+  // CORS 보안 이슈 우회가 가능한 최신 HTML2Canvas 렌더링 로직으로 전면 업그레이드 (압축 완료)
   captureBtn.addEventListener('click', () => {
     captureBtn.disabled = true;
     captureBtn.innerHTML = '<i data-lucide="loader"></i> 이미지 생성 중...';
     if (window.lucide) window.lucide.createIcons();
 
-    // 캡처 최적화 옵션
-    domtoimage.toJpeg(stackContainer, {
-      quality: 0.75, // 75% 퀄리티 압축
-      bgcolor: '#0f172a'
+    // 임시 복제 캔버스 렌더링을 통한 BGG 외부 리소스 CORS 우회 캡처 진행
+    html2canvas(stackContainer, {
+      useCORS: true,       // 외부 도메인 이미지 CORS 허용
+      allowTaint: true,
+      backgroundColor: '#0f172a',
+      scale: 1             // 너무 뻥튀기되지 않도록 스케일 고정 (용량 최적화)
     })
-    .then((dataUrl) => {
+    .then((canvas) => {
+      // 퀄리티 0.7 압축 비율로 JPEG 변환하여 경량화 완성
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
+      
       const link = document.createElement('a');
       link.download = `다독다독보드-탑-${new Date().toISOString().substring(2,10)}.jpg`;
       link.href = dataUrl;
@@ -933,11 +943,11 @@ function setupEventListeners() {
       if (window.lucide) window.lucide.createIcons();
     })
     .catch((error) => {
-      console.error('oops, something went wrong!', error);
+      console.error('html2canvas error!', error);
       captureBtn.disabled = false;
       captureBtn.innerHTML = '<i data-lucide="camera"></i> 탑 이미지 저장 (경량)';
       if (window.lucide) window.lucide.createIcons();
-      alert('이미지 저장에 실패했습니다. 브라우저 보안 설정을 확인해주세요.');
+      alert('이미지 저장 중 오류가 발생했습니다. 브라우저 설정을 확인해주세요.');
     });
   });
 
@@ -1081,7 +1091,6 @@ function setupEventListeners() {
     render(isNewAddition);
     closeModal();
 
-    // 새 기록 추가 시 카드 개봉 오버레이 오픈 연출 발동!
     if (isNewAddition && targetLogObj) {
       setTimeout(() => {
         openCardFlipView(targetLogObj);

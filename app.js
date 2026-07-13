@@ -1,6 +1,7 @@
 // --- State Management ---
 let logs = [];
 let decos = [];
+let soundEnabled = true;
 
 const PRESET_COLORS = [
   '#ff7675', // 파스텔 레드
@@ -26,7 +27,6 @@ const CHARACTERS = [
   { id: 'c6', name: '보드게임 지신', emoji: '🧙‍♂️', condText: '기록 20회 달성', unlockFn: (count) => count >= 20 }
 ];
 
-// 자주 사용하는 대표 보드게임 한글 데이터 오프라인 사전 (BGG API가 영어이므로 한국어로 자연스럽게 보정하는 역할)
 const OFFLINE_GAME_DB = {
   '스플렌더': { name: '스플렌더 (Splendor)', desc: '보석 칩을 모아 광산을 개발하고 귀족들의 방문을 이끌어내는 대표적인 셋컬렉션 게임', img: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=150&q=80', color: '#6c5ce7' },
   '루미큐브': { name: '루미큐브 (Rummikub)', desc: '숫자 타일들을 규칙에 따라 조합하여 자신의 타일을 가장 먼저 모두 털어내는 두뇌 회전 게임', img: 'https://images.unsplash.com/photo-1606167668584-78701c57f13d?auto=format&fit=crop&w=150&q=80', color: '#0984e3' },
@@ -35,6 +35,42 @@ const OFFLINE_GAME_DB = {
   '할리갈리': { name: '할리갈리 (Halli Galli)', desc: '같은 과일 카드가 5개가 보이면 누구보다 빠르게 종을 쳐서 카드를 모으는 순발력 파티게임', img: 'https://images.unsplash.com/photo-1629812456605-4a044aa38fbc?auto=format&fit=crop&w=150&q=80', color: '#e74c3c' },
   '다빈치코드': { name: '다빈치코드 (Da Vinci Code)', desc: '상대방의 비밀 숫자 코드를 추리하고, 자신의 코드를 끝까지 숨겨내는 숫자 추리 게임', img: 'https://images.unsplash.com/photo-1611890798517-0127e27a1725?auto=format&fit=crop&w=150&q=80', color: '#34495e' }
 };
+
+// --- Web Audio API를 활용한 무설치 효과음 신디사이저 ---
+let audioCtx = null;
+function playDropSound() {
+  if (!soundEnabled) return;
+  try {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    
+    // 쿵! (Thud) 소리 합성 로직
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    
+    // 저주파 드럼 비트 소리로 하강 피치 설정
+    osc.type = 'triangle';
+    osc.frequency.setValueAtTime(140, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.3);
+    
+    gainNode.gain.setValueAtTime(0.6, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.35);
+    
+    osc.start(audioCtx.currentTime);
+    osc.stop(audioCtx.currentTime + 0.45);
+
+    // 시각적 상자 탑 임팩트 진동 흔들기 효과
+    stackContainer.classList.add('shake');
+    setTimeout(() => stackContainer.classList.remove('shake'), 200);
+
+  } catch (e) {
+    console.warn("Audio play failed or blocked by autoplay restriction:", e);
+  }
+}
 
 // --- DOM Elements ---
 const stackContainer = document.getElementById('stackContainer');
@@ -53,6 +89,7 @@ const bestMateArea = document.getElementById('bestMateArea');
 
 const characterList = document.getElementById('characterList');
 const logFeed = document.getElementById('logFeed');
+const gameInfoGrid = document.getElementById('gameInfoGrid');
 
 const openAddModalBtn = document.getElementById('openAddModalBtn');
 const closeAddModalBtn = document.getElementById('closeAddModalBtn');
@@ -80,6 +117,11 @@ const starRatingContainer = document.getElementById('starRatingContainer');
 const gameRatingInput = document.getElementById('gameRating');
 
 const sortBySelect = document.getElementById('sortBy');
+
+const soundToggleBtn = document.getElementById('soundToggleBtn');
+const tabButtons = document.querySelectorAll('.tab-btn');
+const tabPanels = document.querySelectorAll('.tab-panel');
+const feedFilterControls = document.getElementById('feedFilterControls');
 
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -109,22 +151,36 @@ function loadData() {
       decos = [];
     }
   }
+
+  const savedSound = localStorage.getItem('dadok_dadok_board_sound');
+  if (savedSound !== null) {
+    soundEnabled = savedSound === 'true';
+  }
 }
 
 function saveData() {
   localStorage.setItem('dadok_dadok_board_logs', JSON.stringify(logs));
   localStorage.setItem('dadok_dadok_board_decos', JSON.stringify(decos));
+  localStorage.setItem('dadok_dadok_board_sound', soundEnabled.toString());
 }
 
 // --- Render Core ---
-function render() {
+function render(isNewAddition = false) {
   saveData();
   renderStats();
   renderAdvancedStats();
   renderStack();
   renderDecoLayer();
   renderLogFeed();
+  renderGameInfoTab();
   renderCharacters();
+  updateSoundButtonUI();
+  
+  if (isNewAddition) {
+    // 쿵 소리 재생
+    setTimeout(playDropSound, 300);
+  }
+
   if (window.lucide) {
     window.lucide.createIcons();
   }
@@ -192,13 +248,11 @@ function renderAdvancedStats() {
 
 // 2. 상자 두께 계산 및 상자 탑 렌더링
 function calculateThickness(difficulty, playTime) {
-  // 두께 = (난이도 가중치) * (플레이시간 * 0.05) + 1.5cm
   let weight = 1.0;
   if (difficulty === 'easy') weight = 0.5;
   else if (difficulty === 'heavy') weight = 1.5;
 
   const calculated = weight * (Number(playTime) * 0.05) + 1.5;
-  // 최소 두께 1.8cm, 최대 두께 12cm 제한
   return Math.max(1.8, Math.min(12, calculated));
 }
 
@@ -224,11 +278,9 @@ function renderStack() {
     const boxEl = document.createElement('div');
     boxEl.className = 'game-box-item';
     boxEl.style.backgroundColor = log.color || '#ff7675';
-    // 두께에 비례해서 px 높이 결정
     boxEl.style.height = `${(thicknessCm * 10) + 12}px`;
     boxEl.title = `${log.gameTitle} (${thicknessCm.toFixed(1)}cm)`;
 
-    // 이미지 로고가 있는 경우 탑 상자 안에 살짝 삽입
     const thumbHtml = log.gameThumbnail ? `<img src="${log.gameThumbnail}" style="width: 24px; height: 24px; border-radius: 4px; object-fit: cover; margin-right: 8px;">` : '🎲 ';
 
     boxEl.innerHTML = `
@@ -251,7 +303,6 @@ function renderStack() {
 // 2-2. 데코레이션 레이어 렌더링
 function renderDecoLayer() {
   decoLayer.innerHTML = '';
-  
   decos.forEach((deco) => {
     const meeple = document.createElement('div');
     meeple.className = 'deco-meeple';
@@ -298,7 +349,7 @@ function renderDecoLayer() {
   });
 }
 
-// 3. 로그 피드 렌더링
+// 3. 플레이 로그 피드 렌더링
 function renderLogFeed() {
   logFeed.innerHTML = '';
   
@@ -370,13 +421,11 @@ function renderLogFeed() {
       </div>
     `;
 
-    // 수정 버튼 클릭
     card.querySelector('.edit-log-btn').addEventListener('click', (e) => {
       e.stopPropagation();
       openEditModal(log);
     });
 
-    // 삭제 버튼 클릭
     card.querySelector('.delete-log-btn').addEventListener('click', (e) => {
       e.stopPropagation();
       if (confirm(`'${log.gameTitle}' 기록을 탑에서 제거할까요?`)) {
@@ -385,6 +434,66 @@ function renderLogFeed() {
     });
 
     logFeed.appendChild(card);
+  });
+}
+
+// 3-2. 보드게임 소개 서재 탭 렌더링
+function renderGameInfoTab() {
+  gameInfoGrid.innerHTML = '';
+
+  // 중복되지 않는 고유 보드게임 리스트 추출
+  const uniqueGames = {};
+  logs.forEach(log => {
+    if (!uniqueGames[log.gameTitle]) {
+      uniqueGames[log.gameTitle] = {
+        title: log.gameTitle,
+        thumbnail: log.gameThumbnail || 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=150&q=80',
+        desc: log.gameDescription || '설명 기록 없음',
+        plays: 0,
+        totalTime: 0,
+        difficulty: log.boxThickness
+      };
+    }
+    uniqueGames[log.gameTitle].plays += 1;
+    uniqueGames[log.gameTitle].totalTime += Number(log.playTime || 0);
+  });
+
+  const gameList = Object.values(uniqueGames);
+
+  if (gameList.length === 0) {
+    gameInfoGrid.innerHTML = `
+      <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; color: var(--text-muted);">
+        <p>기록된 보드게임 정보가 없습니다.<br>플레이 로그에 보드게임을 등록하면 백과사전이 자동으로 완성됩니다!</p>
+      </div>
+    `;
+    return;
+  }
+
+  gameList.forEach(game => {
+    const card = document.createElement('div');
+    card.className = 'info-card';
+
+    // 한글로 난이도 뱃지 라벨 파싱
+    let diffLabel = '쉬움';
+    if (game.difficulty === 'medium') diffLabel = '보통';
+    else if (game.difficulty === 'heavy') diffLabel = '묵직함';
+
+    card.innerHTML = `
+      <div class="info-card-header">
+        <img src="${game.thumbnail}" class="info-card-blur-bg" alt="blur">
+        <img src="${game.thumbnail}" class="info-card-img" alt="${game.title}">
+      </div>
+      <div class="info-card-body">
+        <h3 class="info-card-title">${game.title}</h3>
+        <div class="info-card-stat-row">
+          <span>🎮 플레이 <strong>${game.plays}회</strong></span>
+          <span>⏱️ 총 <strong>${game.totalTime}분</strong></span>
+          <span>⚖️ 난이도 <strong>${diffLabel}</strong></span>
+        </div>
+        <p class="info-card-desc">${game.desc}</p>
+      </div>
+    `;
+    gameInfoGrid.appendChild(card);
   });
 }
 
@@ -421,13 +530,26 @@ function renderCharacters() {
   });
 }
 
+// --- Sound Button UI Toggle ---
+function updateSoundButtonUI() {
+  if (soundEnabled) {
+    soundToggleBtn.classList.remove('muted');
+    soundToggleBtn.innerHTML = '<i data-lucide="volume-2"></i>';
+  } else {
+    soundToggleBtn.classList.add('muted');
+    soundToggleBtn.innerHTML = '<i data-lucide="volume-x"></i>';
+  }
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+}
+
 // --- BGG API Search Logic ---
 async function searchBoardGame(query) {
   if (!query) return;
   searchResultsDropdown.innerHTML = '<div style="padding:10px; font-size:0.85rem; color:var(--text-muted);">검색 중...</div>';
   searchResultsDropdown.classList.add('active');
 
-  // 오프라인 사전 우선 대조
   const offlineMatch = Object.keys(OFFLINE_GAME_DB).find(key => query.includes(key) || key.includes(query));
   
   let results = [];
@@ -442,7 +564,6 @@ async function searchBoardGame(query) {
     });
   }
 
-  // BoardGameGeek XML API2 호출 (비동기 XML 파싱)
   try {
     const response = await fetch(`https://boardgamegeek.com/xmlapi2/search?type=boardgame&query=${encodeURIComponent(query)}`);
     const text = await response.text();
@@ -450,7 +571,6 @@ async function searchBoardGame(query) {
     const xmlDoc = parser.parseFromString(text, "text/xml");
     const items = xmlDoc.getElementsByTagName("item");
 
-    // 최대 5개 검색 결과 분석
     for (let i = 0; i < Math.min(5, items.length); i++) {
       const id = items[i].getAttribute("id");
       const name = items[i].getElementsByTagName("name")[0].getAttribute("value");
@@ -482,10 +602,8 @@ async function searchBoardGame(query) {
       gameTitleInput.value = res.name;
 
       if (res.isBgg) {
-        // 상세 데이터 가져오기
         await fetchBggDetails(res.id, res.name);
       } else {
-        // 오프라인 사전 데이터 적용
         displaySelectedGame(res.name, res.thumbnail, res.description, res.color);
       }
     });
@@ -503,10 +621,7 @@ async function fetchBggDetails(bggId, gameName) {
     const thumbnail = xmlDoc.getElementsByTagName("thumbnail")[0] ? xmlDoc.getElementsByTagName("thumbnail")[0].textContent : '';
     let description = xmlDoc.getElementsByTagName("description")[0] ? xmlDoc.getElementsByTagName("description")[0].textContent : '';
     
-    // HTML 엔티티 제거 및 영어 설명 번역 안내
     description = description.replace(/&amp;/g, '&').replace(/&quot;/g, '"').substring(0, 150) + "...";
-
-    // 랜덤 컬러 생성
     const randomColor = PRESET_COLORS[Math.floor(Math.random() * PRESET_COLORS.length)];
 
     displaySelectedGame(gameName, thumbnail, description, randomColor);
@@ -525,7 +640,6 @@ function displaySelectedGame(name, imgUrl, desc, color) {
   
   selectedGamePreview.style.display = 'flex';
   
-  // 색상 자동 선택
   if (color) {
     selectedColorInput.value = color;
     document.querySelectorAll('.color-chip').forEach(chip => {
@@ -538,7 +652,6 @@ function displaySelectedGame(name, imgUrl, desc, color) {
   }
 }
 
-// 헬퍼: rgb(x,y,z)를 Hex 값으로 변환
 function rgbToHex(rgb) {
   if (rgb.startsWith('#')) return rgb;
   const parts = rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/);
@@ -558,12 +671,10 @@ function deleteLog(id) {
 }
 
 function openEditModal(log) {
-  // 모달을 수정 모드로 전환
   modalTitle.innerText = "✏️ 보드게임 플레이 기록 수정";
   submitBtn.innerText = "기록 수정 완료";
   editingLogIdInput.value = log.id;
 
-  // 값 채우기
   gameTitleInput.value = log.gameTitle;
   document.getElementById('playDate').value = log.playDate;
   document.getElementById('playTime').value = log.playTime;
@@ -573,14 +684,12 @@ function openEditModal(log) {
   document.getElementById('gameReview').value = log.review || '';
   gameRatingInput.value = log.rating;
   
-  // 라디오 체급 설정
   document.querySelectorAll('input[name="boxThickness"]').forEach(radio => {
     if (radio.value === log.boxThickness) {
       radio.checked = true;
     }
   });
 
-  // 썸네일 미리보기 표시
   if (log.gameThumbnail) {
     displaySelectedGame(log.gameTitle, log.gameThumbnail, log.gameDescription, log.color);
   } else {
@@ -621,7 +730,6 @@ function setupStarRating() {
   }
 
   stars.forEach(star => {
-    // 기존에 리스너가 중복 바인딩되지 않게 복사하여 이벤트 새로 지정
     const newStar = star.cloneNode(true);
     star.parentNode.replaceChild(newStar, star);
 
@@ -651,6 +759,38 @@ function setupStarRating() {
 }
 
 function setupEventListeners() {
+  // 소리 버튼 클릭 이벤트
+  soundToggleBtn.addEventListener('click', () => {
+    soundEnabled = !soundEnabled;
+    saveData();
+    updateSoundButtonUI();
+  });
+
+  // 탭 클릭 이벤트
+  tabButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetTab = btn.getAttribute('data-tab');
+      
+      tabButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      tabPanels.forEach(panel => {
+        if (panel.id === `${targetTab}Panel`) {
+          panel.classList.add('active');
+        } else {
+          panel.classList.remove('active');
+        }
+      });
+
+      // 소개 탭일 때는 우측 정렬 필터 숨기기
+      if (targetTab === 'info') {
+        feedFilterControls.style.display = 'none';
+      } else {
+        feedFilterControls.style.display = 'block';
+      }
+    });
+  });
+
   openAddModalBtn.addEventListener('click', () => {
     modalTitle.innerText = "🎲 새 보드게임 플레이 기록";
     submitBtn.innerText = "상자 탑에 올리기";
@@ -667,7 +807,6 @@ function setupEventListeners() {
     addModal.classList.add('active');
   });
 
-  // 검색 트리거
   bggSearchBtn.addEventListener('click', () => {
     searchBoardGame(gameTitleInput.value.trim());
   });
@@ -679,7 +818,6 @@ function setupEventListeners() {
     }
   });
 
-  // 드롭다운 바깥 클릭 시 닫기
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.search-container')) {
       searchResultsDropdown.classList.remove('active');
@@ -717,9 +855,9 @@ function setupEventListeners() {
     const gameDescription = gameDescriptionInput.value;
 
     const editingId = editingLogIdInput.value;
+    let isNewAddition = false;
 
     if (editingId) {
-      // 기록 수정 모드
       const idx = logs.findIndex(log => log.id === editingId);
       if (idx !== -1) {
         logs[idx] = {
@@ -739,7 +877,7 @@ function setupEventListeners() {
         };
       }
     } else {
-      // 새 기록 등록 모드
+      isNewAddition = true;
       const newLog = {
         id: Date.now().toString(),
         gameTitle,
@@ -758,7 +896,7 @@ function setupEventListeners() {
       logs.push(newLog);
     }
 
-    render();
+    render(isNewAddition);
     closeModal();
   });
 

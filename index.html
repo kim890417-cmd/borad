@@ -54,9 +54,14 @@
       <section class="dashboard-section">
         <div class="dashboard-header">
           <h2>내 보드게임 아카이브</h2>
-          <button class="btn btn-primary" id="openAddModalBtn">
-            <i data-lucide="plus"></i> 새 게임 기록하기
-          </button>
+          <div class="header-action-group">
+            <button class="btn btn-sound-toggle" id="soundToggleBtn" title="효과음 켜기/끄기">
+              <i data-lucide="volume-2"></i>
+            </button>
+            <button class="btn btn-primary" id="openAddModalBtn">
+              <i data-lucide="plus"></i> 새 게임 기록하기
+            </button>
+          </div>
         </div>
 
         <div class="stats-grid">
@@ -115,11 +120,14 @@
         </div>
       </section>
 
-      <!-- 플레이 피드 목록 영역 -->
+      <!-- 플레이 피드 목록 영역 (탭 시스템 적용) -->
       <section class="history-section">
-        <div class="section-title-row">
-          <h3>나의 플레이 로그</h3>
-          <div class="filter-controls">
+        <div class="tab-header-row">
+          <div class="tab-buttons">
+            <button class="tab-btn active" data-tab="logs"><i data-lucide="scroll"></i> 플레이 로그</button>
+            <button class="tab-btn" data-tab="info"><i data-lucide="book-open"></i> 보드게임 소개</button>
+          </div>
+          <div class="filter-controls" id="feedFilterControls">
             <select id="sortBy" class="select-input">
               <option value="recent">최근 순</option>
               <option value="oldest">오래된 순</option>
@@ -128,8 +136,18 @@
           </div>
         </div>
         
-        <div class="log-feed" id="logFeed">
-          <!-- JS로 기록 리스트를 그려냄 -->
+        <!-- 탭 패널 1: 플레이 로그 피드 -->
+        <div class="tab-panel active" id="logsPanel">
+          <div class="log-feed" id="logFeed">
+            <!-- JS로 기록 리스트를 그려냄 -->
+          </div>
+        </div>
+
+        <!-- 탭 패널 2: 보드게임 소개 서재 -->
+        <div class="tab-panel" id="infoPanel">
+          <div class="game-info-grid" id="gameInfoGrid">
+            <!-- JS로 고유 보드게임 설명 카드를 카드형 그리드로 그려냄 -->
+          </div>
         </div>
       </section>
     </main>

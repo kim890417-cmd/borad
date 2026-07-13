@@ -34,6 +34,7 @@ const ENCYCLOPEDIA_DB = {
     name: '스플렌더 (Splendor)', 
     desc: '보석 칩을 모아 광산을 개발하고 카드 점수를 모아 귀족들의 방문을 유도하는 최고의 셋컬렉션 입문 게임', 
     img: 'images/스플렌더_seo.webp',
+    players: '2-4',
     color: '#6c5ce7', 
     difficulty: 'medium' 
   },
@@ -42,6 +43,7 @@ const ENCYCLOPEDIA_DB = {
     name: '루미큐브 (Rummikub)', 
     desc: '숫자 타일들을 연속된 수 또는 같은 숫자의 다른 색 조합으로 맞춰 자신의 타일을 가장 먼저 터는 두뇌 보드게임', 
     img: 'images/루미큐브_seo.webp',
+    players: '2-4',
     color: '#0984e3', 
     difficulty: 'easy' 
   },
@@ -50,6 +52,7 @@ const ENCYCLOPEDIA_DB = {
     name: '카르카손 (Carcassonne)', 
     desc: '타일을 한 장씩 뽑아 성, 길, 초원을 건설하고 내 미플을 놓아 영토를 넓히는 최고의 영향력 타일 배치 게임', 
     img: 'images/carcassonne.jpg', 
+    players: '2-5',
     color: '#2ecc71', 
     difficulty: 'easy' 
   },
@@ -58,6 +61,7 @@ const ENCYCLOPEDIA_DB = {
     name: '카탄의 개척자 (Catan)', 
     desc: '자원을 생산하고 다른 개척자들과의 활발한 거래 및 도로, 마을 확장을 통해 10점을 먼저 획득하는 협상 전략 게임', 
     img: 'images/catan.jpg', 
+    players: '3-4',
     color: '#ff7675', 
     difficulty: 'medium' 
   },
@@ -66,6 +70,7 @@ const ENCYCLOPEDIA_DB = {
     name: '할리갈리 (Halli Galli)', 
     desc: '과일의 합이 정확히 5개가 되는 순간 누구보다 빠르게 종을 쳐서 카드를 쓸어 담는 순발력 과일 게임', 
     img: 'images/할리갈리_seo.webp',
+    players: '2-6',
     color: '#e74c3c', 
     difficulty: 'easy' 
   },
@@ -74,6 +79,7 @@ const ENCYCLOPEDIA_DB = {
     name: '다빈치코드 (Da Vinci Code)', 
     desc: '상대방의 흑백 타일 번호를 하나씩 밝혀내고 나의 비밀 숫자 조합은 끝까지 감추는 숫자 추리 게임', 
     img: 'images/다빈치코드_seo.webp',
+    players: '2-4',
     color: '#34495e', 
     difficulty: 'easy' 
   },
@@ -82,6 +88,7 @@ const ENCYCLOPEDIA_DB = {
     name: '젝스님트 (6 Nimmst!)', 
     desc: '카드를 비공개로 내고 오름차순으로 배치하다가, 6번째 카드를 놓는 불운의 플레이어가 벌점 카드를 먹는 파티 눈치 카드게임', 
     img: 'images/젝스님트_seo.webp',
+    players: '2-10',
     color: '#e84393', 
     difficulty: 'easy' 
   },
@@ -90,6 +97,7 @@ const ENCYCLOPEDIA_DB = {
     name: '레지스탕스 아발론 (Avalon)', 
     desc: '선과 악의 진영으로 나뉘어 서로의 정체를 속이고 미션을 성공시키거나 저지하는 최고의 마피아 블러핑 게임', 
     img: 'images/아발론_seo.webp',
+    players: '5-10',
     color: '#16a085', 
     difficulty: 'heavy' 
   },
@@ -98,6 +106,7 @@ const ENCYCLOPEDIA_DB = {
     name: '딕싯 (Dixit)', 
     desc: '추상적인 일러스트 카드를 보고 다채로운 힌트를 제시하여 출제자의 카드를 맞추는 감성 스토리텔링 게임', 
     img: 'images/dixit.jpg', 
+    players: '3-6',
     color: '#8e44ad', 
     difficulty: 'easy' 
   },
@@ -106,6 +115,7 @@ const ENCYCLOPEDIA_DB = {
     name: '스컬 (Skull)', 
     desc: '꽃과 해골이 그려진 디스크를 내고, 해골을 밟지 않으면서 자기가 선언한 장수만큼 뒤집는 고도의 심리 블러핑 포커 게임', 
     img: 'images/skull.jpg', 
+    players: '3-6',
     color: '#fdcb6e', 
     difficulty: 'easy' 
   },
@@ -114,6 +124,7 @@ const ENCYCLOPEDIA_DB = {
     name: '아그리콜라 (Agricola)', 
     desc: '17세기 농부가 되어 밭을 일구고 가축을 키우며 내 가족들을 굶기지 않고 농장을 건설하는 명작 일꾼배치 게임', 
     img: 'images/agricola.jpg', 
+    players: '1-4',
     color: '#d35400', 
     difficulty: 'heavy' 
   },
@@ -122,6 +133,7 @@ const ENCYCLOPEDIA_DB = {
     name: '러브레터 (Love Letter)', 
     desc: '단 16장의 카드만을 사용하여 공주에게 비밀 편지를 무사히 배달하고 다른 라이벌을 탈락시키는 전략 카드게임', 
     img: 'images/loveletter.jpg', 
+    players: '2-4',
     color: '#d63031', 
     difficulty: 'easy' 
   },
@@ -130,6 +142,7 @@ const ENCYCLOPEDIA_DB = {
     name: '뱅! (Bang!)', 
     desc: '보안관, 부관, 무법자, 배신자라는 각자의 비밀 역할을 맡아 서부 총잡이가 되어 쏘고 피하는 정통 서부극 카드게임', 
     img: 'images/뱅_seo.webp',
+    players: '4-7',
     color: '#e67e22', 
     difficulty: 'medium' 
   },
@@ -138,6 +151,7 @@ const ENCYCLOPEDIA_DB = {
     name: '우노 (UNO)', 
     desc: '손에 든 카드와 같은 색상이나 숫자를 내어 패를 털어내고, 마지막 1장이 남았을 때 우노를 외치는 고전 카드게임', 
     img: 'images/우노_seo.webp',
+    players: '2-10',
     color: '#27ae60', 
     difficulty: 'easy' 
   },
@@ -146,6 +160,7 @@ const ENCYCLOPEDIA_DB = {
     name: '아키올로지 (Archeology)', 
     desc: '사막 유적지를 발굴하여 보물 세트를 모아 상인에게 비싸게 팔아넘기며 모래폭풍과 도둑을 피하는 카드 컬렉션 게임', 
     img: 'images/archeology.jpg', 
+    players: '2-4',
     color: '#f39c12', 
     difficulty: 'easy' 
   },
@@ -154,6 +169,7 @@ const ENCYCLOPEDIA_DB = {
     name: '꼬치의달인 (Kebab Chef)',
     desc: '재료를 골라 꼬치를 완성하고 손님에게 서빙하는 최고의 요리사가 되어보는 순발력 카드게임',
     img: 'images/꼬치의달인_seo.webp',
+    players: '2-5',
     color: '#ff7675',
     difficulty: 'easy'
   },
@@ -162,6 +178,7 @@ const ENCYCLOPEDIA_DB = {
     name: '달무티 (Dalmunti)',
     desc: '토끼와 거북이 캐릭터가 달을 향해 경주하는 귀여운 테마의 전략 보드게임',
     img: 'images/달무티_seo.webp',
+    players: '2-4',
     color: '#0984e3',
     difficulty: 'easy'
   },
@@ -170,6 +187,7 @@ const ENCYCLOPEDIA_DB = {
     name: '노터치크라켄 (No Touch Kraken)',
     desc: '크라켄을 건드리지 않고 해저 보물을 회수하는 파티용 손놀림 게임',
     img: 'images/노터치크라켄_seo.webp',
+    players: '2-6',
     color: '#00cec9',
     difficulty: 'easy'
   },
@@ -178,6 +196,7 @@ const ENCYCLOPEDIA_DB = {
     name: '스위스사는스미스씨 (Mr. Smith in Switzerland)',
     desc: '스위스에 사는 스미스 씨가 되어 다양한 에피소드를 해결하는 스토리텔링 카드게임',
     img: 'images/스위스사는스미스씨_seo.webp',
+    players: '3-8',
     color: '#2ecc71',
     difficulty: 'easy'
   },
@@ -186,6 +205,7 @@ const ENCYCLOPEDIA_DB = {
     name: '핸즈업 (Hands Up)',
     desc: '손을 빠르게 움직여 주어진 동작을 가장 먼저 완성하는 순발력 파티게임',
     img: 'images/핸즈업_seo.webp',
+    players: '2-8',
     color: '#e74c3c',
     difficulty: 'easy'
   },
@@ -194,6 +214,7 @@ const ENCYCLOPEDIA_DB = {
     name: '한밤의늑대인간 (Werewolf at Midnight)',
     desc: '밤이 되면 늑대인간으로 변하는 마을 사람들 사이에서 정체를 숨기고 살아남는 심리 추리 게임',
     img: 'images/한밤의늑대인간_seo.webp',
+    players: '4-10',
     color: '#34495e',
     difficulty: 'easy'
   },
@@ -202,6 +223,7 @@ const ENCYCLOPEDIA_DB = {
     name: '프레즌트 (Present)',
     desc: '선물 상자를 서로 돌리며 누가 가장 멋진 선물을 받을지 내기하는 파티 게임',
     img: 'images/프레즌트_seo.webp',
+    players: '2-6',
     color: '#e84393',
     difficulty: 'easy'
   },
@@ -210,6 +232,7 @@ const ENCYCLOPEDIA_DB = {
     name: '포실리스 (Fossilis)',
     desc: '고고학자가 되어 화석을 발굴하고 박물관에 전시하는 테마의 카드 게임',
     img: 'images/포실리스_seo.webp',
+    players: '2-5',
     color: '#d35400',
     difficulty: 'medium'
   },
@@ -218,6 +241,7 @@ const ENCYCLOPEDIA_DB = {
     name: '펭귄파티 (Penguin Party)',
     desc: '귀여운 펭귄들이 펼치는 얼음 위 파티! 가장 많은 물고기를 모으는 가족 보드게임',
     img: 'images/펭귄파티_seo.webp',
+    players: '2-4',
     color: '#16a085',
     difficulty: 'easy'
   },
@@ -226,6 +250,7 @@ const ENCYCLOPEDIA_DB = {
     name: '페이퍼사파리 (Paper Safari)',
     desc: '접힌 종이를 펼쳐 동물을 완성하고 다양한 동물을 수집하는 어린이 보드게임',
     img: 'images/페이퍼사파리_seo.webp',
+    players: '2-4',
     color: '#27ae60',
     difficulty: 'easy'
   },
@@ -234,6 +259,7 @@ const ENCYCLOPEDIA_DB = {
     name: '타코캣고트치즈피자 (Taco Cat Goat Cheese Pizza)',
     desc: '카드를 돌며 외치다가 같은 그림이 나오면 손으로 팍! 쳐야 하는 초고속 순발력 파티게임',
     img: 'images/타코캣고트치즈피자_seo.webp',
+    players: '2-8',
     color: '#ff7675',
     difficulty: 'easy'
   },
@@ -242,6 +268,7 @@ const ENCYCLOPEDIA_DB = {
     name: '쿼리도 (Quoridor)',
     desc: '내 말을 먼저 반대편 끝까지 보내는 전략 미로 게임. 벽을 세워 상대를 막고 길을 개척하라',
     img: 'images/쿼리도_seo.webp',
+    players: '2-4',
     color: '#6c5ce7',
     difficulty: 'medium'
   },
@@ -250,6 +277,7 @@ const ENCYCLOPEDIA_DB = {
     name: '캘리코 (Calico)',
     desc: '패치워크 퀼트를 디자인하여 귀여운 고양이들을 유치하는 퍼즐 전략 게임',
     img: 'images/캘리코_seo.webp',
+    players: '1-4',
     color: '#fdcb6e',
     difficulty: 'medium'
   },
@@ -258,6 +286,7 @@ const ENCYCLOPEDIA_DB = {
     name: "캔트스탑 (Can't Stop)",
     desc: '주사위를 굴려 숫자를 완성하는데 그만둘지 계속할지 선택의 연속! 짜릿한 푸시유어럭 게임',
     img: 'images/캔트스탑_seo.webp',
+    players: '2-4',
     color: '#0984e3',
     difficulty: 'easy'
   },
@@ -266,6 +295,7 @@ const ENCYCLOPEDIA_DB = {
     name: '카리바 (Kariba)',
     desc: '아프리카 사바나에서 동물 카드를 내며 더 강한 동물로 약한 동물을 덮는 간단한 카드게임',
     img: 'images/카리바_seo.webp',
+    players: '2-4',
     color: '#e67e22',
     difficulty: 'easy'
   },
@@ -274,6 +304,7 @@ const ENCYCLOPEDIA_DB = {
     name: '치킨차차 (Chicken Cha Cha)',
     desc: '치킨이 되어 알을 낳고 병아리를 키우는 유쾌한 기억력 게임',
     img: 'images/치킨차차_seo.webp',
+    players: '2-4',
     color: '#f39c12',
     difficulty: 'easy'
   },
@@ -282,6 +313,7 @@ const ENCYCLOPEDIA_DB = {
     name: '익스플로딩키튼 (Exploding Kittens)',
     desc: '폭발하는 고양이를 피하고 다양한 액션 카드로 상대를 공격하는 최후의 1인이 되는 러시안룰렛 카드게임',
     img: 'images/익스플로딩키튼_seo.webp',
+    players: '2-5',
     color: '#e84393',
     difficulty: 'easy'
   },
@@ -290,6 +322,7 @@ const ENCYCLOPEDIA_DB = {
     name: '우봉고 (Ubongo)',
     desc: '퍼즐 조각을 제한 시간 안에 맞춰 보석을 획득하는 두뇌 퍼즐 게임',
     img: 'images/우봉고_seo.webp',
+    players: '1-4',
     color: '#00cec9',
     difficulty: 'medium'
   },
@@ -298,6 +331,7 @@ const ENCYCLOPEDIA_DB = {
     name: '시타델 (Citadels)',
     desc: '왕국을 건설하며 다양한 캐릭터를 선택해 상대보다 먼저 8개 구역을 완성하는 전략 카드게임',
     img: 'images/시타델_seo.webp',
+    players: '2-7',
     color: '#8e44ad',
     difficulty: 'medium'
   },
@@ -306,6 +340,7 @@ const ENCYCLOPEDIA_DB = {
     name: '슬리핑퀸즈 (Sleeping Queens)',
     desc: '잠자는 여왕들을 깨워 왕국을 재건하는 동화 같은 테마의 어린이 카드게임',
     img: 'images/슬리핑퀸즈_seo.webp',
+    players: '2-5',
     color: '#6c5ce7',
     difficulty: 'easy'
   },
@@ -314,6 +349,7 @@ const ENCYCLOPEDIA_DB = {
     name: '스파이폴 (Spyfall)',
     desc: '스파이를 찾아내거나 스파이로써 정체를 숨기는 심리 블러핑 질문 게임',
     img: 'images/스파이폴_seo.webp',
+    players: '3-8',
     color: '#2ecc71',
     difficulty: 'easy'
   },
@@ -322,6 +358,7 @@ const ENCYCLOPEDIA_DB = {
     name: '스틱스택 (Stick Stack)',
     desc: '막대기를 하나씩 빼서 쌓으며 균형을 유지하는 손기술 소근육 발달 게임',
     img: 'images/스틱스택_seo.webp',
+    players: '2-4',
     color: '#ff7675',
     difficulty: 'easy'
   },
@@ -330,6 +367,7 @@ const ENCYCLOPEDIA_DB = {
     name: '스컬킹 (Skull King)',
     desc: '트릭을 예측하고 해적왕 스컬킹을 조심하며 승부를 거는 해적 테마 트릭테이킹 게임',
     img: 'images/스컬킹_seo.webp',
+    players: '2-8',
     color: '#e74c3c',
     difficulty: 'medium'
   },
@@ -338,6 +376,7 @@ const ENCYCLOPEDIA_DB = {
     name: '로보77 (Robo 77)',
     desc: '숫자 카드를 전략적으로 사용해 합이 정확히 77이 되지 않도록 조절하는 숫자 카드게임',
     img: 'images/로보77_seo.webp',
+    players: '2-5',
     color: '#34495e',
     difficulty: 'easy'
   },
@@ -346,6 +385,7 @@ const ENCYCLOPEDIA_DB = {
     name: '도블 (Dobble)',
     desc: '두 카드 사이에 항상 하나의 같은 그림을 가장 먼저 찾아내는 초스피드 관찰력 게임',
     img: 'images/도블_seo.webp',
+    players: '2-8',
     color: '#27ae60',
     difficulty: 'easy'
   },
@@ -354,6 +394,7 @@ const ENCYCLOPEDIA_DB = {
     name: '마네 (Manee)',
     desc: '경매와 교환을 통해 원하는 동물 카드를 모으는 한국형 보드게임',
     img: 'images/마네_seo.webp',
+    players: '2-5',
     color: '#16a085',
     difficulty: 'easy'
   },
@@ -362,6 +403,7 @@ const ENCYCLOPEDIA_DB = {
     name: '보난자 (Bohnanza)',
     desc: '콩 농장을 운영하며 콩을 심고 수확해 가장 많은 수익을 올리는 트레이딩 카드게임의 명작',
     img: 'images/보난자_seo.webp',
+    players: '2-7',
     color: '#d35400',
     difficulty: 'medium'
   },
@@ -370,6 +412,7 @@ const ENCYCLOPEDIA_DB = {
     name: '더마인드 (The Mind)',
     desc: '대화 없이 오직 타이밍만으로 카드를 오름차순으로 내는 신개념 협력 카드게임',
     img: 'images/더마인드_seo.webp',
+    players: '2-4',
     color: '#fdcb6e',
     difficulty: 'easy'
   }
@@ -518,6 +561,12 @@ const flipCard = document.getElementById('flipCard');
 const cardFrontView = document.getElementById('cardFrontView');
 const closeCardBtn = document.getElementById('closeCardBtn');
 const captureBtn = document.getElementById('captureBtn');
+
+const diffFilterEl = document.getElementById('diffFilter');
+const playerFilterEl = document.getElementById('playerFilter');
+
+let activeDiffFilter = 'all';
+let activePlayerFilter = 'all';
 
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -840,7 +889,21 @@ function renderLogFeed() {
 function renderGameInfoTab() {
   gameInfoGrid.innerHTML = '';
 
-  Object.entries(ENCYCLOPEDIA_DB).forEach(([key, info]) => {
+  let filtered = Object.entries(ENCYCLOPEDIA_DB).filter(([key, info]) => {
+    if (activeDiffFilter !== 'all' && info.difficulty !== activeDiffFilter) return false;
+    if (activePlayerFilter !== 'all') {
+      const parts = info.players.split('-');
+      const minP = parseInt(parts[0]);
+      const maxP = parseInt(parts[1] || parts[0]);
+      if (activePlayerFilter === 'solo' && minP !== 1) return false;
+      if (activePlayerFilter === '2p' && !(minP <= 2 && maxP <= 2)) return false;
+      if (activePlayerFilter === '3-4' && !(maxP >= 3 && maxP <= 4)) return false;
+      if (activePlayerFilter === '5+' && maxP < 5) return false;
+    }
+    return true;
+  });
+
+  filtered.forEach(([key, info]) => {
     const matchLog = logs.find(log => {
       const lowerInput = log.gameTitle.toLowerCase();
       const lowerKey = key.toLowerCase();
@@ -877,7 +940,7 @@ function renderGameInfoTab() {
       `;
 
       card.addEventListener('click', () => {
-        openCardFlipView(matchLog);
+        openCardFlipView({ ...matchLog, gameThumbnail: matchLog.gameThumbnail || info.img });
       });
 
     } else {
@@ -1425,5 +1488,23 @@ function setupEventListeners() {
 
   sortBySelect.addEventListener('change', () => {
     renderLogFeed();
+  });
+
+  diffFilterEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    diffFilterEl.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeDiffFilter = btn.dataset.diff;
+    renderGameInfoTab();
+  });
+
+  playerFilterEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    playerFilterEl.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activePlayerFilter = btn.dataset.players;
+    renderGameInfoTab();
   });
 }

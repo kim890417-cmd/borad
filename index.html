@@ -152,6 +152,27 @@
 
         <!-- 탭 패널 2: 보드게임 도감 서재 -->
         <div class="tab-panel" id="infoPanel">
+          <div class="encyclopedia-filters">
+            <div class="filter-group">
+              <span class="filter-label">난이도</span>
+              <div class="filter-buttons" id="diffFilter">
+                <button class="filter-btn active" data-diff="all">전체</button>
+                <button class="filter-btn" data-diff="easy">쉬움</button>
+                <button class="filter-btn" data-diff="medium">보통</button>
+                <button class="filter-btn" data-diff="heavy">어려움</button>
+              </div>
+            </div>
+            <div class="filter-group">
+              <span class="filter-label">인원</span>
+              <div class="filter-buttons" id="playerFilter">
+                <button class="filter-btn active" data-players="all">전체</button>
+                <button class="filter-btn" data-players="solo">1인</button>
+                <button class="filter-btn" data-players="2p">2인</button>
+                <button class="filter-btn" data-players="3-4">3~4인</button>
+                <button class="filter-btn" data-players="5+">5인 이상</button>
+              </div>
+            </div>
+          </div>
           <div class="game-info-grid" id="gameInfoGrid">
             <!-- JS로 전체 도감 카드 (잠금/해금) 그려냄 -->
           </div>

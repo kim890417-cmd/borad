@@ -808,6 +808,179 @@ body {
   height: 28px;
 }
 
+/* Feed Log Card: Layout fix for text cutoff/wrapping bug */
+.log-card {
+  background: var(--card-bg);
+  border-radius: 18px;
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* 줄높이 다양화에 대응 */
+  gap: 16px;
+  border: 1.5px solid var(--border-color);
+  transition: var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+  min-height: 110px;
+}
+
+.log-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-light);
+}
+
+.log-card-left {
+  display: flex;
+  gap: 1.25rem;
+  flex: 1; /* 왼쪽 내용 영역이 유연하게 확장 */
+  min-width: 0; /* flex 자식의 overflow 방지 */
+}
+
+.log-color-indicator {
+  width: 8px;
+  height: 100%;
+  border-radius: 4px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
+.log-meta-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+  min-width: 0; /* 중요: 내부 텍스트 자식들이 말줄임 처리되거나 끊기지 않게 방지 */
+}
+
+.log-game-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-main);
+  white-space: normal; /* 긴 이름 줄바꿈 허용 */
+  word-break: keep-all; /* 단어 단위 줄바꿈 */
+  line-height: 1.4;
+}
+
+.log-details-row {
+  display: flex;
+  flex-wrap: wrap; /* 모바일 대응 자동 개행 */
+  gap: 12px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.log-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+}
+
+.log-detail-item i {
+  width: 14px;
+  height: 14px;
+}
+
+.log-review {
+  margin-top: 6px;
+  font-size: 0.9rem;
+  color: var(--text-main);
+  background: #f8fafc;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border-left: 3px solid var(--primary-light);
+  line-height: 1.5;
+  word-break: break-all; /* 긴 영문/한글 문자열 자동 개행 */
+  white-space: pre-wrap; /* 사용자가 엔터 친 개행도 반영 */
+}
+
+.log-card-right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  min-height: 80px;
+  flex-shrink: 0; /* 가로 압축 방지 */
+}
+
+.log-date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.log-badge-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: flex-end;
+}
+
+.result-badge {
+  font-size: 0.75rem;
+  padding: 3px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge-win { background-color: rgba(46, 204, 113, 0.15); color: #27ae60; }
+.badge-lose { background-color: rgba(231, 76, 60, 0.15); color: #c0392b; }
+.badge-draw { background-color: rgba(52, 152, 219, 0.15); color: #2980b9; }
+.badge-none { background-color: rgba(149, 165, 166, 0.15); color: #7f8c8d; }
+
+.log-stars {
+  color: #f1c40f;
+  display: flex;
+  gap: 2px;
+}
+
+.log-stars i {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 4px;
+  opacity: 0;
+  transition: var(--transition-normal);
+}
+
+.log-card:hover .action-buttons {
+  opacity: 1;
+}
+
+.edit-log-btn,
+.delete-log-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: var(--transition-normal);
+}
+
+.edit-log-btn {
+  color: var(--primary-color);
+}
+
+.edit-log-btn:hover {
+  background: rgba(108, 92, 231, 0.1);
+}
+
+.delete-log-btn {
+  color: #ff7675;
+}
+
+.delete-log-btn:hover {
+  background: rgba(255, 118, 117, 0.1);
+}
+
 /* 3D Card Opening / Draw Overlay Layout */
 .card-draw-overlay {
   position: fixed;

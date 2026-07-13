@@ -27,23 +27,23 @@ const CHARACTERS = [
   { id: 'c6', name: '보드게임 지신', emoji: '🧙‍♂️', condText: '기록 20회 달성', unlockFn: (count) => count >= 20 }
 ];
 
-// --- 20종 이상의 풍부한 기본 보드게임 도감 백과사전 DB (한글설명 매핑) ---
+// --- 20종 이상의 풍부한 기본 보드게임 도감 백과사전 DB (BGG 공식 Thing ID 포함) ---
 const ENCYCLOPEDIA_DB = {
-  '스플렌더': { name: '스플렌더 (Splendor)', desc: '보석 칩을 모아 광산을 개발하고 카드 점수를 모아 귀족들의 방문을 유도하는 최고의 셋컬렉션 입문 게임', img: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=300&q=80', color: '#6c5ce7', difficulty: 'medium' },
-  '루미큐브': { name: '루미큐브 (Rummikub)', desc: '숫자 타일들을 연속된 수 또는 같은 숫자의 다른 색 조합으로 맞춰 자신의 타일을 가장 먼저 터는 두뇌 보드게임', img: 'https://images.unsplash.com/photo-1606167668584-78701c57f13d?auto=format&fit=crop&w=300&q=80', color: '#0984e3', difficulty: 'easy' },
-  '카르카손': { name: '카르카손 (Carcassonne)', desc: '타일을 한 장씩 뽑아 성, 길, 초원을 건설하고 내 미플을 놓아 영토를 넓히는 최고의 영향력 타일 배치 게임', img: 'https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=300&q=80', color: '#2ecc71', difficulty: 'easy' },
-  '카탄': { name: '카탄의 개척자 (Catan)', desc: '자원을 생산하고 다른 개척자들과의 활발한 거래 및 도로, 마을 확장을 통해 10점을 먼저 획득하는 협상 전략 게임', img: 'https://images.unsplash.com/photo-1585504198199-20277593b94f?auto=format&fit=crop&w=300&q=80', color: '#ff7675', difficulty: 'medium' },
-  '할리갈리': { name: '할리갈리 (Halli Galli)', desc: '과일의 합이 정확히 5개가 되는 순간 누구보다 빠르게 종을 쳐서 카드를 쓸어 담는 순발력 과일 게임', img: 'https://images.unsplash.com/photo-1629812456605-4a044aa38fbc?auto=format&fit=crop&w=300&q=80', color: '#e74c3c', difficulty: 'easy' },
-  '다빈치코드': { name: '다빈치코드 (Da Vinci Code)', desc: '상대방의 흑백 타일 번호를 하나씩 밝혀내고 나의 비밀 숫자 조합은 끝까지 감추는 숫자 추리 게임', img: 'https://images.unsplash.com/photo-1611890798517-0127e27a1725?auto=format&fit=crop&w=300&q=80', color: '#34495e', difficulty: 'easy' },
-  '젝스님트': { name: '젝스님트 (6 Nimmst!)', desc: '카드를 비공개로 내고 오름차순으로 배치하다가, 6번째 카드를 놓는 불운의 플레이어가 벌점 카드를 먹는 파티 눈치 카드게임', img: 'https://images.unsplash.com/photo-1607513746994-51f730a44832?auto=format&fit=crop&w=300&q=80', color: '#e84393', difficulty: 'easy' },
-  '아발론': { name: '레지스탕스 아발론 (Avalon)', desc: '선과 악의 진영으로 나뉘어 서로의 정체를 속이고 미션을 성공시키거나 저지하는 최고의 마피아 블러핑 게임', img: 'https://images.unsplash.com/photo-1590134643916-29177a452cc7?auto=format&fit=crop&w=300&q=80', color: '#16a085', difficulty: 'heavy' },
-  '딕싯': { name: '딕싯 (Dixit)', desc: '추상적인 일러스트 카드를 보고 다채로운 힌트를 제시하여 출제자의 카드를 맞추는 감성 스토리텔링 게임', img: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=300&q=80', color: '#8e44ad', difficulty: 'easy' },
-  '스컬': { name: '스컬 (Skull)', desc: '꽃과 해골이 그려진 디스크를 내고, 해골을 밟지 않으면서 자기가 선언한 장수만큼 뒤집는 고도의 심리 블러핑 포커 게임', img: 'https://images.unsplash.com/photo-1605870445919-838d190e8e1b?auto=format&fit=crop&w=300&q=80', color: '#fdcb6e', difficulty: 'easy' },
-  '아그리콜라': { name: '아그리콜라 (Agricola)', desc: '17세기 농부가 되어 밭을 일구고 가축을 키우며 내 가족들을 굶기지 않고 풍요로운 농장을 건설하는 명작 일꾼배치 게임', img: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=300&q=80', color: '#d35400', difficulty: 'heavy' },
-  '러브레터': { name: '러브레터 (Love Letter)', desc: '단 16장의 카드만을 사용하여 공주에게 비밀 편지를 무사히 배달하고 다른 라이벌을 탈락시키는 전략 카드게임', img: 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=300&q=80', color: '#d63031', difficulty: 'easy' },
-  '뱅': { name: '뱅! (Bang!)', desc: '보안관, 부관, 무법자, 배신자라는 각자의 비밀 역할을 맡아 서부 총잡이가 되어 쏘고 피하는 정통 서부극 카드게임', img: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=300&q=80', color: '#e67e22', difficulty: 'medium' },
-  '우노': { name: '우노 (UNO)', desc: '손에 든 카드와 같은 색상이나 숫자를 내어 패를 털어내고, 마지막 1장이 남았을 때 우노를 외치는 고전 카드게임', img: 'https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=300&q=80', color: '#27ae60', difficulty: 'easy' },
-  '아키오로지': { name: '아키올로지 (Archeology)', desc: '사막 유적지를 발굴하여 보물 세트를 모아 상인에게 비싸게 팔아넘기며 모래폭풍과 도둑을 피하는 카드 컬렉션 게임', img: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=300&q=80', color: '#f39c12', difficulty: 'easy' }
+  '스플렌더': { bggId: '148228', name: '스플렌더 (Splendor)', desc: '보석 칩을 모아 광산을 개발하고 카드 점수를 모아 귀족들의 방문을 유도하는 최고의 셋컬렉션 입문 게임', img: 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=300&q=80', color: '#6c5ce7', difficulty: 'medium' },
+  '루미큐브': { bggId: '811', name: '루미큐브 (Rummikub)', desc: '숫자 타일들을 연속된 수 또는 같은 숫자의 다른 색 조합으로 맞춰 자신의 타일을 가장 먼저 터는 두뇌 보드게임', img: 'https://images.unsplash.com/photo-1606167668584-78701c57f13d?auto=format&fit=crop&w=300&q=80', color: '#0984e3', difficulty: 'easy' },
+  '카르카손': { bggId: '822', name: '카르카손 (Carcassonne)', desc: '타일을 한 장씩 뽑아 성, 길, 초원을 건설하고 내 미플을 놓아 영토를 넓히는 최고의 영향력 타일 배치 게임', img: 'https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=300&q=80', color: '#2ecc71', difficulty: 'easy' },
+  '카탄': { bggId: '13', name: '카탄의 개척자 (Catan)', desc: '자원을 생산하고 다른 개척자들과의 활발한 거래 및 도로, 마을 확장을 통해 10점을 먼저 획득하는 협상 전략 게임', img: 'https://images.unsplash.com/photo-1585504198199-20277593b94f?auto=format&fit=crop&w=300&q=80', color: '#ff7675', difficulty: 'medium' },
+  '할리갈리': { bggId: '598', name: '할리갈리 (Halli Galli)', desc: '과일의 합이 정확히 5개가 되는 순간 누구보다 빠르게 종을 쳐서 카드를 쓸어 담는 순발력 과일 게임', img: 'https://images.unsplash.com/photo-1629812456605-4a044aa38fbc?auto=format&fit=crop&w=300&q=80', color: '#e74c3c', difficulty: 'easy' },
+  '다빈치코드': { bggId: '8946', name: '다빈치코드 (Da Vinci Code)', desc: '상대방의 흑백 타일 번호를 하나씩 밝혀내고 나의 비밀 숫자 조합은 끝까지 감추는 숫자 추리 게임', img: 'https://images.unsplash.com/photo-1611890798517-0127e27a1725?auto=format&fit=crop&w=300&q=80', color: '#34495e', difficulty: 'easy' },
+  '젝스님트': { bggId: '118', name: '젝스님트 (6 Nimmst!)', desc: '카드를 비공개로 내고 오름차순으로 배치하다가, 6번째 카드를 놓는 불운의 플레이어가 벌점 카드를 먹는 파티 눈치 카드게임', img: 'https://images.unsplash.com/photo-1607513746994-51f730a44832?auto=format&fit=crop&w=300&q=80', color: '#e84393', difficulty: 'easy' },
+  '아발론': { bggId: '128839', name: '레지스탕스 아발론 (Avalon)', desc: '선과 악의 진영으로 나뉘어 서로의 정체를 속이고 미션을 성공시키거나 저지하는 최고의 마피아 블러핑 게임', img: 'https://images.unsplash.com/photo-1590134643916-29177a452cc7?auto=format&fit=crop&w=300&q=80', color: '#16a085', difficulty: 'heavy' },
+  '딕싯': { bggId: '39856', name: '딕싯 (Dixit)', desc: '추상적인 일러스트 카드를 보고 다채로운 힌트를 제시하여 출제자의 카드를 맞추는 감성 스토리텔링 게임', img: 'https://images.unsplash.com/photo-1534447677768-be436bb09401?auto=format&fit=crop&w=300&q=80', color: '#8e44ad', difficulty: 'easy' },
+  '스컬': { bggId: '131057', name: '스컬 (Skull)', desc: '꽃과 해골이 그려진 디스크를 내고, 해골을 밟지 않으면서 자기가 선언한 장수만큼 뒤집는 고도의 심리 블러핑 포커 게임', img: 'https://images.unsplash.com/photo-1605870445919-838d190e8e1b?auto=format&fit=crop&w=300&q=80', color: '#fdcb6e', difficulty: 'easy' },
+  '아그리콜라': { bggId: '31260', name: '아그리콜라 (Agricola)', desc: '17세기 농부가 되어 밭을 일구고 가축을 키우며 내 가족들을 굶기지 않고 농장을 건설하는 명작 일꾼배치 게임', img: 'https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=300&q=80', color: '#d35400', difficulty: 'heavy' },
+  '러브레터': { bggId: '129622', name: '러브레터 (Love Letter)', desc: '단 16장의 카드만을 사용하여 공주에게 비밀 편지를 무사히 배달하고 다른 라이벌을 탈락시키는 전략 카드게임', img: 'https://images.unsplash.com/photo-1509248961158-e54f6934749c?auto=format&fit=crop&w=300&q=80', color: '#d63031', difficulty: 'easy' },
+  '뱅': { bggId: '3955', name: '뱅! (Bang!)', desc: '보안관, 부관, 무법자, 배신자라는 각자의 비밀 역할을 맡아 서부 총잡이가 되어 쏘고 피하는 정통 서부극 카드게임', img: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=300&q=80', color: '#e67e22', difficulty: 'medium' },
+  '우노': { bggId: '2223', name: '우노 (UNO)', desc: '손에 든 카드와 같은 색상이나 숫자를 내어 패를 털어내고, 마지막 1장이 남았을 때 우노를 외치는 고전 카드게임', img: 'https://images.unsplash.com/photo-1611195974226-a6a9be9dd763?auto=format&fit=crop&w=300&q=80', color: '#27ae60', difficulty: 'easy' },
+  '아키올로지': { bggId: '131301', name: '아키올로지 (Archeology)', desc: '사막 유적지를 발굴하여 보물 세트를 모아 상인에게 비싸게 팔아넘기며 모래폭풍과 도둑을 피하는 카드 컬렉션 게임', img: 'https://images.unsplash.com/photo-1539650116574-8efeb43e2750?auto=format&fit=crop&w=300&q=80', color: '#f39c12', difficulty: 'easy' }
 };
 
 // --- Web Audio API 효과음 신디사이저 ---
@@ -191,12 +191,15 @@ const closeCardBtn = document.getElementById('closeCardBtn');
 const captureBtn = document.getElementById('captureBtn');
 
 // --- Initialization ---
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   loadData();
   renderColorPicker();
   setupStarRating();
   setupEventListeners();
   render();
+  
+  // 최초 앱 구동 시 BGG로부터 도감 이미지 백그라운드 프리패치 진행
+  await prefetchOfficialBoxArts();
 });
 
 // --- Data Operations ---
@@ -229,6 +232,59 @@ function saveData() {
   localStorage.setItem('dadok_dadok_board_logs', JSON.stringify(logs));
   localStorage.setItem('dadok_dadok_board_decos', JSON.stringify(decos));
   localStorage.setItem('dadok_dadok_board_sound', soundEnabled.toString());
+}
+
+// BGG에서 도감의 고유 ID별로 실제 오피셜 박스 아트 이미지를 긁어와 로컬 캐싱/매핑하는 프리패치 로직
+async function prefetchOfficialBoxArts() {
+  const cacheKey = 'dadok_dadok_bgg_img_cache';
+  let cachedImgs = {};
+  
+  try {
+    const savedCache = localStorage.getItem(cacheKey);
+    if (savedCache) {
+      cachedImgs = JSON.parse(savedCache);
+    }
+  } catch (e) {}
+
+  // 캐시가 비어있다면 BGG API 배치 호출
+  const missingIds = [];
+  Object.entries(ENCYCLOPEDIA_DB).forEach(([key, info]) => {
+    if (!cachedImgs[info.bggId]) {
+      missingIds.push(info.bggId);
+    }
+  });
+
+  if (missingIds.length > 0) {
+    try {
+      // 콤마(,)로 여러 ID를 합쳐 호출하면 한 번에 획득 가능
+      const res = await fetch(`https://boardgamegeek.com/xmlapi2/thing?id=${missingIds.join(',')}`);
+      const text = await res.text();
+      const parser = new DOMParser();
+      const xmlDoc = parser.parseFromString(text, "text/xml");
+      const items = xmlDoc.getElementsByTagName("item");
+
+      for (let i = 0; i < items.length; i++) {
+        const id = items[i].getAttribute("id");
+        const thumbnail = items[i].getElementsByTagName("thumbnail")[0] ? items[i].getElementsByTagName("thumbnail")[0].textContent : '';
+        if (thumbnail) {
+          cachedImgs[id] = thumbnail;
+        }
+      }
+      localStorage.setItem(cacheKey, JSON.stringify(cachedImgs));
+    } catch (err) {
+      console.warn("BGG image prefetch error, using fallbacks:", err);
+    }
+  }
+
+  // 데이터베이스 인메모리 이미지 변수 갱신
+  Object.entries(ENCYCLOPEDIA_DB).forEach(([key, info]) => {
+    if (cachedImgs[info.bggId]) {
+      info.img = cachedImgs[info.bggId];
+    }
+  });
+
+  // 이미지 갱신 완료 후 재렌더링
+  renderGameInfoTab();
 }
 
 // --- Render Core ---
@@ -507,14 +563,12 @@ function renderLogFeed() {
   });
 }
 
-// 고정 도감 데이터와 플레이 로그 매핑하여 해금/잠금 상태 판정 후 도감 그리기
+// 도감 렌더링
 function renderGameInfoTab() {
   gameInfoGrid.innerHTML = '';
 
-  // 1. 도감 아이템들 루프 돌며 해금 상태 점검
   Object.entries(ENCYCLOPEDIA_DB).forEach(([key, info]) => {
     
-    // 플레이 로그 중 해당 게임과 이름이 매칭(한글 혹은 영문 포함)되는 로그 검사
     const matchLog = logs.find(log => {
       const lowerInput = log.gameTitle.toLowerCase();
       const lowerKey = key.toLowerCase();
@@ -524,9 +578,7 @@ function renderGameInfoTab() {
     });
 
     const isUnlocked = !!matchLog;
-
     const card = document.createElement('div');
-    // 잠금 여부에 따라 locked 클래스 부여
     card.className = `info-card ${isUnlocked ? '' : 'locked'}`;
 
     let diffLabel = '쉬움';
@@ -534,7 +586,6 @@ function renderGameInfoTab() {
     else if (info.difficulty === 'heavy') diffLabel = '묵직함';
 
     if (isUnlocked) {
-      // 1-1. 해금 상태 렌더링
       const playCount = logs.filter(log => log.gameTitle.toLowerCase().includes(key.toLowerCase())).length;
 
       card.innerHTML = `
@@ -552,13 +603,11 @@ function renderGameInfoTab() {
         </div>
       `;
 
-      // 해금된 카드 클릭 시 3D 뷰어 띄우기 (매치 로그 데이터 기반)
       card.addEventListener('click', () => {
         openCardFlipView(matchLog);
       });
 
     } else {
-      // 1-2. 잠금 상태 렌더링
       card.innerHTML = `
         <div class="info-card-header">
           <img src="${info.img}" class="info-card-blur-bg" alt="blur">
@@ -569,7 +618,7 @@ function renderGameInfoTab() {
           <div class="info-card-stat-row">
             <span>⚖️ 난이도 <strong>${diffLabel}</strong></span>
           </div>
-          <p class="info-card-desc" style="color:transparent; text-shadow:0 0 8px rgba(0,0,0,0.5);">비공개 설명 블러 처리 블러 처리</p>
+          <p class="info-card-desc" style="color:transparent; text-shadow:0 0 8px rgba(0,0,0,0.5);">비공개 설명 블러 처리</p>
         </div>
         <div class="info-card-lock-overlay">
           <i data-lucide="lock"></i>
@@ -604,7 +653,6 @@ function openCardFlipView(log) {
 
   const thumbUrl = log.gameThumbnail || 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=150&q=80';
 
-  // 앞면 콘텐츠 조립
   cardFrontView.innerHTML = `
     <div class="card-header-glow" style="background: linear-gradient(135deg, ${log.color || '#1e1b4b'} 0%, #0f172a 100%);">
       <div class="card-badge-tag">${badgeText}</div>
@@ -692,7 +740,6 @@ async function searchBoardGame(query) {
   searchResultsDropdown.innerHTML = '<div style="padding:10px; font-size:0.85rem; color:var(--text-muted);">검색 중...</div>';
   searchResultsDropdown.classList.add('active');
 
-  // 오프라인 도감 DB에서 대소문자 가리지 않고 매칭 우선 검색
   const offlineMatchKey = Object.keys(ENCYCLOPEDIA_DB).find(key => query.includes(key) || key.includes(query));
   
   let results = [];
@@ -916,21 +963,18 @@ function setupEventListeners() {
     cardDrawOverlay.classList.remove('active');
   });
 
-  // CORS 보안 이슈 우회가 가능한 최신 HTML2Canvas 렌더링 로직으로 전면 업그레이드 (압축 완료)
   captureBtn.addEventListener('click', () => {
     captureBtn.disabled = true;
     captureBtn.innerHTML = '<i data-lucide="loader"></i> 이미지 생성 중...';
     if (window.lucide) window.lucide.createIcons();
 
-    // 임시 복제 캔버스 렌더링을 통한 BGG 외부 리소스 CORS 우회 캡처 진행
     html2canvas(stackContainer, {
-      useCORS: true,       // 외부 도메인 이미지 CORS 허용
+      useCORS: true,
       allowTaint: true,
       backgroundColor: '#0f172a',
-      scale: 1             // 너무 뻥튀기되지 않도록 스케일 고정 (용량 최적화)
+      scale: 1
     })
     .then((canvas) => {
-      // 퀄리티 0.7 압축 비율로 JPEG 변환하여 경량화 완성
       const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
       
       const link = document.createElement('a');

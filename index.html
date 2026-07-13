@@ -12,6 +12,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
   <!-- Lucide Icons 아이콘 폰트 적용 -->
   <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- HTML2Canvas: 화면 캡처 라이브러리 추가 -->
+  <script src="https://cdnjs.cloudflare.com/ajax/dom-to-image/2.6.0/dom-to-image.min.js"></script>
 </head>
 <body>
   <div class="app-container">
@@ -35,12 +37,15 @@
         </div>
       </div>
 
-      <!-- 누적 높이 표시기 및 데코 모드 가이드 -->
+      <!-- 누적 높이 표시기 및 데코 모드 가이드 / 캡처 단추 -->
       <div class="height-counter-wrapper">
         <div class="height-counter">
           <span class="label">누적 높이</span>
           <span class="value" id="totalHeight">0cm</span>
         </div>
+        <button class="btn btn-capture" id="captureBtn">
+          <i data-lucide="camera"></i> 탑 이미지 저장 (경량)
+        </button>
         <div class="deco-guide">
           <span>💡 해금된 미플을 더블클릭/드래그하여 탑을 꾸며보세요!</span>
         </div>
@@ -266,6 +271,38 @@
           <button type="submit" class="btn btn-primary" id="submitBtn">상자 탑에 올리기</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- 카드 드로우 / 개봉 전용 오버레이 화면 -->
+  <div class="card-draw-overlay" id="cardDrawOverlay">
+    <div class="glow-effect"></div>
+    <div class="card-pack-wrapper">
+      
+      <!-- 3D 뒤집기 카드 콘텐트 -->
+      <div class="flip-card-container" id="flipCard">
+        <div class="flip-card-inner">
+          
+          <!-- 카드 뒷면 (미확인 팩) -->
+          <div class="flip-card-back">
+            <div class="card-pack-art">
+              <div class="logo-circle">🎲</div>
+              <h3>다독다독보드</h3>
+              <p>보드게임 팩</p>
+              <div class="pulse-indicator">클릭하여 개봉하기</div>
+            </div>
+          </div>
+          
+          <!-- 카드 앞면 (공개된 카드) -->
+          <div class="flip-card-front" id="cardFrontView">
+            <!-- 동적으로 렌더링 예정 -->
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- 닫기 버튼 (카드 오픈 완료 후 활성화) -->
+      <button class="btn btn-primary close-card-btn" id="closeCardBtn" style="display:none;">서재에 보관하기</button>
     </div>
   </div>
 

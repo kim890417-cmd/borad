@@ -38,21 +38,22 @@ const OFFLINE_GAME_DB = {
 
 // --- Web Audio API를 활용한 무설치 효과음 신디사이저 ---
 let audioCtx = null;
+function initAudioContext() {
+  if (!audioCtx) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  }
+}
+
 function playDropSound() {
   if (!soundEnabled) return;
   try {
-    if (!audioCtx) {
-      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    }
-    
-    // 쿵! (Thud) 소리 합성 로직
+    initAudioContext();
     const osc = audioCtx.createOscillator();
     const gainNode = audioCtx.createGain();
     
     osc.connect(gainNode);
     gainNode.connect(audioCtx.destination);
     
-    // 저주파 드럼 비트 소리로 하강 피치 설정
     osc.type = 'triangle';
     osc.frequency.setValueAtTime(140, audioCtx.currentTime);
     osc.frequency.exponentialRampToValueAtTime(30, audioCtx.currentTime + 0.3);
@@ -63,13 +64,69 @@ function playDropSound() {
     osc.start(audioCtx.currentTime);
     osc.stop(audioCtx.currentTime + 0.45);
 
-    // 시각적 상자 탑 임팩트 진동 흔들기 효과
     stackContainer.classList.add('shake');
     setTimeout(() => stackContainer.classList.remove('shake'), 200);
-
   } catch (e) {
-    console.warn("Audio play failed or blocked by autoplay restriction:", e);
+    console.warn("Audio play failed:", e);
   }
+}
+
+// 가챠 카드 팩 나타날 때 소리 (쉬이익)
+function playCardSpawnSound() {
+  if (!soundEnabled) return;
+  try {
+    initAudioContext();
+    const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 0.4, audioCtx.sampleRate);
+    const output = noiseBuffer.getChannelData(0);
+    for (let i = 0; i < noiseBuffer.length; i++) {
+      output[i] = Math.random() * 2 - 1;
+    }
+    
+    const whiteNoise = audioCtx.createBufferSource();
+    whiteNoise.buffer = noiseBuffer;
+
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.setValueAtTime(200, audioCtx.currentTime);
+    filter.frequency.exponentialRampToValueAtTime(1800, audioCtx.currentTime + 0.35);
+
+    const gainNode = audioCtx.createGain();
+    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+
+    whiteNoise.connect(filter);
+    filter.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+
+    whiteNoise.start();
+  } catch (e) {}
+}
+
+// 카드가 촤라락 뒤집힐 때의 찬란한 효과음 (샤라랑 칭)
+function playCardFlipSound() {
+  if (!soundEnabled) return;
+  try {
+    initAudioContext();
+    const now = audioCtx.currentTime;
+    
+    // 주파수가 상승하는 벨소리
+    for (let i = 0; i < 6; i++) {
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(440 + (i * 220), now + (i * 0.05));
+      
+      gainNode.gain.setValueAtTime(0.15, now + (i * 0.05));
+      gainNode.gain.exponentialRampToValueAtTime(0.01, now + (i * 0.05) + 0.3);
+      
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      
+      osc.start(now + (i * 0.05));
+      osc.stop(now + (i * 0.05) + 0.35);
+    }
+  } catch (e) {}
 }
 
 // --- DOM Elements ---
@@ -122,6 +179,15 @@ const soundToggleBtn = document.getElementById('soundToggleBtn');
 const tabButtons = document.querySelectorAll('.tab-btn');
 const tabPanels = document.querySelectorAll('.tab-panel');
 const feedFilterControls = document.getElementById('feedFilterControls');
+
+// 카드 가챠 관련 DOM
+const cardDrawOverlay = document.getElementById('cardDrawOverlay');
+const flipCard = document.getElementById('flipCard');
+const cardFrontView = document.getElementById('cardFrontView');
+const closeCardBtn = document.getElementById('closeCardBtn');
+
+// 캡처 단추
+const captureBtn = document.getElementById('captureBtn');
 
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -177,7 +243,6 @@ function render(isNewAddition = false) {
   updateSoundButtonUI();
   
   if (isNewAddition) {
-    // 쿵 소리 재생
     setTimeout(playDropSound, 300);
   }
 
@@ -186,7 +251,7 @@ function render(isNewAddition = false) {
   }
 }
 
-// 1. 대시보드 통계
+// 대시보드 통계
 function renderStats() {
   const count = logs.length;
   const totalTime = logs.reduce((acc, log) => acc + Number(log.playTime || 0), 0);
@@ -205,7 +270,7 @@ function renderStats() {
   statGradeEl.innerText = grade;
 }
 
-// 1-2. 고급 통계
+// 고급 분석 통계
 function renderAdvancedStats() {
   const total = logs.length;
   if (total === 0) {
@@ -246,7 +311,7 @@ function renderAdvancedStats() {
   }
 }
 
-// 2. 상자 두께 계산 및 상자 탑 렌더링
+// 상자 두께 계산 및 상자 탑 렌더링
 function calculateThickness(difficulty, playTime) {
   let weight = 1.0;
   if (difficulty === 'easy') weight = 0.5;
@@ -291,7 +356,7 @@ function renderStack() {
     `;
 
     boxEl.addEventListener('click', () => {
-      alert(`[${log.gameTitle}]\n플레이 날짜: ${log.playDate}\n시간: ${log.playTime}분\n체급: ${log.boxThickness}\n두께: ${thicknessCm.toFixed(1)}cm\n동반자: ${log.companions || '없음'}\n설명: ${log.gameDescription || '없음'}\n평점: ${'⭐'.repeat(log.rating)}\n메모: ${log.review || '기록 없음'}`);
+      openCardFlipView(log);
     });
 
     stackContainer.appendChild(boxEl);
@@ -300,7 +365,7 @@ function renderStack() {
   totalHeightEl.innerText = `${currentHeight.toFixed(1)}cm`;
 }
 
-// 2-2. 데코레이션 레이어 렌더링
+// 데코레이션 레이어 렌더링
 function renderDecoLayer() {
   decoLayer.innerHTML = '';
   decos.forEach((deco) => {
@@ -349,7 +414,7 @@ function renderDecoLayer() {
   });
 }
 
-// 3. 플레이 로그 피드 렌더링
+// 플레이 로그 피드 렌더링
 function renderLogFeed() {
   logFeed.innerHTML = '';
   
@@ -392,7 +457,7 @@ function renderLogFeed() {
 
     card.innerHTML = `
       <div class="log-color-indicator" style="background-color: ${log.color || '#ff7675'};"></div>
-      <div class="log-card-left">
+      <div class="log-card-left" style="cursor:pointer;">
         ${cardThumb}
         <div class="log-meta-info">
           <span class="log-game-title">${log.gameTitle}</span>
@@ -421,6 +486,11 @@ function renderLogFeed() {
       </div>
     `;
 
+    // 메인 본문 영역 클릭 시 카드 상세 드로우 열기
+    card.querySelector('.log-card-left').addEventListener('click', () => {
+      openCardFlipView(log);
+    });
+
     card.querySelector('.edit-log-btn').addEventListener('click', (e) => {
       e.stopPropagation();
       openEditModal(log);
@@ -437,11 +507,10 @@ function renderLogFeed() {
   });
 }
 
-// 3-2. 보드게임 소개 서재 탭 렌더링
+// 보드게임 소개 탭 렌더링
 function renderGameInfoTab() {
   gameInfoGrid.innerHTML = '';
 
-  // 중복되지 않는 고유 보드게임 리스트 추출
   const uniqueGames = {};
   logs.forEach(log => {
     if (!uniqueGames[log.gameTitle]) {
@@ -451,7 +520,9 @@ function renderGameInfoTab() {
         desc: log.gameDescription || '설명 기록 없음',
         plays: 0,
         totalTime: 0,
-        difficulty: log.boxThickness
+        difficulty: log.boxThickness,
+        // 오리지널 데이터 매핑 보관용
+        originalLog: log 
       };
     }
     uniqueGames[log.gameTitle].plays += 1;
@@ -473,7 +544,6 @@ function renderGameInfoTab() {
     const card = document.createElement('div');
     card.className = 'info-card';
 
-    // 한글로 난이도 뱃지 라벨 파싱
     let diffLabel = '쉬움';
     if (game.difficulty === 'medium') diffLabel = '보통';
     else if (game.difficulty === 'heavy') diffLabel = '묵직함';
@@ -493,11 +563,76 @@ function renderGameInfoTab() {
         <p class="info-card-desc">${game.desc}</p>
       </div>
     `;
+
+    // 카드 누르면 해당 보드게임 3D 드로우 효과로 세부 카드 펼쳐보기
+    card.addEventListener('click', () => {
+      openCardFlipView(game.originalLog);
+    });
+
     gameInfoGrid.appendChild(card);
   });
 }
 
-// 4. 캐릭터 도감
+// 3D 카드 뽑기 효과로 모달 열기
+function openCardFlipView(log) {
+  // 뒤집기 상태 초기화
+  flipCard.classList.remove('flipped');
+  closeCardBtn.style.display = 'none';
+
+  let diffLabel = '가벼움 (카드/파티)';
+  if (log.boxThickness === 'medium') diffLabel = '보통 (일반패밀리)';
+  else if (log.boxThickness === 'heavy') diffLabel = '묵직함 (하드유로)';
+
+  let badgeClass = 'badge-none';
+  let badgeText = '단순 기록';
+  if (log.result === 'win') { badgeClass = 'badge-win'; badgeText = '승리 🎉'; }
+  else if (log.result === 'lose') { badgeClass = 'badge-lose'; badgeText = '패배 😢'; }
+  else if (log.result === 'draw') { badgeClass = 'badge-draw'; badgeText = '무승부 🤝'; }
+
+  let starsHtml = '';
+  for (let i = 0; i < 5; i++) {
+    starsHtml += `<i data-lucide="star" style="${i < log.rating ? '' : 'fill: none; color: #dfe6e9;'}"></i>`;
+  }
+
+  const thumbUrl = log.gameThumbnail || 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=150&q=80';
+
+  // 앞면 콘텐츠 조립
+  cardFrontView.innerHTML = `
+    <div class="card-header-glow" style="background: linear-gradient(135deg, ${log.color || '#1e1b4b'} 0%, #0f172a 100%);">
+      <div class="card-badge-tag">${badgeText}</div>
+      <img src="${thumbUrl}" class="card-front-thumb" alt="${log.gameTitle}">
+    </div>
+    <div class="card-front-body">
+      <h3 class="card-front-title">${log.gameTitle}</h3>
+      <div class="card-front-stars">${starsHtml}</div>
+      
+      <div class="card-front-stats">
+        <span>⏱️ <strong>${log.playTime}분</strong></span>
+        <span>👥 <strong>${log.playerCount}명</strong></span>
+        <span>⚖️ <strong>${diffLabel}</strong></span>
+      </div>
+      
+      <p class="card-front-desc">
+        ${log.gameDescription || '게임 정보 설명이 없습니다.'}
+      </p>
+      
+      ${log.review ? `<p class="log-review" style="margin-top:auto;"><strong>메모:</strong> ${log.review}</p>` : ''}
+    </div>
+    <div class="card-front-footer">
+      플레이 날짜: ${log.playDate}
+    </div>
+  `;
+
+  // Lucide 아이콘 로드
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+
+  cardDrawOverlay.classList.add('active');
+  playCardSpawnSound();
+}
+
+// 캐릭터 도감
 function renderCharacters() {
   characterList.innerHTML = '';
   const playCount = logs.length;
@@ -530,7 +665,7 @@ function renderCharacters() {
   });
 }
 
-// --- Sound Button UI Toggle ---
+// Sound Button UI Toggle
 function updateSoundButtonUI() {
   if (soundEnabled) {
     soundToggleBtn.classList.remove('muted');
@@ -544,7 +679,7 @@ function updateSoundButtonUI() {
   }
 }
 
-// --- BGG API Search Logic ---
+// BGG API Search Logic
 async function searchBoardGame(query) {
   if (!query) return;
   searchResultsDropdown.innerHTML = '<div style="padding:10px; font-size:0.85rem; color:var(--text-muted);">검색 중...</div>';
@@ -664,7 +799,7 @@ function rgbToHex(rgb) {
   return '#' + parts.join('');
 }
 
-// --- Interaction Logic ---
+// Interaction Logic
 function deleteLog(id) {
   logs = logs.filter(log => log.id !== id);
   render();
@@ -759,14 +894,59 @@ function setupStarRating() {
 }
 
 function setupEventListeners() {
-  // 소리 버튼 클릭 이벤트
+  // 3D 카드 클릭 시 뒤집기 이벤트
+  flipCard.addEventListener('click', () => {
+    if (!flipCard.classList.contains('flipped')) {
+      flipCard.classList.add('flipped');
+      playCardFlipSound();
+      
+      // 샤라랑 소리 끝난 후 보관 버튼 표시
+      setTimeout(() => {
+        closeCardBtn.style.display = 'block';
+      }, 600);
+    }
+  });
+
+  closeCardBtn.addEventListener('click', () => {
+    cardDrawOverlay.classList.remove('active');
+  });
+
+  // 스택 캡처 기능 (dom-to-image 사용하여 모바일 용량 압축 캡처)
+  captureBtn.addEventListener('click', () => {
+    captureBtn.disabled = true;
+    captureBtn.innerHTML = '<i data-lucide="loader"></i> 이미지 생성 중...';
+    if (window.lucide) window.lucide.createIcons();
+
+    // 캡처 최적화 옵션
+    domtoimage.toJpeg(stackContainer, {
+      quality: 0.75, // 75% 퀄리티 압축
+      bgcolor: '#0f172a'
+    })
+    .then((dataUrl) => {
+      const link = document.createElement('a');
+      link.download = `다독다독보드-탑-${new Date().toISOString().substring(2,10)}.jpg`;
+      link.href = dataUrl;
+      link.click();
+      
+      captureBtn.disabled = false;
+      captureBtn.innerHTML = '<i data-lucide="camera"></i> 탑 이미지 저장 (경량)';
+      if (window.lucide) window.lucide.createIcons();
+    })
+    .catch((error) => {
+      console.error('oops, something went wrong!', error);
+      captureBtn.disabled = false;
+      captureBtn.innerHTML = '<i data-lucide="camera"></i> 탑 이미지 저장 (경량)';
+      if (window.lucide) window.lucide.createIcons();
+      alert('이미지 저장에 실패했습니다. 브라우저 보안 설정을 확인해주세요.');
+    });
+  });
+
   soundToggleBtn.addEventListener('click', () => {
     soundEnabled = !soundEnabled;
     saveData();
     updateSoundButtonUI();
   });
 
-  // 탭 클릭 이벤트
   tabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
       const targetTab = btn.getAttribute('data-tab');
@@ -782,7 +962,6 @@ function setupEventListeners() {
         }
       });
 
-      // 소개 탭일 때는 우측 정렬 필터 숨기기
       if (targetTab === 'info') {
         feedFilterControls.style.display = 'none';
       } else {
@@ -856,6 +1035,7 @@ function setupEventListeners() {
 
     const editingId = editingLogIdInput.value;
     let isNewAddition = false;
+    let targetLogObj = null;
 
     if (editingId) {
       const idx = logs.findIndex(log => log.id === editingId);
@@ -875,6 +1055,7 @@ function setupEventListeners() {
           gameThumbnail,
           gameDescription
         };
+        targetLogObj = logs[idx];
       }
     } else {
       isNewAddition = true;
@@ -894,10 +1075,18 @@ function setupEventListeners() {
         gameDescription
       };
       logs.push(newLog);
+      targetLogObj = newLog;
     }
 
     render(isNewAddition);
     closeModal();
+
+    // 새 기록 추가 시 카드 개봉 오버레이 오픈 연출 발동!
+    if (isNewAddition && targetLogObj) {
+      setTimeout(() => {
+        openCardFlipView(targetLogObj);
+      }, 500);
+    }
   });
 
   sortBySelect.addEventListener('change', () => {

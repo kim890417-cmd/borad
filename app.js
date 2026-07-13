@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- Data Operations ---
 function loadData() {
-  const saved = localStorage.getItem('bustle_board_logs');
+  const saved = localStorage.getItem('dadok_dadok_board_logs');
   if (saved) {
     try {
       logs = JSON.parse(saved);
@@ -72,7 +72,7 @@ function loadData() {
 }
 
 function saveData() {
-  localStorage.setItem('bustle_board_logs', JSON.stringify(logs));
+  localStorage.setItem('dadok_dadok_board_logs', JSON.stringify(logs));
 }
 
 // --- Render Core ---

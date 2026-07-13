@@ -727,7 +727,8 @@ function renderStack() {
     boxEl.style.height = `${(thicknessCm * 10) + 12}px`;
     boxEl.title = `${log.gameTitle} (${thicknessCm.toFixed(1)}cm)`;
 
-    const thumbHtml = log.gameThumbnail ? `<img src="${log.gameThumbnail}" style="width: 24px; height: 24px; border-radius: 4px; object-fit: cover; margin-right: 8px;">` : '🎲 ';
+    const thumbSrc = log.gameThumbnail || getEncyclopediaImage(log.gameTitle);
+    const thumbHtml = thumbSrc ? `<img src="${thumbSrc}" style="width: 24px; height: 24px; border-radius: 4px; object-fit: cover; margin-right: 8px;">` : '🎲 ';
 
     boxEl.innerHTML = `
       <span class="game-box-text" style="display:flex; align-items:center;">
@@ -834,7 +835,8 @@ function renderLogFeed() {
       starsHtml += `<i data-lucide="star" style="${i < log.rating ? '' : 'fill: none; color: #dfe6e9;'}"></i>`;
     }
 
-    const cardThumb = log.gameThumbnail ? `<img src="${log.gameThumbnail}" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;">` : '';
+    const ctSrc = log.gameThumbnail || getEncyclopediaImage(log.gameTitle);
+    const cardThumb = ctSrc ? `<img src="${ctSrc}" style="width: 50px; height: 50px; border-radius: 8px; object-fit: cover;">` : '';
 
     card.innerHTML = `
       <div class="log-color-indicator" style="background-color: ${log.color || '#ff7675'};"></div>
@@ -1124,6 +1126,17 @@ function renderRankingTab() {
   `;
 }
 
+// 도감 DB에서 게임 이미지 찾기
+function getEncyclopediaImage(gameTitle) {
+  const entry = Object.entries(ENCYCLOPEDIA_DB).find(([key, info]) => {
+    const t = gameTitle.toLowerCase();
+    const k = key.toLowerCase();
+    const n = info.name.toLowerCase();
+    return t.includes(k) || k.includes(t) || t.includes(n) || n.includes(t);
+  });
+  return entry ? entry[1].img : null;
+}
+
 // 3D 카드 뽑기 효과로 모달 열기
 function openCardFlipView(log) {
   flipCard.classList.remove('flipped');
@@ -1144,7 +1157,7 @@ function openCardFlipView(log) {
     starsHtml += `<i data-lucide="star" style="${i < log.rating ? '' : 'fill: none; color: #dfe6e9;'}"></i>`;
   }
 
-  const thumbUrl = log.gameThumbnail || 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=150&q=80';
+  const thumbUrl = log.gameThumbnail || getEncyclopediaImage(log.gameTitle) || 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=150&q=80';
 
   // 앞면 콘텐츠 조립
   cardFrontView.innerHTML = `

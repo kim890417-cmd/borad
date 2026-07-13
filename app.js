@@ -27,13 +27,13 @@ const CHARACTERS = [
   { id: 'c6', name: '보드게임 지신', emoji: '🧙‍♂️', condText: '기록 20회 달성', unlockFn: (count) => count >= 20 }
 ];
 
-// --- 20종 이상의 풍부한 기본 보드게임 도감 백과사전 DB (국내 정식 한글판 고화질 패키지 일러스트로 긴급 수동 매핑) ---
+// --- 20종 이상의 풍부한 기본 보드게임 도감 백과사전 DB (외부 차단 보안을 회피하여 안정적으로 동작하는 쇼핑몰/CDN 한글판 고화질 이미지로 교체) ---
 const ENCYCLOPEDIA_DB = {
   '스플렌더': { 
     bggId: '148228', 
     name: '스플렌더 (Splendor)', 
     desc: '보석 칩을 모아 광산을 개발하고 카드 점수를 모아 귀족들의 방문을 유도하는 최고의 셋컬렉션 입문 게임', 
-    img: 'https://divedice.net/images/product/info/202111/49dfa6d8d6411516e87bc5e595b128dc.jpg', // 정식 코보게 한글판 스플렌더 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3246377/32463774844.20230919102434.jpg?type=w300', // 네이버 쇼핑 공식 등록 한글판 스플렌더
     color: '#6c5ce7', 
     difficulty: 'medium' 
   },
@@ -41,7 +41,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '811', 
     name: '루미큐브 (Rummikub)', 
     desc: '숫자 타일들을 연속된 수 또는 같은 숫자의 다른 색 조합으로 맞춰 자신의 타일을 가장 먼저 터는 두뇌 보드게임', 
-    img: 'https://divedice.net/images/product/info/202111/476e336d39dfb3b64c05e1ab8db5b24c.jpg', // 정식 루미큐브 클래식 한글판 박스 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3246320/32463208579.20220527145719.jpg?type=w300', // 한글판 루미큐브 클래식
     color: '#0984e3', 
     difficulty: 'easy' 
   },
@@ -49,7 +49,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '822', 
     name: '카르카손 (Carcassonne)', 
     desc: '타일을 한 장씩 뽑아 성, 길, 초원을 건설하고 내 미플을 놓아 영토를 넓히는 최고의 영향력 타일 배치 게임', 
-    img: 'https://divedice.net/images/product/info/202112/035882672534a6dfcc8cb4ffcfbc99aa.jpg', // 한글판 카르카손 패키지
+    img: 'https://shopping-phinf.pstatic.net/main_3246323/32463238690.20230206103131.jpg?type=w300', // 한글판 카르카손
     color: '#2ecc71', 
     difficulty: 'easy' 
   },
@@ -57,7 +57,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '13', 
     name: '카탄의 개척자 (Catan)', 
     desc: '자원을 생산하고 다른 개척자들과의 활발한 거래 및 도로, 마을 확장을 통해 10점을 먼저 획득하는 협상 전략 게임', 
-    img: 'https://divedice.net/images/product/info/202111/500c2830ad54ab17cb4c0559f0f9c2d1.jpg', // 정식 한글판 카탄 박스 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3246369/32463699741.20220527150117.jpg?type=w300', // 한글판 카탄
     color: '#ff7675', 
     difficulty: 'medium' 
   },
@@ -65,7 +65,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '598', 
     name: '할리갈리 (Halli Galli)', 
     desc: '과일의 합이 정확히 5개가 되는 순간 누구보다 빠르게 종을 쳐서 카드를 쓸어 담는 순발력 과일 게임', 
-    img: 'https://divedice.net/images/product/info/202111/b3c66f5c88e9999a4e044c3c3a9d985a.jpg', // 빨간 딸기 한글판 할리갈리 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3246377/32463771963.20220527150508.jpg?type=w300', // 한글판 할리갈리 오리지널
     color: '#e74c3c', 
     difficulty: 'easy' 
   },
@@ -73,7 +73,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '8946', 
     name: '다빈치코드 (Da Vinci Code)', 
     desc: '상대방의 흑백 타일 번호를 하나씩 밝혀내고 나의 비밀 숫자 조합은 끝까지 감추는 숫자 추리 게임', 
-    img: 'https://divedice.net/images/product/info/202111/49c890798517c0128e04e27f1c1f2f6f.jpg', // 한글판 다빈치코드 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3246320/32463205720.20220527145700.jpg?type=w300', // 한글판 다빈치코드
     color: '#34495e', 
     difficulty: 'easy' 
   },
@@ -81,7 +81,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '118', 
     name: '젝스님트 (6 Nimmst!)', 
     desc: '카드를 비공개로 내고 오름차순으로 배치하다가, 6번째 카드를 놓는 불운의 플레이어가 벌점 카드를 먹는 파티 눈치 카드게임', 
-    img: 'https://divedice.net/images/product/info/202111/49a29a0c799a4832ebcf07cf7c3b4832.jpg', // 한글판 젝스님트 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3247953/32479535043.20220527141517.jpg?type=w300', // 한글판 젝스님트
     color: '#e84393', 
     difficulty: 'easy' 
   },
@@ -89,7 +89,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '128839', 
     name: '레지스탕스 아발론 (Avalon)', 
     desc: '선과 악의 진영으로 나뉘어 서로의 정체를 속이고 미션을 성공시키거나 저지하는 최고의 마피아 블러핑 게임', 
-    img: 'https://divedice.net/images/product/info/202112/03e843af7b8aa9ba4c010a3b8e44adcf.jpg', // 한글판 아발론 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3246370/32463701633.20220527150125.jpg?type=w300', // 한글판 아발론
     color: '#16a085', 
     difficulty: 'heavy' 
   },
@@ -97,7 +97,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '39856', 
     name: '딕싯 (Dixit)', 
     desc: '추상적인 일러스트 카드를 보고 다채로운 힌트를 제시하여 출제자의 카드를 맞추는 감성 스토리텔링 게임', 
-    img: 'https://divedice.net/images/product/info/202111/4ea28b43f7bb09401ab4d47c7d4768ab.jpg', // 한글판 딕싯 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3246473/32464733979.20220527151044.jpg?type=w300', // 한글판 딕싯
     color: '#8e44ad', 
     difficulty: 'easy' 
   },
@@ -105,7 +105,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '131057', 
     name: '스컬 (Skull)', 
     desc: '꽃과 해골이 그려진 디스크를 내고, 해골을 밟지 않으면서 자기가 선언한 장수만큼 뒤집는 고도의 심리 블러핑 포커 게임', 
-    img: 'https://divedice.net/images/product/info/202111/49b9960587044591e1b8c38df3d1f3f3.jpg', // 한글판 스컬 박스 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3246337/32463378572.20220527145711.jpg?type=w300', // 한글판 스컬
     color: '#fdcb6e', 
     difficulty: 'easy' 
   },
@@ -113,7 +113,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '31260', 
     name: '아그리콜라 (Agricola)', 
     desc: '17세기 농부가 되어 밭을 일구고 가축을 키우며 내 가족들을 굶기지 않고 농장을 건설하는 명작 일꾼배치 게임', 
-    img: 'https://divedice.net/images/product/info/202111/450c093738664cf6d1dfef3d1fd3854a.jpg', // 한글판 아그리콜라 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3247946/32479464670.20230419104005.jpg?type=w300', // 한글판 아그리콜라
     color: '#d35400', 
     difficulty: 'heavy' 
   },
@@ -121,7 +121,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '129622', 
     name: '러브레터 (Love Letter)', 
     desc: '단 16장의 카드만을 사용하여 공주에게 비밀 편지를 무사히 배달하고 다른 라이벌을 탈락시키는 전략 카드게임', 
-    img: 'https://divedice.net/images/product/info/202111/509248961158a54f6934749c95d8d8d3.jpg', // 한글판 러브레터 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3246360/32463609805.20220527145952.jpg?type=w300', // 한글판 러브레터
     color: '#d63031', 
     difficulty: 'easy' 
   },
@@ -129,7 +129,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '3955', 
     name: '뱅! (Bang!)', 
     desc: '보안관, 부관, 무법자, 배신자라는 각자의 비밀 역할을 맡아 서부 총잡이가 되어 쏘고 피하는 정통 서부극 카드게임', 
-    img: 'https://divedice.net/images/product/info/202111/533134242443d4fd215305ada6d6f6f6.jpg', // 한글판 뱅 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3246369/32463697950.20220527150106.jpg?type=w300', // 한글판 뱅
     color: '#e67e22', 
     difficulty: 'medium' 
   },
@@ -137,7 +137,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '2223', 
     name: '우노 (UNO)', 
     desc: '손에 든 카드와 같은 색상이나 숫자를 내어 패를 털어내고, 마지막 1장이 남았을 때 우노를 외치는 고전 카드게임', 
-    img: 'https://divedice.net/images/product/info/202112/026111195974a226a27ae6085a60b24c.jpg', // 한글판 우노 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3246473/32464737525.20220527151046.jpg?type=w300', // 한글판 우노
     color: '#27ae60', 
     difficulty: 'easy' 
   },
@@ -145,7 +145,7 @@ const ENCYCLOPEDIA_DB = {
     bggId: '131301', 
     name: '아키올로지 (Archeology)', 
     desc: '사막 유적지를 발굴하여 보물 세트를 모아 상인에게 비싸게 팔아넘기며 모래폭풍과 도둑을 피하는 카드 컬렉션 게임', 
-    img: 'https://divedice.net/images/product/info/202111/539650116574a8efe43e27503f39c116.jpg', // 한글판 아키올로지 이미지
+    img: 'https://shopping-phinf.pstatic.net/main_3246337/32463372863.20220527145705.jpg?type=w300', // 한글판 아키올로지
     color: '#f39c12', 
     difficulty: 'easy' 
   }
@@ -667,7 +667,7 @@ function renderGameInfoTab() {
           <div class="info-card-stat-row">
             <span>⚖️ 난이도 <strong>${diffLabel}</strong></span>
           </div>
-          <p class="info-card-desc" style="color:transparent; text-shadow:0 0 8px rgba(0,0,0,0.5);">비공개 설명 블러 처리 블러 처리</p>
+          <p class="info-card-desc" style="color:transparent; text-shadow:0 0 8px rgba(0,0,0,0.5);">비공개 설명 블러 처리</p>
         </div>
         <div class="info-card-lock-overlay">
           <i data-lucide="lock"></i>
@@ -859,7 +859,6 @@ async function fetchBggDetails(bggId, gameName) {
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(text, "text/xml");
     
-    // thumbnail 대신 고화질 image 주소 추출
     const bigImg = xmlDoc.getElementsByTagName("image")[0] ? xmlDoc.getElementsByTagName("image")[0].textContent : '';
     const thumbnail = xmlDoc.getElementsByTagName("thumbnail")[0] ? xmlDoc.getElementsByTagName("thumbnail")[0].textContent : '';
     const finalImg = bigImg || thumbnail || 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=300&q=80';
@@ -869,7 +868,6 @@ async function fetchBggDetails(bggId, gameName) {
     
     const randomColor = PRESET_COLORS[Math.floor(Math.random() * PRESET_COLORS.length)];
 
-    // 만약 사용자가 도감에 있는 대표 게임을 한글/영문 검색하여 등록한다면, BGG 이미지 대신 오피셜 코보게 한글판 박스아트로 자동 치환하는 센스 구현!
     const offlineMatchKey = Object.keys(ENCYCLOPEDIA_DB).find(key => gameName.includes(key) || key.includes(gameName));
     const targetImg = offlineMatchKey ? ENCYCLOPEDIA_DB[offlineMatchKey].img : finalImg;
 

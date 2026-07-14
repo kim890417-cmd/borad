@@ -1576,10 +1576,14 @@ function setupEventListeners() {
         }
       });
 
-      if (targetTab === 'info' || targetTab === 'rank') {
+      if (targetTab === 'info' || targetTab === 'rank' || targetTab === 'bingo') {
         feedFilterControls.style.display = 'none';
       } else {
         feedFilterControls.style.display = 'block';
+      }
+
+      if (targetTab === 'bingo') {
+        renderBingoBoard();
       }
     });
   });
@@ -1724,36 +1728,7 @@ function setupEventListeners() {
     renderGameInfoTab();
   });
 
-  // --- Bingo Mode Event Listeners ---
-  const modeStackBtn = document.getElementById('modeStackBtn');
-  const modeBingoBtn = document.getElementById('modeBingoBtn');
-  const visualPanel = document.querySelector('.visual-panel');
-
-  modeStackBtn.addEventListener('click', () => {
-    currentMode = 'stack';
-    modeStackBtn.classList.add('active');
-    modeBingoBtn.classList.remove('active');
-    visualPanel.classList.remove('bingo-mode');
-    
-    document.getElementById('stackContainer').style.display = 'flex';
-    document.getElementById('stackControlWrapper').style.display = 'block';
-    document.getElementById('bingoContainer').style.display = 'none';
-    document.getElementById('bingoControlWrapper').style.display = 'none';
-  });
-
-  modeBingoBtn.addEventListener('click', () => {
-    currentMode = 'bingo';
-    modeStackBtn.classList.remove('active');
-    modeBingoBtn.classList.add('active');
-    visualPanel.classList.add('bingo-mode');
-    
-    document.getElementById('stackContainer').style.display = 'none';
-    document.getElementById('stackControlWrapper').style.display = 'none';
-    document.getElementById('bingoContainer').style.display = 'flex';
-    document.getElementById('bingoControlWrapper').style.display = 'block';
-    
-    renderBingoBoard();
-  });
+  // Mode toggles removed since Bingo is in main tabs
 
   const closeBingoSlotModalBtn = document.getElementById('closeBingoSlotModalBtn');
   const saveBingoSlotBtn = document.getElementById('saveBingoSlotBtn');

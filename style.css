@@ -1800,47 +1800,7 @@ select:focus {
 
 /* --- Bingo Mode Styles --- */
 
-/* Mode Toggle */
-.mode-toggle-container {
-  display: flex;
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 12px;
-  padding: 4px;
-  margin-bottom: 1.2rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.mode-toggle-container .toggle-btn {
-  flex: 1;
-  background: transparent;
-  border: none;
-  color: #94a3b8;
-  padding: 0.6rem;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  transition: all 0.3s ease;
-}
-
-.mode-toggle-container .toggle-btn.active {
-  background: rgba(255, 255, 255, 0.15);
-  color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-/* Adjust visual panel width slightly for bingo board if screen allows */
-@media (min-width: 900px) {
-  .visual-panel.bingo-mode {
-    width: 480px;
-    min-width: 480px;
-    transition: width 0.3s ease;
-  }
-}
+/* Mode Toggle and Sidebar adjustments removed since Bingo is inside main tabs */
 
 /* Bingo Container */
 .bingo-container {

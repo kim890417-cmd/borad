@@ -747,6 +747,85 @@ body {
   position: relative;
 }
 
+/* 개별 게임 카드 우상단 승률 배지 스타일 */
+.winrate-badge-pill {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(108, 92, 231, 0.95);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 20px;
+  box-shadow: 0 2px 8px rgba(108, 92, 231, 0.35);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  backdrop-filter: blur(4px);
+}
+
+.winrate-badge-pill.win-high {
+  background: rgba(0, 206, 201, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 206, 201, 0.35);
+}
+
+/* 캐릭터 도감용 카드 스타일 */
+.char-book-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--border-color);
+  border-radius: 16px;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: var(--transition-bounce);
+  position: relative;
+}
+
+.char-book-card.locked {
+  filter: grayscale(1);
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.char-book-card.unlocked {
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-sm);
+}
+
+.char-book-card.unlocked:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+}
+
+.char-book-card .card-emoji {
+  font-size: 2.2rem;
+  margin-bottom: 2px;
+  transition: transform 0.3s ease;
+}
+
+.char-book-card.unlocked:hover .card-emoji {
+  transform: scale(1.15) rotate(5deg);
+}
+
+.char-book-card .card-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+}
+
+.char-book-card .card-cond-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+
 .info-card:hover {
   transform: translateY(-5px);
   box-shadow: var(--shadow-md);

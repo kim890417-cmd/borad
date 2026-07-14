@@ -120,7 +120,12 @@
 
       <!-- 미플 캐릭터 도감 영역 (북적북적의 귀여운 캐릭터 해금 모티브) -->
       <section class="characters-section">
-        <h3>해금된 보드게임 프렌즈</h3>
+        <div class="section-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <h3 style="margin-bottom: 0;">해금된 보드게임 프렌즈</h3>
+          <button class="btn btn-secondary btn-sm" id="openCharacterBookBtn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; border-radius: 8px;">
+            <i data-lucide="book-open" style="width: 14px; height: 14px;"></i> 🔍 캐릭터 스토리 도감
+          </button>
+        </div>
         <p class="section-desc">캐릭터를 더블클릭하면 왼쪽 상자 탑에 생성됩니다!</p>
         <div class="character-list" id="characterList">
           <!-- JS에서 해금 상태에 따라 렌더링 -->
@@ -422,6 +427,47 @@
       </div>
       <div class="ad-footer">
         <span class="ad-timer" id="adTimer" style="font-size: 0.9rem; color: #94a3b8;">5초 후 광고 시청이 완료됩니다...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 캐릭터 스토리 도감 모달 -->
+  <div class="modal-backdrop" id="characterBookModal" style="display: none;">
+    <div class="modal-card" style="max-width: 720px; width: 95%;">
+      <div class="modal-header">
+        <h3 style="display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="book-marked" class="text-primary"></i> 보드게임 프렌즈 스토리 도감
+        </h3>
+        <button class="close-btn" id="closeCharacterBookModalBtn"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body" style="max-height: 75vh;">
+        <div class="char-book-summary" style="background: var(--bg-color); padding: 1rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span style="font-weight: 600; font-size: 0.95rem;">나의 탐험 진행도: <span id="unlockedCharsCount" style="color: var(--primary-color); font-weight: 800;">0</span> / 30</span>
+          <div class="progress-bar-container" style="flex: 0.6; height: 10px; background: rgba(0,0,0,0.05); border-radius: 5px; overflow: hidden;">
+            <div id="unlockedCharsProgressBar" style="width: 0%; height: 100%; background: var(--primary-color); transition: width 0.5s ease;"></div>
+          </div>
+        </div>
+        <div class="char-book-grid" id="charBookGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px;">
+          <!-- JS에서 30종의 카드를 동적으로 바인딩 -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 캐릭터 상세 스토리 전용 팝업 모달 -->
+  <div class="modal-backdrop" id="charStoryModal" style="display: none; z-index: 110;">
+    <div class="modal-card" style="max-width: 400px; width: 90%; text-align: center; border: 2px solid var(--primary-color); overflow: visible;">
+      <div class="char-story-avatar-glow" id="charStoryAvatar" style="font-size: 4.5rem; margin-top: -40px; margin-bottom: 10px; animation: float 3s ease-in-out infinite; display: inline-block;">🧸</div>
+      <div class="modal-body" style="padding: 1.5rem 2rem; align-items: center; gap: 10px;">
+        <h3 id="charStoryName" style="font-size: 1.4rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">베이비 미플</h3>
+        <span class="badge-win" id="charStoryCond" style="font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 600;">누적 1cm 달성</span>
+        <p id="charStoryDesc" style="font-size: 0.9rem; line-height: 1.5; color: var(--text-muted); margin-top: 10px; word-break: keep-all;">
+          아직은 보드판 위를 뒹굴뒹굴 구르는 것을 좋아하는 아기 미플입니다.
+        </p>
+        <div style="display: flex; gap: 8px; width: 100%; margin-top: 15px;">
+          <button class="btn btn-primary" id="summonMeepleBtn" style="flex: 1; padding: 0.7rem; font-size: 0.9rem; font-weight: 600;">상자 탑에 소환 🧱</button>
+          <button class="btn btn-secondary" id="closeCharStoryBtn" style="flex: 1; padding: 0.7rem; font-size: 0.9rem; font-weight: 600;">도감으로 가기</button>
+        </div>
       </div>
     </div>
   </div>

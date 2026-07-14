@@ -43,13 +43,36 @@ const PRESET_COLORS = [
 ];
 
 const CHARACTERS = [
-  { id: 'c1', name: '꼬마 미플', emoji: '🧸', condText: '기록 1회 달성', unlockFn: (count) => count >= 1 },
-  { id: 'c2', name: '아기 주사위', emoji: '🎲', condText: '기록 3회 달성', unlockFn: (count) => count >= 3 },
-  { id: 'c3', name: '보드 빌더', emoji: '🧱', condText: '기록 5회 달성', unlockFn: (count) => count >= 5 },
-  { id: 'c4', name: '룰북 정독이', emoji: '📖', condText: '기록 8회 달성', unlockFn: (count) => count >= 8 },
-  { id: 'c5', name: '미플 익스퍼트', emoji: '👑', condText: '기록 12회 달성', unlockFn: (count) => count >= 12 },
-  { id: 'c6', name: '보드게임 지신', emoji: '🧙‍♂️', condText: '기록 20회 달성', unlockFn: (count) => count >= 20 },
-  { id: 'c7', name: '골든 메카 미플', emoji: '🤖', condText: '월간 빙고 미션 달성', unlockFn: () => isBingoRewardClaimed }
+  { id: 'c1', name: '꼬마 미플', emoji: '🧸', condText: '누적 1cm 달성', story: '아직은 보드판 위를 뒹굴뒹굴 구르는 것을 좋아하는 아기 미플입니다. 언젠가 거대한 보드게임 상자 탑을 정복하는 꿈을 꾸고 있습니다.', unlockFn: (height, count) => height >= 1 },
+  { id: 'c2', name: '아기 주사위', emoji: '🎲', condText: '누적 3cm 달성', story: '숫자 6이 나오도록 매일 밤 머리를 박고 굴러다니는 초보 주사위입니다. 1이 나오면 시무룩해져 구석으로 굴러갑니다.', unlockFn: (height, count) => height >= 3 },
+  { id: 'c3', name: '카드 슬리버', emoji: '✉️', condText: '누적 5cm 달성', story: '프로텍터 씌우기의 절대 강자. 소중한 보드게임 카드에 미세한 지문이나 먼지가 묻는 것을 절대 용서하지 않는 꼼꼼한 친구입니다.', unlockFn: (height, count) => height >= 5 },
+  { id: 'c4', name: '보드 빌더', emoji: '🧱', condText: '누적 8cm 달성', story: '상자 탑의 균형을 연구하는 공학 미플입니다. 수평계와 각도기를 들고 다니며 어떻게 하면 더 안전하게 높이 쌓을 수 있을지 항상 연산 중입니다.', unlockFn: (height, count) => height >= 8 },
+  { id: 'c5', name: '컴포 수집가', emoji: '💎', condText: '누적 12cm 달성', story: '나무 큐브나 플라스틱 피규어 컴포넌트 하나만 없어져도 온 방안을 뒤집어엎고 우는 욕심쟁이 요정입니다.', unlockFn: (height, count) => height >= 12 },
+  { id: 'c6', name: '룰북 정독이', emoji: '📖', condText: '누적 16cm 달성', story: '게임을 시작하기 전에 두꺼운 한글/영문 룰북을 첫 장부터 끝 장까지 정독해야 직성이 풀립니다. 에러플 발견 시 조용히 돋보기를 치켜세웁니다.', unlockFn: (height, count) => height >= 16 },
+  { id: 'c7', name: '하우스 룰러', emoji: '✏️', condText: '누적 20cm 달성', story: '기존의 게임 규칙이 마음에 안 들면 바로 자기만의 밸런스 패치 하우스 룰을 적용해버리는 창조적인 보드게이머입니다.', unlockFn: (height, count) => height >= 20 },
+  { id: 'c8', name: '마플 시커', emoji: '🔍', condText: '누적 25cm 달성', story: 'BGG(보드게임긱) 순위 1위부터 100위까지의 게임 평점을 매일 분석하는 데이터 분석가 미플입니다.', unlockFn: (height, count) => height >= 25 },
+  { id: 'c9', name: '미플 익스퍼트', emoji: '👑', condText: '누적 30cm 달성', story: '수많은 플레이를 거치며 전략과 블러핑의 경지에 다다른 정예 미플. 머리에 쓴 황금 왕관은 승리의 상징입니다.', unlockFn: (height, count) => height >= 30 },
+  { id: 'c10', name: '타이머 마스터', emoji: '⏱️', condText: '누적 35cm 달성', story: '장고(장시간 고민)를 극도로 싫어하는 스피드광 미플. 남들의 차례가 10초를 넘어가면 모래시계를 거세게 흔들어 댑니다.', unlockFn: (height, count) => height >= 35 },
+  { id: 'c11', name: '슬기로운 메이트', emoji: '🤝', condText: '누적 40cm 달성', story: '협력 게임을 할 때 조율과 협상을 도맡아 승리로 이끄는 평화주의자입니다. 다만 트롤 플레이어를 만나면 눈빛이 변합니다.', unlockFn: (height, count) => height >= 40 },
+  { id: 'c12', name: '블러핑 요괴', emoji: '🎭', condText: '누적 45cm 달성', story: '마피아나 레지스탕스 아발론에서 악의 세력을 맡을 때 포커페이스를 무섭게 유지하는 거짓말의 천재 요정입니다.', unlockFn: (height, count) => height >= 45 },
+  { id: 'c13', name: '선플레이어 미플', emoji: '🥇', condText: '누적 50cm 달성', story: '언제나 1등으로 차례를 시작하는 것에 목숨을 건 미플. 게임 시작 전 선을 정하는 미니 게임에서도 절대 양보란 없습니다.', unlockFn: (height, count) => height >= 50 },
+  { id: 'c14', name: '꼬치 셰프 미플', emoji: '🍢', condText: '누적 55cm 달성', story: '꼬치의 달인 게임에 특화되어 재료를 빛의 속도로 꿰는 파티게임형 주방장 미플입니다.', unlockFn: (height, count) => height >= 55 },
+  { id: 'c15', name: '할리갈리 종지기', emoji: '🔔', condText: '누적 60cm 달성', story: '과일 5개만 보이면 무서운 반사신경으로 종을 쳐 종을 박살 내기로 소문난 악명 높은 미플입니다.', unlockFn: (height, count) => height >= 60 },
+  { id: 'c16', name: '점수 계산기', emoji: '🧮', condText: '누적 65cm 달성', story: '엔진빌딩 게임의 최종 점수 계산 단계에서 엄청난 계산 속도를 자랑하는 회계 담당 스마트 미플입니다.', unlockFn: (height, count) => height >= 65 },
+  { id: 'c17', name: '박스 테이퍼', emoji: '🩹', condText: '누적 70cm 달성', story: '오래되어 찢어진 게임 상자 모서리를 투명 테이프로 정성스레 치료해주는 보드게임 병원의 간호사 미플입니다.', unlockFn: (height, count) => height >= 70 },
+  { id: 'c18', name: '오거나이저 수호신', emoji: '📦', condText: '누적 75cm 달성', story: '종이 트레이 대신 아크릴과 목재 오거나이저를 사랑하는 정돈의 수호신 미플. 정리가 안 된 상자를 보면 스트레스를 받습니다.', unlockFn: (height, count) => height >= 75 },
+  { id: 'c19', name: '테마 몰입러', emoji: '🧛', condText: '누적 80cm 달성', story: '보드게임의 스토리에 과몰입하여 목소리를 변조하거나 소품을 챙겨오는 정통 연기파 미플입니다.', unlockFn: (height, count) => height >= 80 },
+  { id: 'c20', name: '긱 스토어 지키미', emoji: '🏪', condText: '누적 90cm 달성', story: '해외 직구로만 구할 수 있는 한정판 프로모션 카드나 메탈 코인을 상자 속에 수집해두는 상인 미플입니다.', unlockFn: (height, count) => height >= 90 },
+  { id: 'c21', name: '보드게임 지신', emoji: '🧙‍♂️', condText: '누적 100cm 달성', story: '플레이 횟수가 수백 회에 달하며 보드판 위의 흐름을 훤히 꿰뚫고 있는 보드게임계의 현자 신선입니다.', unlockFn: (height, count) => height >= 100 },
+  { id: 'c22', name: '주사위 신선', emoji: '🍀', condText: '누적 110cm 달성', story: '주사위를 던지기만 하면 원하는 숫자가 무조건 나오는 확률 조작 의혹의 소유자. 럭키 가이 미플입니다.', unlockFn: (height, count) => height >= 110 },
+  { id: 'c23', name: '포슬리스 발굴단', emoji: '🦖', condText: '누적 120cm 달성', story: '보드판 아래 숨겨진 숨은 룰이나 꿀팁을 고고학자처럼 발굴해 내는 분석형 탐험가 미플입니다.', unlockFn: (height, count) => height >= 120 },
+  { id: 'c24', name: '코인 리치 미플', emoji: '🪙', condText: '누적 130cm 달성', story: '가짜 종이 돈은 싫다! 짤랑거리는 묵직한 메탈 코인을 수집하며 게임 중에도 돈을 자랑하는 부자 미플입니다.', unlockFn: (height, count) => height >= 130 },
+  { id: 'c25', name: '매트 깔개 요정', emoji: '🟩', condText: '누적 140cm 달성', story: '테이블 위에 고급 전용 게임 매트를 깔아 쾌적한 손맛을 선물해 주는 보드카페 단골 요정입니다.', unlockFn: (height, count) => height >= 140 },
+  { id: 'c26', name: '한밤의 늑대 미플', emoji: '🐺', condText: '누적 150cm 달성', story: '한밤의 늑대인간 테마에서 태어났습니다. 밤만 되면 눈이 붉게 빛나며 마피아 게임을 은밀히 리드해 나갑니다.', unlockFn: (height, count) => height >= 150 },
+  { id: 'c27', name: '성층권 도달러', emoji: '🚀', condText: '누적 160cm 달성', story: '높이 쌓아 올린 상자 탑의 정상에 우주선을 쏘아 올리고 성층권을 돌파해 달나라 보드게임장으로 가려는 미플입니다.', unlockFn: (height, count) => height >= 160 },
+  { id: 'c28', name: '아그리 농부 미플', emoji: '👨‍🌾', condText: '누적 170cm 달성', story: '아그리콜라 밭에서 갓 수확한 싱싱한 야채와 가축들을 끌고 다니며 탑 주변을 평화롭게 일구는 농부 요정입니다.', unlockFn: (height, count) => height >= 170 },
+  { id: 'c29', name: '골든 메카 미플', emoji: '🤖', condText: '누적 185cm 달성', story: '미래형 합금 재질로 만들어져 절대 쓰러지지 않는 단단한 메카 미플. 빙고 정복 후 탑에 소환되어 웅장함을 더합니다.', unlockFn: (height, count) => height >= 185 },
+  { id: 'c30', name: '우주 보드 신선', emoji: '🪐', condText: '누적 200cm 달성', story: '우주의 모든 보드게임 규칙과 비하인드 룰북을 달달 외운 해탈의 보드 마스터 신선 미플. 최종 마스터 해금의 상징입니다.', unlockFn: (height, count) => height >= 200 }
 ];
 
 // --- 20종 이상의 풍부한 기본 보드게임 도감 백과사전 DB (로컬 저장된 초경량 고화질 한글판 패키지 이미지로 매핑) ---
@@ -973,9 +996,12 @@ function renderGameInfoTab() {
 
     if (isUnlocked) {
       const playCount = logs.filter(log => log.gameTitle.toLowerCase().includes(key.toLowerCase())).length;
+      const stats = calculateGameWinRate(key);
+      const winRateBadge = stats.total > 0 ? `<div class="winrate-badge-pill ${stats.rate >= 60 ? 'win-high' : ''}">🏆 ${stats.rate}%</div>` : '';
 
       card.innerHTML = `
         <div class="info-card-header">
+          ${winRateBadge}
           <img src="${info.img}" class="info-card-blur-bg" alt="blur">
           <img src="${info.img}" class="info-card-img" alt="${info.name}">
         </div>
@@ -1205,6 +1231,14 @@ function openCardFlipView(log) {
 
   const thumbUrl = log.gameThumbnail || getEncyclopediaImage(log.gameTitle) || 'https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=150&q=80';
 
+  const stats = calculateGameWinRate(log.gameTitle);
+  let statsRowHtml = '';
+  if (stats.total > 0) {
+    statsRowHtml = `<div class="card-front-winrate-row" style="font-size: 0.78rem; font-weight: 600; color: var(--primary-color); background: rgba(108, 92, 231, 0.05); padding: 4px 8px; border-radius: 6px; margin-bottom: 2px;">
+      🏆 게임 전적: ${stats.wins}승 ${stats.losses}패 ${stats.draws}무 (승률 ${stats.rate}%)
+    </div>`;
+  }
+
   // 앞면 콘텐츠 조립
   cardFrontView.innerHTML = `
     <div class="card-header-glow" style="background: linear-gradient(135deg, ${log.color || '#1e1b4b'} 0%, #0f172a 100%);">
@@ -1220,6 +1254,8 @@ function openCardFlipView(log) {
         <span>👥 <strong>${log.playerCount}명</strong></span>
         <span>⚖️ <strong>${diffLabel}</strong></span>
       </div>
+      
+      ${statsRowHtml}
       
       <p class="card-front-desc">
         ${log.gameDescription || '게임 정보 설명이 없습니다.'}
@@ -1240,23 +1276,50 @@ function openCardFlipView(log) {
   playCardSpawnSound();
 }
 
+// 특정 게임 타이틀 별 승률 및 전적 계산
+function calculateGameWinRate(gameTitle) {
+  const matchingLogs = logs.filter(log => {
+    const lTitle = log.gameTitle.toLowerCase();
+    const target = gameTitle.toLowerCase();
+    return lTitle.includes(target) || target.includes(lTitle);
+  });
+
+  const total = matchingLogs.length;
+  if (total === 0) return { total: 0, wins: 0, losses: 0, draws: 0, rate: 0 };
+
+  const wins = matchingLogs.filter(log => log.result === 'win').length;
+  const losses = matchingLogs.filter(log => log.result === 'lose').length;
+  const draws = matchingLogs.filter(log => log.result === 'draw').length;
+  const matchesForRate = total - draws; // 무승부/기타는 승률 분모에서 제외하거나 전체 비율 계산
+
+  const rate = matchesForRate > 0 ? Math.round((wins / matchesForRate) * 100) : 0;
+  return { total, wins, losses, draws, rate };
+}
+
 // 캐릭터 도감
 function renderCharacters() {
   characterList.innerHTML = '';
-  const playCount = logs.length;
+  
+  // 현재 상자 탑의 높이
+  let currentHeight = 0;
+  logs.forEach(log => {
+    currentHeight += calculateThickness(log.boxThickness, log.playTime);
+  });
 
+  const unlockedCount = CHARACTERS.filter(char => char.unlockFn(currentHeight, logs.length)).length;
+  
+  // 왼쪽 사이드바 하단 도감 요약 미플들 렌더링 (해금된 것만 상자 탑 소환용 뱃지로 노출)
   CHARACTERS.forEach((char) => {
-    const isUnlocked = char.unlockFn(playCount);
-    const badge = document.createElement('div');
-    badge.className = `character-badge ${isUnlocked ? '' : ''}`;
-    
-    badge.innerHTML = `
-      <div class="character-avatar">${isUnlocked ? char.emoji : '🔒'}</div>
-      <span class="character-name">${char.name}</span>
-      <span class="character-cond">${char.condText}</span>
-    `;
-
+    const isUnlocked = char.unlockFn(currentHeight, logs.length);
     if (isUnlocked) {
+      const badge = document.createElement('div');
+      badge.className = 'character-badge unlocked';
+      badge.innerHTML = `
+        <div class="character-avatar">${char.emoji}</div>
+        <span class="character-name">${char.name}</span>
+        <span class="character-cond" style="color: var(--primary-color);">더블클릭 소환</span>
+      `;
+      
       badge.addEventListener('dblclick', () => {
         const newDeco = {
           id: Date.now().toString(),
@@ -1267,10 +1330,70 @@ function renderCharacters() {
         decos.push(newDeco);
         render();
       });
+      characterList.appendChild(badge);
+    }
+  });
+
+  if (characterList.children.length === 0) {
+    characterList.innerHTML = `
+      <div style="grid-column: 1/-1; text-align: center; font-size: 0.8rem; color: var(--text-muted); padding: 1rem 0;">
+        탑을 쌓아올리면 새로운 캐릭터가 이곳에 활성화됩니다! (cm 단위)
+      </div>
+    `;
+  }
+}
+
+// 30종 전체 캐릭터 스토리 도감 모달 렌더링
+let selectedCharForStory = null;
+function renderCharacterBookModal() {
+  const grid = document.getElementById('charBookGrid');
+  grid.innerHTML = '';
+
+  let currentHeight = 0;
+  logs.forEach(log => {
+    currentHeight += calculateThickness(log.boxThickness, log.playTime);
+  });
+
+  let unlockedCount = 0;
+
+  CHARACTERS.forEach(char => {
+    const isUnlocked = char.unlockFn(currentHeight, logs.length);
+    if (isUnlocked) unlockedCount++;
+
+    const card = document.createElement('div');
+    card.className = `char-book-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+    
+    card.innerHTML = `
+      <div class="card-emoji">${isUnlocked ? char.emoji : '🔒'}</div>
+      <span class="card-name">${char.name}</span>
+      <span class="card-cond-label">${char.condText}</span>
+    `;
+
+    if (isUnlocked) {
+      card.addEventListener('click', () => {
+        openCharacterStoryDetail(char);
+      });
+    } else {
+      card.addEventListener('click', () => {
+        alert(`🔒 이 캐릭터는 아직 잠겨 있습니다.\n해금 조건: ${char.condText}\n(현재 누적 높이: ${currentHeight.toFixed(1)}cm)`);
+      });
     }
 
-    characterList.appendChild(badge);
+    grid.appendChild(card);
   });
+
+  document.getElementById('unlockedCharsCount').innerText = unlockedCount;
+  document.getElementById('unlockedCharsProgressBar').style.width = `${(unlockedCount / 30) * 100}%`;
+}
+
+function openCharacterStoryDetail(char) {
+  selectedCharForStory = char;
+  document.getElementById('charStoryAvatar').innerText = char.emoji;
+  document.getElementById('charStoryName').innerText = char.name;
+  document.getElementById('charStoryCond').innerText = char.condText;
+  document.getElementById('charStoryDesc').innerText = char.story || "해당 캐릭터의 숨겨진 상세 스토리가 준비 중입니다.";
+
+  document.getElementById('charStoryModal').style.display = 'flex';
 }
 
 // Sound Button UI Toggle
@@ -1703,6 +1826,61 @@ function setupEventListeners() {
       setTimeout(() => {
         openCardFlipView(targetLogObj);
       }, 500);
+    }
+  });
+
+  // --- 캐릭터 도감 관련 이벤트 리스너 추가 ---
+  const openCharacterBookBtn = document.getElementById('openCharacterBookBtn');
+  const characterBookModal = document.getElementById('characterBookModal');
+  const closeCharacterBookModalBtn = document.getElementById('closeCharacterBookModalBtn');
+
+  const charStoryModal = document.getElementById('charStoryModal');
+  const closeCharStoryBtn = document.getElementById('closeCharStoryBtn');
+  const summonMeepleBtn = document.getElementById('summonMeepleBtn');
+
+  openCharacterBookBtn.addEventListener('click', () => {
+    renderCharacterBookModal();
+    characterBookModal.style.display = 'flex';
+    characterBookModal.classList.add('active');
+  });
+
+  closeCharacterBookModalBtn.addEventListener('click', () => {
+    characterBookModal.style.display = 'none';
+    characterBookModal.classList.remove('active');
+  });
+
+  closeCharStoryBtn.addEventListener('click', () => {
+    charStoryModal.style.display = 'none';
+  });
+
+  summonMeepleBtn.addEventListener('click', () => {
+    if (selectedCharForStory) {
+      const newDeco = {
+        id: Date.now().toString(),
+        emoji: selectedCharForStory.emoji,
+        x: Math.floor(Math.random() * 80),
+        y: Math.floor(Math.random() * 80)
+      };
+      decos.push(newDeco);
+      charStoryModal.style.display = 'none';
+      characterBookModal.style.display = 'none';
+      characterBookModal.classList.remove('active');
+      render();
+      alert(`상자 탑에 ${selectedCharForStory.name}(이)가 소환되었습니다!`);
+    }
+  });
+
+  // 바깥 배경 클릭 시 모달 닫기
+  characterBookModal.addEventListener('click', (e) => {
+    if (e.target === characterBookModal) {
+      characterBookModal.style.display = 'none';
+      characterBookModal.classList.remove('active');
+    }
+  });
+
+  charStoryModal.addEventListener('click', (e) => {
+    if (e.target === charStoryModal) {
+      charStoryModal.style.display = 'none';
     }
   });
 

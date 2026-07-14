@@ -1797,3 +1797,315 @@ select:focus {
     grid-template-columns: 1fr;
   }
 }
+
+/* --- Bingo Mode Styles --- */
+
+/* Mode Toggle */
+.mode-toggle-container {
+  display: flex;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  padding: 4px;
+  margin-bottom: 1.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.mode-toggle-container .toggle-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  padding: 0.6rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.3s ease;
+}
+
+.mode-toggle-container .toggle-btn.active {
+  background: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* Adjust visual panel width slightly for bingo board if screen allows */
+@media (min-width: 900px) {
+  .visual-panel.bingo-mode {
+    width: 480px;
+    min-width: 480px;
+    transition: width 0.3s ease;
+  }
+}
+
+/* Bingo Container */
+.bingo-container {
+  flex: 1;
+  margin: 1rem 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Board Styling: Beautiful retro game board style */
+.bingo-board-wrapper {
+  background: #fdf6e2; /* Warm paper/wood tone */
+  border: 6px solid #4a3728; /* Dark wood frame */
+  border-radius: 16px;
+  padding: 1rem;
+  color: #2d231e;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.15), 0 8px 16px rgba(0, 0, 0, 0.3);
+  position: relative;
+  background-image: radial-gradient(rgba(0,0,0,0.03) 1px, transparent 0), radial-gradient(rgba(0,0,0,0.03) 1px, transparent 0);
+  background-size: 8px 8px;
+  background-position: 0 0, 4px 4px;
+}
+
+.bingo-board-header {
+  text-align: center;
+  margin-bottom: 0.8rem;
+  border-bottom: 2px dashed #8b7355;
+  padding-bottom: 0.4rem;
+}
+
+.bingo-board-title {
+  font-family: 'Noto Sans KR', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #b22222; /* Crimson red */
+  text-shadow: 1px 1px 1px #fff;
+  margin: 0;
+}
+
+.bingo-board-subtitle {
+  font-size: 0.72rem;
+  color: #6b5444;
+  margin: 2px 0 0 0;
+  font-weight: bold;
+}
+
+/* 4x4 Grid */
+.bingo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+/* Bingo Slot/Cell */
+.bingo-cell {
+  aspect-ratio: 1 / 1.35;
+  background: #fff;
+  border: 2px solid #c9b097;
+  border-radius: 8px;
+  padding: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.bingo-cell:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.12), 0 0 0 2px #d97706;
+}
+
+.bingo-cell-img-wrapper {
+  width: 100%;
+  height: 52%;
+  border-radius: 4px;
+  overflow: hidden;
+  position: relative;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bingo-cell-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bingo-cell-placeholder-icon {
+  font-size: 1.2rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.bingo-cell-placeholder-icon i {
+  width: 20px;
+  height: 20px;
+}
+
+.bingo-cell-info {
+  width: 100%;
+  text-align: center;
+  margin: 1px 0;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+}
+
+.bingo-cell-title {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #2d231e;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 1px;
+  max-width: 100%;
+}
+
+.bingo-cell-stars {
+  font-size: 0.55rem;
+  color: #f59e0b; /* Yellow stars */
+  line-height: 1;
+  margin-bottom: 1px;
+}
+
+.bingo-cell-genre {
+  font-size: 0.52rem;
+  color: #6b5444;
+  background: #f0e6d2;
+  padding: 1px 3px;
+  border-radius: 3px;
+  display: inline-block;
+  max-width: 90%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0 auto;
+}
+
+/* Stamp Checkbox */
+.bingo-cell-check {
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid #8b7355;
+  border-radius: 3px;
+  background: #fff;
+  margin-top: 1px;
+  position: relative;
+  pointer-events: none;
+}
+
+/* Complete stamp overlay */
+.bingo-cell.completed {
+  background: #faf8f5;
+}
+
+.bingo-cell.completed .bingo-cell-check {
+  background: #b22222;
+  border-color: #b22222;
+}
+
+.bingo-cell.completed .bingo-cell-check::after {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 1px;
+  width: 4px;
+  height: 7px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Large Meeple Stamp Effect overlay */
+.meeple-stamp {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  font-size: 2.2rem;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 5;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.bingo-cell.completed .meeple-stamp {
+  transform: translate(-50%, -50%) scale(1) rotate(-15deg);
+  opacity: 0.9;
+}
+
+/* Bingo line win glow effect */
+.bingo-cell.bingo-highlight {
+  animation: pulse-bingo 1.5s infinite;
+  border-color: #ef4444;
+}
+
+@keyframes pulse-bingo {
+  0%, 100% {
+    box-shadow: 0 0 6px rgba(239, 68, 68, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 14px rgba(239, 68, 68, 0.7), inset 0 0 6px rgba(239, 68, 68, 0.2);
+  }
+}
+
+/* Bingo Status Info wrapper */
+.bingo-status-wrapper {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1rem;
+  margin-top: auto;
+}
+
+.bingo-counter-row {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 0.8rem;
+}
+
+.bingo-counter, .bingo-progress {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bingo-counter .label, .bingo-progress .label {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-bottom: 0.2rem;
+}
+
+.bingo-counter .value, .bingo-progress .value {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #81ecec;
+}
+
+/* Confetti Particle */
+.confetti-particle {
+  position: fixed;
+  width: 10px;
+  height: 10px;
+  z-index: 9999;
+  pointer-events: none;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  0% {
+    transform: translateY(-20px) rotate(0deg);
+  }
+  100% {
+    transform: translateY(105vh) rotate(360deg);
+  }
+}
+

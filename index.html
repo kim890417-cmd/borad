@@ -18,14 +18,20 @@
 <body>
   <div class="app-container">
     
-    <!-- 왼쪽 사이드바: 보드게임 상자가 차곡차곡 쌓이는 영역 -->
+    <!-- 왼쪽 사이드바: 보드게임 상자가 차곡차곡 쌓이거나 빙고 미션이 노출되는 영역 -->
     <aside class="visual-panel">
       <header class="panel-header">
         <h1 class="brand-title">
           다독다독보드 <i data-lucide="dices" class="brand-icon"></i>
         </h1>
-        <p class="subtitle">플레이한 게임이 차곡차곡 쌓여요</p>
+        <p class="subtitle">나만의 보드게임 아카이브</p>
       </header>
+
+      <!-- 모드 전환 탭 토글 -->
+      <div class="mode-toggle-container">
+        <button class="toggle-btn active" id="modeStackBtn"><i data-lucide="layers"></i> 탑 쌓기</button>
+        <button class="toggle-btn" id="modeBingoBtn"><i data-lucide="grid"></i> 빙고 미션</button>
+      </div>
 
       <!-- 실제 상자들이 쌓여서 렌더링될 영역 -->
       <div class="stack-container" id="stackContainer">
@@ -39,8 +45,22 @@
         </div>
       </div>
 
-      <!-- 누적 높이 표시기 및 데코 모드 가이드 / 캡처 단추 -->
-      <div class="height-counter-wrapper">
+      <!-- 빙고판 컨테이너 (기본 숨김) -->
+      <div class="bingo-container" id="bingoContainer" style="display: none;">
+        <div class="bingo-board-wrapper" id="bingoBoardWrapper">
+          <div class="bingo-board-header">
+            <h2 class="bingo-board-title" id="bingoTitle">7월 보드게임 빙고!</h2>
+            <p class="bingo-board-subtitle">미션을 완료하고 보상을 받으세요</p>
+          </div>
+          <!-- 4x4 빙고 그리드 -->
+          <div class="bingo-grid" id="bingoGrid">
+            <!-- JS에서 동적으로 빙고 셀을 생성 -->
+          </div>
+        </div>
+      </div>
+
+      <!-- 누적 높이 표시기 및 데코 모드 가이드 / 캡처 단추 (탑 쌓기 전용) -->
+      <div class="height-counter-wrapper" id="stackControlWrapper">
         <div class="height-counter">
           <span class="label">누적 높이</span>
           <span class="value" id="totalHeight">0cm</span>
@@ -50,6 +70,29 @@
         </button>
         <div class="deco-guide">
           <span>💡 해금된 미플을 더블클릭/드래그하여 탑을 꾸며보세요!</span>
+        </div>
+      </div>
+
+      <!-- 빙고 진행도 및 보상/캡처 단추 (빙고 전용, 기본 숨김) -->
+      <div class="bingo-status-wrapper" id="bingoControlWrapper" style="display: none;">
+        <div class="bingo-counter-row">
+          <div class="bingo-counter">
+            <span class="label">완성 빙고</span>
+            <span class="value" id="bingoCompletedLines">0줄</span>
+          </div>
+          <div class="bingo-progress">
+            <span class="label">달성률</span>
+            <span class="value" id="bingoProgressPercent">0%</span>
+          </div>
+        </div>
+        <button class="btn btn-reward" id="claimRewardBtn" disabled style="width: 100%; margin-bottom: 0.8rem; background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); color: white; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; border: none; padding: 0.8rem; border-radius: 12px; cursor: not-allowed; opacity: 0.6; transition: all 0.3s ease;">
+          <i data-lucide="gift"></i> 미션 완료 보상 받기
+        </button>
+        <button class="btn btn-capture" id="captureBingoBtn" style="width: 100%;">
+          <i data-lucide="camera"></i> 빙고 이미지 저장
+        </button>
+        <div class="deco-guide">
+          <span>💡 칸을 선택하여 게임을 교체하거나 광고로 채울 수 있습니다.</span>
         </div>
       </div>
     </aside>
@@ -334,6 +377,53 @@
 
       <!-- 닫기 버튼 -->
       <button class="btn btn-primary close-card-btn" id="closeCardBtn" style="display:none;">서재에 보관하기</button>
+    </div>
+  </div>
+
+  <!-- 빙고 슬롯 설정 모달 -->
+  <div class="modal-backdrop" id="bingoSlotModal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🎲 빙고 슬롯 설정</h3>
+        <button class="close-btn" id="closeBingoSlotModalBtn"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="targetSlotIndex" value="">
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label for="bingoGameSelect">보드게임 선택</label>
+          <select id="bingoGameSelect" class="select-input" style="width: 100%; padding: 0.8rem; border-radius: 8px; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color);">
+            <!-- JS에서 동적 삽입 -->
+          </select>
+        </div>
+        <div class="bingo-action-buttons" style="display: flex; gap: 10px; margin-top: 1rem;">
+          <button type="button" class="btn btn-primary" id="saveBingoSlotBtn" style="flex: 1; border: none;">
+            슬롯 게임 변경
+          </button>
+          <button type="button" class="btn btn-reward" id="watchAdForSlotBtn" style="flex: 1; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: none; color: white; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: bold; cursor: pointer; border-radius: 8px;">
+            <i data-lucide="play"></i> 광고로 칸 채우기
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 광고 시뮬레이터 모달 -->
+  <div class="modal-backdrop" id="adModal" style="display: none;">
+    <div class="ad-card" style="background: #1e1b4b; border: 2px solid #f59e0b; border-radius: 16px; padding: 2rem; width: 90%; max-width: 400px; text-align: center; color: white; box-shadow: 0 10px 25px rgba(0,0,0,0.5); position: relative;">
+      <div class="ad-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <span class="ad-badge" style="background: #f59e0b; color: #1e1b4b; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">AD 광고</span>
+        <h4 style="margin: 0; font-size: 1.1rem; color: #fff;">재미있는 보드게임 광고</h4>
+      </div>
+      <div class="ad-video-simulation" style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 12px; margin-bottom: 1.5rem;">
+        <div class="ad-logo" style="font-size: 3rem; margin-bottom: 1rem; animation: bounce 1s infinite alternate;">🎲</div>
+        <p class="ad-slogan" style="font-size: 0.95rem; font-weight: bold; margin-bottom: 1.5rem; line-height: 1.4;">"보드게임을 사랑한다면?<br>다독다독보드와 함께 즐기세요!"</p>
+        <div class="ad-progress-bar-wrapper" style="width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+          <div class="ad-progress-bar" id="adProgressBar" style="width: 0%; height: 100%; background: #f59e0b; transition: width 0.1s linear;"></div>
+        </div>
+      </div>
+      <div class="ad-footer">
+        <span class="ad-timer" id="adTimer" style="font-size: 0.9rem; color: #94a3b8;">5초 후 광고 시청이 완료됩니다...</span>
+      </div>
     </div>
   </div>
 

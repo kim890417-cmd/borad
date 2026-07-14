@@ -3,6 +3,30 @@ let logs = [];
 let decos = [];
 let soundEnabled = true;
 
+// --- Bingo State ---
+let currentMode = 'stack'; // 'stack' or 'bingo'
+let bingoSlots = [];
+let isBingoRewardClaimed = false;
+
+const defaultBingoGames = [
+  { name: '스플렌더', difficulty: 3, genre: '전략', img: 'images/스플렌더_seo.webp', completed: false },
+  { name: '루미큐브', difficulty: 2, genre: '가벼움', img: 'images/루미큐브_seo.webp', completed: false },
+  { name: '카르카손', difficulty: 2, genre: '가벼움', img: 'images/카르카손_seo.webp', completed: false },
+  { name: '카탄', difficulty: 3, genre: '전략', img: 'images/카탄_seo.webp', completed: false },
+  { name: '할리갈리', difficulty: 1, genre: '가벼움', img: 'images/할리갈리_seo.webp', completed: false },
+  { name: '다빈치코드', difficulty: 2, genre: '가벼움', img: 'images/다빈치코드_seo.webp', completed: false },
+  { name: '젝스님트', difficulty: 2, genre: '가벼움', img: 'images/젝스님트_seo.webp', completed: false },
+  { name: '아발론', difficulty: 4, genre: '파티/심리', img: 'images/아발론_seo.webp', completed: false },
+  { name: '딕싯', difficulty: 2, genre: '파티/심리', img: 'images/딕싯_seo.webp', completed: false },
+  { name: '스컬', difficulty: 2, genre: '파티/심리', img: 'images/스컬_seo.webp', completed: false },
+  { name: '아그리콜라', difficulty: 4, genre: '전략', img: 'images/아그리콜라.webp', completed: false },
+  { name: '러브레터', difficulty: 2, genre: '가벼움', img: 'images/러브레터_seo.webp', completed: false },
+  { name: '뱅', difficulty: 3, genre: '파티/심리', img: 'images/뱅_seo.webp', completed: false },
+  { name: '우노', difficulty: 1, genre: '가벼움', img: 'images/우노_seo.webp', completed: false },
+  { name: '아키올로지', difficulty: 2, genre: '가벼움', img: 'images/아키올로지_seo.jpg', completed: false },
+  { name: '꼬치의달인', difficulty: 2, genre: '가벼움', img: 'images/꼬치의달인_seo.webp', completed: false }
+];
+
 const PRESET_COLORS = [
   '#ff7675', // 파스텔 레드
   '#fdcb6e', // 파스텔 오렌지
@@ -24,7 +48,8 @@ const CHARACTERS = [
   { id: 'c3', name: '보드 빌더', emoji: '🧱', condText: '기록 5회 달성', unlockFn: (count) => count >= 5 },
   { id: 'c4', name: '룰북 정독이', emoji: '📖', condText: '기록 8회 달성', unlockFn: (count) => count >= 8 },
   { id: 'c5', name: '미플 익스퍼트', emoji: '👑', condText: '기록 12회 달성', unlockFn: (count) => count >= 12 },
-  { id: 'c6', name: '보드게임 지신', emoji: '🧙‍♂️', condText: '기록 20회 달성', unlockFn: (count) => count >= 20 }
+  { id: 'c6', name: '보드게임 지신', emoji: '🧙‍♂️', condText: '기록 20회 달성', unlockFn: (count) => count >= 20 },
+  { id: 'c7', name: '골든 메카 미플', emoji: '🤖', condText: '월간 빙고 미션 달성', unlockFn: () => isBingoRewardClaimed }
 ];
 
 // --- 20종 이상의 풍부한 기본 보드게임 도감 백과사전 DB (로컬 저장된 초경량 고화질 한글판 패키지 이미지로 매핑) ---
@@ -602,12 +627,30 @@ function loadData() {
   if (savedSound !== null) {
     soundEnabled = savedSound === 'true';
   }
+
+  const savedBingo = localStorage.getItem('dadok_dadok_board_bingo_slots');
+  if (savedBingo) {
+    try {
+      bingoSlots = JSON.parse(savedBingo);
+    } catch (e) {
+      bingoSlots = [...defaultBingoGames];
+    }
+  } else {
+    bingoSlots = [...defaultBingoGames];
+  }
+
+  const savedRewardClaimed = localStorage.getItem('dadok_dadok_board_bingo_reward');
+  if (savedRewardClaimed !== null) {
+    isBingoRewardClaimed = savedRewardClaimed === 'true';
+  }
 }
 
 function saveData() {
   localStorage.setItem('dadok_dadok_board_logs', JSON.stringify(logs));
   localStorage.setItem('dadok_dadok_board_decos', JSON.stringify(decos));
   localStorage.setItem('dadok_dadok_board_sound', soundEnabled.toString());
+  localStorage.setItem('dadok_dadok_board_bingo_slots', JSON.stringify(bingoSlots));
+  localStorage.setItem('dadok_dadok_board_bingo_reward', isBingoRewardClaimed.toString());
 }
 
 // --- Render Core ---
@@ -622,6 +665,9 @@ function render(isNewAddition = false) {
   renderRankingTab();
   renderCharacters();
   updateSoundButtonUI();
+  if (typeof renderBingoBoard === 'function') {
+    renderBingoBoard();
+  }
   
   if (isNewAddition) {
     setTimeout(playDropSound, 300);
@@ -1677,4 +1723,313 @@ function setupEventListeners() {
     activePlayerFilter = btn.dataset.players;
     renderGameInfoTab();
   });
+
+  // --- Bingo Mode Event Listeners ---
+  const modeStackBtn = document.getElementById('modeStackBtn');
+  const modeBingoBtn = document.getElementById('modeBingoBtn');
+  const visualPanel = document.querySelector('.visual-panel');
+
+  modeStackBtn.addEventListener('click', () => {
+    currentMode = 'stack';
+    modeStackBtn.classList.add('active');
+    modeBingoBtn.classList.remove('active');
+    visualPanel.classList.remove('bingo-mode');
+    
+    document.getElementById('stackContainer').style.display = 'flex';
+    document.getElementById('stackControlWrapper').style.display = 'block';
+    document.getElementById('bingoContainer').style.display = 'none';
+    document.getElementById('bingoControlWrapper').style.display = 'none';
+  });
+
+  modeBingoBtn.addEventListener('click', () => {
+    currentMode = 'bingo';
+    modeStackBtn.classList.remove('active');
+    modeBingoBtn.classList.add('active');
+    visualPanel.classList.add('bingo-mode');
+    
+    document.getElementById('stackContainer').style.display = 'none';
+    document.getElementById('stackControlWrapper').style.display = 'none';
+    document.getElementById('bingoContainer').style.display = 'flex';
+    document.getElementById('bingoControlWrapper').style.display = 'block';
+    
+    renderBingoBoard();
+  });
+
+  const closeBingoSlotModalBtn = document.getElementById('closeBingoSlotModalBtn');
+  const saveBingoSlotBtn = document.getElementById('saveBingoSlotBtn');
+  const watchAdForSlotBtn = document.getElementById('watchAdForSlotBtn');
+
+  closeBingoSlotModalBtn.addEventListener('click', () => {
+    document.getElementById('bingoSlotModal').style.display = 'none';
+  });
+
+  saveBingoSlotBtn.addEventListener('click', () => {
+    const index = Number(document.getElementById('targetSlotIndex').value);
+    const gameName = document.getElementById('bingoGameSelect').value;
+    const gameData = ENCYCLOPEDIA_DB[gameName];
+
+    if (gameData) {
+      let stars = 2;
+      if (gameData.difficulty === 'easy') stars = 1;
+      else if (gameData.difficulty === 'medium') stars = 3;
+      else if (gameData.difficulty === 'heavy') stars = 4;
+
+      bingoSlots[index] = {
+        name: gameName,
+        difficulty: stars,
+        genre: gameData.difficulty === 'heavy' ? '전략' : '가벼움',
+        img: gameData.img,
+        completed: logs.some(log => log.gameTitle && log.gameTitle.includes(gameName))
+      };
+      
+      saveData();
+      renderBingoBoard();
+    }
+    document.getElementById('bingoSlotModal').style.display = 'none';
+  });
+
+  watchAdForSlotBtn.addEventListener('click', () => {
+    document.getElementById('bingoSlotModal').style.display = 'none';
+    
+    const adModal = document.getElementById('adModal');
+    const adProgressBar = document.getElementById('adProgressBar');
+    const adTimer = document.getElementById('adTimer');
+    
+    adModal.style.display = 'flex';
+    adProgressBar.style.width = '0%';
+    adProgressBar.style.transition = 'none';
+    
+    let secondsLeft = 5;
+    adTimer.innerText = `${secondsLeft}초 후 광고 시청이 완료됩니다...`;
+    
+    const timerInterval = setInterval(() => {
+      secondsLeft--;
+      if (secondsLeft > 0) {
+        adTimer.innerText = `${secondsLeft}초 후 광고 시청이 완료됩니다...`;
+      } else {
+        clearInterval(timerInterval);
+        adModal.style.display = 'none';
+        
+        // Mark slot as completed!
+        const index = Number(document.getElementById('targetSlotIndex').value);
+        if (bingoSlots[index]) {
+          bingoSlots[index].completed = true;
+          playDropSound();
+          saveData();
+          renderBingoBoard();
+          alert('광고 시청 완료! 미션 칸이 채워졌습니다. 🎲');
+        }
+      }
+    }, 1000);
+    
+    // Animate progress bar
+    setTimeout(() => {
+      adProgressBar.style.transition = 'width 5s linear';
+      adProgressBar.style.width = '100%';
+    }, 50);
+  });
+
+  const claimRewardBtn = document.getElementById('claimRewardBtn');
+  claimRewardBtn.addEventListener('click', () => {
+    if (!isBingoRewardClaimed) {
+      isBingoRewardClaimed = true;
+      saveData();
+      triggerConfetti();
+      playDropSound();
+      render(); // Rerenders the characters list again, unlocking the Gold robot!
+      renderBingoBoard();
+      alert('축하합니다! 월간 빙고 미션 달성 보상으로 "골든 메카 미플 🤖" 캐릭터가 도감에 해금되었습니다! 왼쪽 하단 도감에서 확인하세요! 🥳');
+    }
+  });
+
+  const captureBingoBtn = document.getElementById('captureBingoBtn');
+  captureBingoBtn.addEventListener('click', () => {
+    captureBingoBtn.disabled = true;
+    captureBingoBtn.innerHTML = '<i data-lucide="loader"></i> 이미지 생성 중...';
+    if (window.lucide) window.lucide.createIcons();
+
+    const currentMonth = new Date().getMonth() + 1;
+    html2canvas(document.getElementById('bingoBoardWrapper'), {
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#fdf6e2',
+      scale: 1.5
+    })
+    .then((canvas) => {
+      const dataUrl = canvas.toDataURL('image/jpeg', 0.9);
+      
+      const link = document.createElement('a');
+      link.download = `보드게임빙고-${currentMonth}월미션.jpg`;
+      link.href = dataUrl;
+      link.click();
+      
+      captureBingoBtn.disabled = false;
+      captureBingoBtn.innerHTML = '<i data-lucide="camera"></i> 빙고 이미지 저장';
+      if (window.lucide) window.lucide.createIcons();
+    })
+    .catch((error) => {
+      console.error('html2canvas error!', error);
+      captureBingoBtn.disabled = false;
+      captureBingoBtn.innerHTML = '<i data-lucide="camera"></i> 빙고 이미지 저장';
+      if (window.lucide) window.lucide.createIcons();
+      alert('이미지 저장 중 오류가 발생했습니다.');
+    });
+  });
+}
+
+// --- Bingo Helper Functions ---
+function renderBingoBoard() {
+  const currentMonth = new Date().getMonth() + 1;
+  document.getElementById('bingoTitle').innerText = `${currentMonth}월 보드게임 빙고!`;
+
+  const bingoGrid = document.getElementById('bingoGrid');
+  bingoGrid.innerHTML = '';
+
+  bingoSlots.forEach((slot) => {
+    const hasBeenPlayed = logs.some(log => log.gameTitle && log.gameTitle.includes(slot.name));
+    if (hasBeenPlayed) {
+      slot.completed = true;
+    }
+  });
+
+  bingoSlots.forEach((slot, index) => {
+    const cell = document.createElement('div');
+    cell.className = `bingo-cell ${slot.completed ? 'completed' : ''}`;
+    cell.dataset.index = index;
+
+    let starsHtml = '';
+    for (let i = 0; i < 5; i++) {
+      starsHtml += i < slot.difficulty ? '★' : '☆';
+    }
+
+    cell.innerHTML = `
+      <div class="bingo-cell-img-wrapper">
+        ${slot.img ? `<img src="${slot.img}" alt="${slot.name}" class="bingo-cell-img">` : `<div class="bingo-cell-placeholder-icon"><i data-lucide="image"></i></div>`}
+      </div>
+      <div class="bingo-cell-info">
+        <span class="bingo-cell-title">${slot.name}</span>
+        <span class="bingo-cell-stars">${starsHtml}</span>
+        <span class="bingo-cell-genre">${slot.genre}</span>
+      </div>
+      <div class="bingo-cell-check"></div>
+      <div class="meeple-stamp">🧸</div>
+    `;
+
+    cell.addEventListener('click', (e) => {
+      if (e.target.closest('.bingo-cell-check')) {
+        slot.completed = !slot.completed;
+        playPopSound();
+        saveData();
+        renderBingoBoard();
+        return;
+      }
+      openBingoSlotModal(index);
+    });
+
+    bingoGrid.appendChild(cell);
+  });
+
+  if (window.lucide) {
+    window.lucide.createIcons();
+  }
+
+  checkBingoLines();
+}
+
+function checkBingoLines() {
+  const lines = [
+    [0, 1, 2, 3],
+    [4, 5, 6, 7],
+    [8, 9, 10, 11],
+    [12, 13, 14, 15],
+    [0, 4, 8, 12],
+    [1, 5, 9, 13],
+    [2, 6, 10, 14],
+    [3, 7, 11, 15],
+    [0, 5, 10, 15],
+    [3, 6, 9, 12]
+  ];
+
+  let completedLines = 0;
+  const cells = document.querySelectorAll('.bingo-cell');
+  
+  cells.forEach(c => c.classList.remove('bingo-highlight'));
+
+  lines.forEach((line) => {
+    const isLineComplete = line.every(index => bingoSlots[index] && bingoSlots[index].completed);
+    if (isLineComplete) {
+      completedLines++;
+      line.forEach(index => {
+        if (cells[index]) {
+          cells[index].classList.add('bingo-highlight');
+        }
+      });
+    }
+  });
+
+  const completedCount = bingoSlots.filter(s => s.completed).length;
+  const percent = Math.round((completedCount / 16) * 100);
+
+  document.getElementById('bingoCompletedLines').innerText = `${completedLines}줄`;
+  document.getElementById('bingoProgressPercent').innerText = `${percent}%`;
+
+  const claimRewardBtn = document.getElementById('claimRewardBtn');
+  if (completedCount === 16 && !isBingoRewardClaimed) {
+    claimRewardBtn.removeAttribute('disabled');
+    claimRewardBtn.style.cursor = 'pointer';
+    claimRewardBtn.style.opacity = '1';
+    claimRewardBtn.classList.add('active');
+  } else {
+    claimRewardBtn.setAttribute('disabled', 'true');
+    claimRewardBtn.classList.remove('active');
+    claimRewardBtn.style.cursor = 'not-allowed';
+    claimRewardBtn.style.opacity = '0.6';
+    if (isBingoRewardClaimed) {
+      claimRewardBtn.innerHTML = '<i data-lucide="check"></i> 보상 수령 완료';
+    } else {
+      claimRewardBtn.innerHTML = '<i data-lucide="gift"></i> 미션 완료 보상 받기';
+    }
+  }
+}
+
+function openBingoSlotModal(slotIndex) {
+  const modal = document.getElementById('bingoSlotModal');
+  document.getElementById('targetSlotIndex').value = slotIndex;
+
+  const select = document.getElementById('bingoGameSelect');
+  select.innerHTML = '';
+
+  Object.keys(ENCYCLOPEDIA_DB).forEach((key) => {
+    const game = ENCYCLOPEDIA_DB[key];
+    const option = document.createElement('option');
+    option.value = key;
+    option.innerText = game.name;
+    if (bingoSlots[slotIndex] && bingoSlots[slotIndex].name === key) {
+      option.selected = true;
+    }
+    select.appendChild(option);
+  });
+
+  modal.style.display = 'flex';
+}
+
+function triggerConfetti() {
+  const colors = ['#f59e0b', '#ef4444', '#3b82f6', '#10b981', '#ec4899', '#8b5cf6'];
+  for (let i = 0; i < 80; i++) {
+    const particle = document.createElement('div');
+    particle.className = 'confetti-particle';
+    particle.style.left = Math.random() * 100 + 'vw';
+    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+    particle.style.transform = `scale(${Math.random() * 0.8 + 0.5})`;
+    
+    const duration = Math.random() * 2 + 1.5;
+    particle.style.animationDuration = duration + 's';
+    particle.style.animationDelay = Math.random() * 1.5 + 's';
+    
+    document.body.appendChild(particle);
+    
+    setTimeout(() => {
+      particle.remove();
+    }, (duration + 2) * 1000);
+  }
 }

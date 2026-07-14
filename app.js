@@ -995,9 +995,9 @@ function renderGameInfoTab() {
     else if (info.difficulty === 'heavy') diffLabel = '묵직함';
 
     if (isUnlocked) {
-      const playCount = logs.filter(log => log.gameTitle.toLowerCase().includes(key.toLowerCase())).length;
       const stats = calculateGameWinRate(key);
       const winRateBadge = stats.total > 0 ? `<div class="winrate-badge-pill ${stats.rate >= 60 ? 'win-high' : ''}">🏆 ${stats.rate}%</div>` : '';
+      const recordText = `${stats.total}전 ${stats.wins}승 ${stats.draws}무 ${stats.losses}패`;
 
       card.innerHTML = `
         <div class="info-card-header">
@@ -1008,7 +1008,7 @@ function renderGameInfoTab() {
         <div class="info-card-body">
           <h3 class="info-card-title">${info.name}</h3>
           <div class="info-card-stat-row">
-            <span>🎮 내 기록 <strong>${playCount}회</strong></span>
+            <span>🎮 <strong>${recordText}</strong></span>
             <span>⚖️ 난이도 <strong>${diffLabel}</strong></span>
           </div>
           <p class="info-card-desc">${info.desc}</p>

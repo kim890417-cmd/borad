@@ -2,6 +2,7 @@
 let logs = [];
 let decos = [];
 let soundEnabled = true;
+let currentTheme = 'midnight';
 
 // --- Bingo State ---
 let currentMode = 'stack'; // 'stack' or 'bingo'
@@ -600,9 +601,43 @@ const gameRatingInput = document.getElementById('gameRating');
 const sortBySelect = document.getElementById('sortBy');
 
 const soundToggleBtn = document.getElementById('soundToggleBtn');
+const themeToggleBtn = document.getElementById('themeToggleBtn');
+const helpToggleBtn = document.getElementById('helpToggleBtn');
+const helpModal = document.getElementById('helpModal');
+const closeHelpModalBtn = document.getElementById('closeHelpModalBtn');
+const confirmHelpBtn = document.getElementById('confirmHelpBtn');
+const helpTabButtons = document.querySelectorAll('.help-tab-btn');
+const helpPanels = document.querySelectorAll('.help-panel');
+
 const tabButtons = document.querySelectorAll('.tab-btn');
 const tabPanels = document.querySelectorAll('.tab-panel');
 const feedFilterControls = document.getElementById('feedFilterControls');
+
+// --- Play Tools DOM References ---
+const toolsPanel = document.getElementById('toolsPanel');
+const subTabRoulette = document.getElementById('subTabRoulette');
+const subTabDice = document.getElementById('subTabDice');
+const subTabLadder = document.getElementById('subTabLadder');
+const toolSectionRoulette = document.getElementById('toolSectionRoulette');
+const toolSectionDice = document.getElementById('toolSectionDice');
+const toolSectionLadder = document.getElementById('toolSectionLadder');
+
+const roulettePlayers = document.getElementById('roulettePlayers');
+const rouletteWheel = document.getElementById('rouletteWheel');
+const spinRouletteBtn = document.getElementById('spinRouletteBtn');
+const rouletteResult = document.getElementById('rouletteResult');
+
+const diceObject = document.getElementById('diceObject');
+const rollDiceBtn = document.getElementById('rollDiceBtn');
+const diceResultText = document.getElementById('diceResultText');
+
+const ladderNum = document.getElementById('ladderNum');
+const ladderPreset = document.getElementById('ladderPreset');
+const ladderInputsArea = document.getElementById('ladderInputsArea');
+const ladderCanvas = document.getElementById('ladderCanvas');
+const ladderResultText = document.getElementById('ladderResultText');
+const resetLadderBtn = document.getElementById('resetLadderBtn');
+const generateLadderBtn = document.getElementById('generateLadderBtn');
 
 const cardDrawOverlay = document.getElementById('cardDrawOverlay');
 const flipCard = document.getElementById('flipCard');
@@ -629,6 +664,7 @@ document.addEventListener('DOMContentLoaded', () => {
     appContainer.classList.add('tab-home');
   }
 
+  initPlayTools();
   render();
 });
 
@@ -672,6 +708,12 @@ function loadData() {
   if (savedRewardClaimed !== null) {
     isBingoRewardClaimed = savedRewardClaimed === 'true';
   }
+
+  const savedTheme = localStorage.getItem('board_village_theme');
+  if (savedTheme !== null) {
+    currentTheme = savedTheme;
+  }
+  applyTheme(currentTheme);
 }
 
 function saveData() {
@@ -680,6 +722,16 @@ function saveData() {
   localStorage.setItem('dadok_dadok_board_sound', soundEnabled.toString());
   localStorage.setItem('dadok_dadok_board_bingo_slots', JSON.stringify(bingoSlots));
   localStorage.setItem('dadok_dadok_board_bingo_reward', isBingoRewardClaimed.toString());
+  localStorage.setItem('board_village_theme', currentTheme);
+}
+
+function applyTheme(theme) {
+  document.body.className = '';
+  if (theme === 'wood') {
+    document.body.classList.add('theme-wood');
+  } else {
+    document.body.classList.add('theme-midnight');
+  }
 }
 
 // --- Render Core ---
@@ -966,6 +1018,29 @@ function renderLogFeed() {
 
 // 고정 도감 데이터와 플레이 로그 매핑하여 해금/잠금 상태 판정 후 도감 그리기
 function renderGameInfoTab() {
+  const allDbKeys = Object.keys(ENCYCLOPEDIA_DB);
+  const totalDbGamesCount = allDbKeys.length;
+  let unlockedDbGamesCount = 0;
+
+  allDbKeys.forEach(key => {
+    const info = ENCYCLOPEDIA_DB[key];
+    const matchLog = logs.find(log => {
+      const lowerInput = log.gameTitle.toLowerCase();
+      const lowerKey = key.toLowerCase();
+      const lowerName = info.name.toLowerCase();
+      return lowerInput.includes(lowerKey) || lowerKey.includes(lowerInput) || lowerInput.includes(lowerName) || lowerName.includes(lowerInput);
+    });
+    if (matchLog) unlockedDbGamesCount++;
+  });
+
+  const progressPercent = totalDbGamesCount > 0 ? Math.round((unlockedDbGamesCount / totalDbGamesCount) * 100) : 0;
+  const progTextEl = document.getElementById('encyclopediaProgressText');
+  const progBarEl = document.getElementById('encyclopediaProgressBar');
+  if (progTextEl && progBarEl) {
+    progTextEl.innerText = `${unlockedDbGamesCount} / ${totalDbGamesCount}개 플레이 (${progressPercent}%)`;
+    progBarEl.style.width = `${progressPercent}%`;
+  }
+
   gameInfoGrid.innerHTML = '';
 
   let filtered = Object.entries(ENCYCLOPEDIA_DB).filter(([key, info]) => {
@@ -1058,6 +1133,13 @@ function renderRankingTab() {
     return;
   }
 
+  const getGameImage = (title) => {
+    const dbImg = getEncyclopediaImage(title);
+    if (dbImg) return dbImg;
+    const matchingLog = logs.find(l => l.gameTitle === title && l.gameThumbnail);
+    return matchingLog ? matchingLog.gameThumbnail : 'images/루미큐브_seo.webp';
+  };
+
   // --- 게임 플레이 순위 ---
   const gameCountMap = {};
   const gameRatingMap = {};
@@ -1116,41 +1198,62 @@ function renderRankingTab() {
   rankGrid.innerHTML = `
     <div class="rank-section">
       <h3 class="rank-section-title"><i data-lucide="trophy"></i> 게임 플레이 순위</h3>
-      <div class="rank-list">
-        ${topPlayed.map(([title, count], i) => `
-          <div class="rank-row">
-            <span class="rank-badge rank-${i + 1}">${i + 1}</span>
-            <span class="rank-name">${title}</span>
-            <div class="rank-bar-wrap"><div class="rank-bar" style="width:${(count / maxCount) * 100}%"></div></div>
-            <span class="rank-value">${count}회</span>
-          </div>
-        `).join('') || '<div class="rank-row rank-empty-row">기록이 없습니다</div>'}
+      <div class="rank-list" style="display: flex; flex-direction: column; gap: 12px;">
+        ${topPlayed.map(([title, count], i) => {
+          const imgUrl = getGameImage(title);
+          return `
+            <div class="rank-row" style="display: flex; align-items: center; gap: 10px;">
+              <span class="rank-badge rank-${i + 1}">${i + 1}</span>
+              <img src="${imgUrl}" style="width: 38px; height: 38px; border-radius: 8px; object-fit: cover; border: 1.5px solid var(--border-color);" alt="${title}">
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+                <span class="rank-name" style="font-weight: 700; font-size: 0.9rem;">${title}</span>
+                <div class="rank-bar-wrap" style="height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden; width: 100%;">
+                  <div class="rank-bar" style="width:${(count / maxCount) * 100}%; height: 100%; background: linear-gradient(90deg, var(--primary-light), var(--primary-color)); border-radius: 4px; transition: width 0.6s ease;"></div>
+                </div>
+              </div>
+              <span class="rank-value" style="font-weight: 800; font-size: 0.9rem; min-width: 42px; text-align: right;">${count}회</span>
+            </div>
+          `;
+        }).join('') || '<div class="rank-row rank-empty-row">기록이 없습니다</div>'}
       </div>
     </div>
 
     <div class="rank-section">
       <h3 class="rank-section-title"><i data-lucide="star"></i> 평점 순위</h3>
-      <div class="rank-list">
-        ${topRated.map(([title, avg], i) => `
-          <div class="rank-row">
-            <span class="rank-badge rank-${i + 1}">${i + 1}</span>
-            <span class="rank-name">${title}</span>
-            <div class="rank-bar-wrap"><div class="rank-bar rank-bar-star" style="width:${(avg / 5) * 100}%"></div></div>
-            <span class="rank-value">${avg.toFixed(1)}점</span>
-          </div>
-        `).join('') || '<div class="rank-row rank-empty-row">기록이 없습니다</div>'}
+      <div class="rank-list" style="display: flex; flex-direction: column; gap: 12px;">
+        ${topRated.map(([title, avg], i) => {
+          const imgUrl = getGameImage(title);
+          return `
+            <div class="rank-row" style="display: flex; align-items: center; gap: 10px;">
+              <span class="rank-badge rank-${i + 1}">${i + 1}</span>
+              <img src="${imgUrl}" style="width: 38px; height: 38px; border-radius: 8px; object-fit: cover; border: 1.5px solid var(--border-color);" alt="${title}">
+              <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+                <span class="rank-name" style="font-weight: 700; font-size: 0.9rem;">${title}</span>
+                <div class="rank-bar-wrap" style="height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden; width: 100%;">
+                  <div class="rank-bar" style="width:${(avg / 5) * 100}%; height: 100%; background: linear-gradient(90deg, #f59e0b, #d97706); border-radius: 4px; transition: width 0.6s ease;"></div>
+                </div>
+              </div>
+              <span class="rank-value" style="font-weight: 800; font-size: 0.9rem; min-width: 42px; text-align: right; color: #d97706;">★ ${avg.toFixed(1)}</span>
+            </div>
+          `;
+        }).join('') || '<div class="rank-row rank-empty-row">기록이 없습니다</div>'}
       </div>
     </div>
 
     <div class="rank-section">
       <h3 class="rank-section-title"><i data-lucide="users"></i> 동반자 랭킹</h3>
-      <div class="rank-list">
+      <div class="rank-list" style="display: flex; flex-direction: column; gap: 12px;">
         ${topCompanions.map(([name, count], i) => `
-          <div class="rank-row">
+          <div class="rank-row" style="display: flex; align-items: center; gap: 10px;">
             <span class="rank-badge rank-${i + 1}">${i + 1}</span>
-            <span class="rank-name">👤 ${name}</span>
-            <div class="rank-bar-wrap"><div class="rank-bar rank-bar-comp" style="width:${(count / maxComp) * 100}%"></div></div>
-            <span class="rank-value">${count}회</span>
+            <div style="width: 38px; height: 38px; border-radius: 50%; background: var(--border-color); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; border: 1px solid var(--border-color); color: var(--text-main);">👤</div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+              <span class="rank-name" style="font-weight: 700; font-size: 0.9rem;">${name}</span>
+              <div class="rank-bar-wrap" style="height: 8px; background: rgba(0,0,0,0.05); border-radius: 4px; overflow: hidden; width: 100%;">
+                <div class="rank-bar" style="width:${(count / maxComp) * 100}%; height: 100%; background: linear-gradient(90deg, #10b981, #059669); border-radius: 4px; transition: width 0.6s ease;"></div>
+              </div>
+            </div>
+            <span class="rank-value" style="font-weight: 800; font-size: 0.9rem; min-width: 42px; text-align: right;">${count}회</span>
           </div>
         `).join('') || '<div class="rank-row rank-empty-row">등록된 동반자가 없습니다</div>'}
       </div>

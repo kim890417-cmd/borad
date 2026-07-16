@@ -1507,6 +1507,7 @@ function openCharacterStoryDetail(char) {
 
 // Sound Button UI Toggle
 function updateSoundButtonUI() {
+  if (!soundToggleBtn) return;
   if (soundEnabled) {
     soundToggleBtn.classList.remove('muted');
     soundToggleBtn.innerHTML = '<i data-lucide="volume-2"></i>';
@@ -1788,11 +1789,13 @@ function setupEventListeners() {
     });
   });
 
-  soundToggleBtn.addEventListener('click', () => {
-    soundEnabled = !soundEnabled;
-    saveData();
-    updateSoundButtonUI();
-  });
+  if (soundToggleBtn) {
+    soundToggleBtn.addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      saveData();
+      updateSoundButtonUI();
+    });
+  }
 
   tabButtons.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1804,8 +1807,10 @@ function setupEventListeners() {
       tabPanels.forEach(panel => {
         if (panel.id === `${targetTab}Panel`) {
           panel.classList.add('active');
+          panel.style.display = 'flex';
         } else {
           panel.classList.remove('active');
+          panel.style.display = 'none';
         }
       });
 

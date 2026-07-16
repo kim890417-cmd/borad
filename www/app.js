@@ -919,6 +919,46 @@ function renderDecoLayer() {
       document.addEventListener('mouseup', upHandler);
     });
 
+    // 모바일 터치 드래그 및 더블 탭 삭제 지원
+    meeple.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      const rect = stackContainer.getBoundingClientRect();
+      
+      const now = Date.now();
+      const lastTap = meeple.dataset.lastTap || 0;
+      if (now - lastTap < 300) {
+        decos = decos.filter(d => d.id !== deco.id);
+        render();
+        return;
+      }
+      meeple.dataset.lastTap = now;
+
+      const moveHandler = (moveEvent) => {
+        const curTouch = moveEvent.touches[0];
+        let leftPercent = ((curTouch.clientX - rect.left) / rect.width) * 100;
+        let topPercent = ((curTouch.clientY - rect.top) / rect.height) * 100;
+        
+        leftPercent = Math.max(0, Math.min(90, leftPercent));
+        topPercent = Math.max(0, Math.min(90, topPercent));
+
+        meeple.style.left = `${leftPercent}%`;
+        meeple.style.top = `${topPercent}%`;
+        
+        deco.x = leftPercent;
+        deco.y = topPercent;
+      };
+
+      const endHandler = () => {
+        document.removeEventListener('touchmove', moveHandler);
+        document.removeEventListener('touchend', endHandler);
+        saveData();
+      };
+
+      document.addEventListener('touchmove', moveHandler, { passive: false });
+      document.addEventListener('touchend', endHandler);
+    }, { passive: false });
+
     decoLayer.appendChild(meeple);
   });
 }
@@ -2486,6 +2526,77 @@ function initPlayTools() {
   if (ladderCanvas) {
     ladderCanvas.addEventListener('click', handleLadderCanvasClick);
   }
+
+  // 4. Tools Settings Setup
+  const toolsThemeBtn = document.getElementById('toolsThemeBtn');
+  const toolsHelpBtn = document.getElementById('toolsHelpBtn');
+  const toolsSoundBtn = document.getElementById('toolsSoundBtn');
+  const toolsSoundIcon = document.getElementById('toolsSoundIcon');
+
+  if (toolsThemeBtn) {
+    toolsThemeBtn.addEventListener('click', () => {
+      currentTheme = currentTheme === 'midnight' ? 'wood' : 'midnight';
+      saveData();
+      applyTheme(currentTheme);
+    });
+  }
+
+  if (toolsHelpBtn) {
+    toolsHelpBtn.addEventListener('click', () => {
+      if (helpModal) helpModal.classList.add('active');
+    });
+  }
+
+  const updateToolsSoundUI = () => {
+    if (toolsSoundIcon) {
+      if (soundEnabled) {
+        toolsSoundIcon.setAttribute('data-lucide', 'volume-2');
+        toolsSoundIcon.parentNode.style.color = '';
+      } else {
+        toolsSoundIcon.setAttribute('data-lucide', 'volume-x');
+        toolsSoundIcon.parentNode.style.color = '#ef4444';
+      }
+      if (window.lucide) window.lucide.createIcons();
+    }
+  };
+
+  if (toolsSoundBtn) {
+    toolsSoundBtn.addEventListener('click', () => {
+      soundEnabled = !soundEnabled;
+      saveData();
+      updateToolsSoundUI();
+    });
+  }
+  updateToolsSoundUI();
+
+  // 5. Help Guide Modal Close & Sub-tab Setup
+  if (closeHelpModalBtn) {
+    closeHelpModalBtn.addEventListener('click', () => {
+      if (helpModal) helpModal.classList.remove('active');
+    });
+  }
+  if (confirmHelpBtn) {
+    confirmHelpBtn.addEventListener('click', () => {
+      if (helpModal) helpModal.classList.remove('active');
+    });
+  }
+
+  helpTabButtons.forEach((btn, index) => {
+    btn.addEventListener('click', () => {
+      helpTabButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      
+      helpPanels.forEach((p, idx) => {
+        if (idx === index) {
+          p.style.display = 'flex';
+          p.classList.add('active');
+        } else {
+          p.style.display = 'none';
+          p.classList.remove('active');
+        }
+      });
+    });
+  });
 }
 
 function updateRouletteWheel() {

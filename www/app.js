@@ -2248,18 +2248,18 @@ function setupEventListeners() {
   if (shuffleBingoBtn) {
     shuffleBingoBtn.addEventListener('click', () => {
       if (soundEnabled) playClickSound();
-      const allEntries = Object.values(ENCYCLOPEDIA_DB);
+      const allEntries = Object.entries(ENCYCLOPEDIA_DB);
       const shuffled = [...allEntries].sort(() => Math.random() - 0.5);
       const selected = shuffled.slice(0, 16);
 
       const diffMap = { easy: 1, medium: 3, heavy: 5 };
       const genreMap = { easy: '가벼움', medium: '전략', heavy: '전략' };
 
-      bingoSlots = selected.map(g => ({
-        name: g.name,
-        difficulty: diffMap[g.difficulty] || 2,
-        genre: genreMap[g.difficulty] || '가벼움',
-        img: g.img,
+      bingoSlots = selected.map(([key, game]) => ({
+        name: key,
+        difficulty: diffMap[game.difficulty] || 2,
+        genre: genreMap[game.difficulty] || '가벼움',
+        img: game.img,
         completed: false
       }));
       isBingoRewardClaimed = false;

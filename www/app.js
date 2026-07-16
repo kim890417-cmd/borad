@@ -1197,6 +1197,14 @@ function renderGameInfoTab() {
 }
 
 // 랭킹/통계 탭 렌더링
+// Global Helper to resolve game images
+const getGameImage = (title) => {
+  const dbImg = getEncyclopediaImage(title);
+  if (dbImg) return dbImg;
+  const matchingLog = logs.find(l => l.gameTitle === title && l.gameThumbnail);
+  return matchingLog ? matchingLog.gameThumbnail : 'images/루미큐브_seo.webp';
+};
+
 function renderRankingTab() {
   rankGrid.innerHTML = '';
 
@@ -1204,13 +1212,6 @@ function renderRankingTab() {
     rankGrid.innerHTML = '<div class="rank-empty"><i data-lucide="bar-chart-3"></i><p>기록을 남기면 랭킹이 표시됩니다.</p></div>';
     return;
   }
-
-  const getGameImage = (title) => {
-    const dbImg = getEncyclopediaImage(title);
-    if (dbImg) return dbImg;
-    const matchingLog = logs.find(l => l.gameTitle === title && l.gameThumbnail);
-    return matchingLog ? matchingLog.gameThumbnail : 'images/루미큐브_seo.webp';
-  };
 
   // --- 게임 플레이 순위 ---
   const gameCountMap = {};
@@ -2429,11 +2430,54 @@ let ladderData = {
 };
 
 function initPlayTools() {
+  const toolsPanel = document.getElementById('toolsPanel');
   if (!toolsPanel) return;
 
+  const btnGetRecommend = document.getElementById('btnGetRecommend');
+  const recommendPlayers = document.getElementById('recommendPlayers');
+  const recommendTime = document.getElementById('recommendTime');
+  const recommendDiff = document.getElementById('recommendDiff');
+  const recommendResultCard = document.getElementById('recommendResultCard');
+  const recommendGameImg = document.getElementById('recommendGameImg');
+  const recommendGameTitle = document.getElementById('recommendGameTitle');
+  const recommendGameDesc = document.getElementById('recommendGameDesc');
+
+  const timerProgressRing = document.getElementById('timerProgressRing');
+  const timerDisplay = document.getElementById('timerDisplay');
+  const btnResetTimer = document.getElementById('btnResetTimer');
+  const btnStartPauseTimer = document.getElementById('btnStartPauseTimer');
+  const timerPlayIcon = document.getElementById('timerPlayIcon');
+
+  const btnScoreAddPlayer = document.getElementById('btnScoreAddPlayer');
+  const btnScoreAddRound = document.getElementById('btnScoreAddRound');
+  const scoreTableBody = document.getElementById('scoreTableBody');
+  const btnScoreReset = document.getElementById('btnScoreReset');
+  const btnScoreSaveLog = document.getElementById('btnScoreSaveLog');
+
+  const helpModal = document.getElementById('helpModal');
+  const closeHelpModalBtn = document.getElementById('closeHelpModalBtn');
+  const confirmHelpBtn = document.getElementById('confirmHelpBtn');
+  const helpTabButtons = document.querySelectorAll('.help-tab-btn');
+  const helpPanels = document.querySelectorAll('.help-panel');
+
   // Sub Tab switching
-  const subTabs = [subTabRoulette, subTabDice, subTabLadder, subTabRecommend, subTabTimer, subTabScoreboard];
-  const sections = [toolSectionRoulette, toolSectionDice, toolSectionLadder, toolSectionRecommend, toolSectionTimer, toolSectionScoreboard];
+  const subTabs = [
+    document.getElementById('subTabRoulette'),
+    document.getElementById('subTabDice'),
+    document.getElementById('subTabLadder'),
+    document.getElementById('subTabRecommend'),
+    document.getElementById('subTabTimer'),
+    document.getElementById('subTabScoreboard')
+  ].filter(Boolean);
+
+  const sections = [
+    document.getElementById('toolSectionRoulette'),
+    document.getElementById('toolSectionDice'),
+    document.getElementById('toolSectionLadder'),
+    document.getElementById('toolSectionRecommend'),
+    document.getElementById('toolSectionTimer'),
+    document.getElementById('toolSectionScoreboard')
+  ].filter(Boolean);
 
   subTabs.forEach((tab, index) => {
     tab.addEventListener('click', () => {
@@ -2442,9 +2486,9 @@ function initPlayTools() {
 
       sections.forEach((sec, idx) => {
         if (idx === index) {
-          sec.style.display = 'flex';
+          if (sec) sec.style.display = 'flex';
         } else {
-          sec.style.display = 'none';
+          if (sec) sec.style.display = 'none';
         }
       });
       

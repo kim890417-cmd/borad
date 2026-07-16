@@ -256,9 +256,9 @@
           
           <!-- 툴 선택 서브 버튼 -->
           <div class="tools-sub-tabs" style="display: flex; gap: 8px; justify-content: center; margin-bottom: 10px;">
-            <button class="btn btn-secondary active" id="subTabRoulette" style="flex: 1; padding: 0.6rem; font-size: 0.85rem; border-radius: 8px;">선 뽑기 (룰렛) 🎡</button>
-            <button class="btn btn-secondary" id="subTabDice" style="flex: 1; padding: 0.6rem; font-size: 0.85rem; border-radius: 8px;">주사위 굴리기 🎲</button>
-            <button class="btn btn-secondary" id="subTabLadder" style="flex: 1; padding: 0.6rem; font-size: 0.85rem; border-radius: 8px;">사다리 타기 🪜</button>
+            <button class="btn btn-secondary active" id="subTabRoulette" style="flex: 1; padding: 0.6rem; font-size: 0.85rem; border-radius: 8px;">선 뽑기 🎡</button>
+            <button class="btn btn-secondary" id="subTabDice" style="flex: 1; padding: 0.6rem; font-size: 0.85rem; border-radius: 8px;">주사위 🎲</button>
+            <button class="btn btn-secondary" id="subTabLadder" style="flex: 1; padding: 0.6rem; font-size: 0.85rem; border-radius: 8px;">사다리 🪜</button>
           </div>
 
           <!-- 1. 선 뽑기 (룰렛) 콘텐츠 -->
@@ -292,7 +292,7 @@
             <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">원하는 주사위를 고르고 굴려보세요.</p>
             
             <!-- 주사위 면체 선택 그룹 -->
-            <div style="display: flex; gap: 6px; justify-content: center; overflow-x: auto; padding-bottom: 4px;">
+            <div class="dice-buttons-grid" style="display: flex; gap: 6px; justify-content: center; overflow-x: auto; padding-bottom: 4px;">
               <button class="btn btn-secondary btn-sm active" data-dice-type="6" style="padding: 0.5rem 0.8rem; font-size: 0.8rem; border-radius: 6px;">D6 (6면)</button>
               <button class="btn btn-secondary btn-sm" data-dice-type="4" style="padding: 0.5rem 0.8rem; font-size: 0.8rem; border-radius: 6px;">D4 (4면)</button>
               <button class="btn btn-secondary btn-sm" data-dice-type="8" style="padding: 0.5rem 0.8rem; font-size: 0.8rem; border-radius: 6px;">D8 (8면)</button>

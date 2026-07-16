@@ -2333,6 +2333,20 @@ select:focus {
   .bingo-cell-title {
     word-break: break-all !important;
   }
+
+  .tool-content-section {
+    padding: 1rem !important;
+    border-radius: 12px !important;
+    gap: 12px !important;
+  }
+
+  .dice-buttons-grid {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 6px !important;
+    width: 100% !important;
+    overflow-x: visible !important;
+  }
 }
 
 .help-tab-btn.active {

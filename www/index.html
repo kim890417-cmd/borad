@@ -264,8 +264,12 @@
           <!-- 1. 선 뽑기 (룰렛) 콘텐츠 -->
           <div class="tool-content-section" id="toolSectionRoulette" style="display: flex; flex-direction: column; gap: 15px; background: var(--card-bg); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color); text-align: center;">
             <h3 style="font-size: 1.2rem; font-weight: 700;">🎡 선 플레이어 뽑기 룰렛</h3>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">플레이어 이름을 쉼표(,)로 구분해 입력해 주세요.</p>
-            <input type="text" id="roulettePlayers" value="플레이어1, 플레이어2, 플레이어3, 플레이어4" style="text-align: center; font-size: 0.95rem; width: 100%;">
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px;">참여 인원수를 선택해 주세요.</p>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; background: var(--bg-color); padding: 0.6rem 1.2rem; border-radius: 12px; border: 1px solid var(--border-color); width: fit-content; margin: 0 auto;">
+              <button type="button" class="btn btn-secondary" id="btnDecPlayers" style="padding: 0.4rem 0.8rem; border-radius: 8px; font-weight: bold; border: none; font-size: 1.1rem; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">-</button>
+              <span id="roulettePlayerCountDisplay" style="font-size: 1.2rem; font-weight: 800; min-width: 48px; color: var(--text-main);">4 명</span>
+              <button type="button" class="btn btn-secondary" id="btnIncPlayers" style="padding: 0.4rem 0.8rem; border-radius: 8px; font-weight: bold; border: none; font-size: 1.1rem; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">+</button>
+            </div>
             
             <!-- 룰렛 시각화 박스 -->
             <div class="roulette-container" style="position: relative; width: 220px; height: 220px; margin: 20px auto; border-radius: 50%; border: 6px solid var(--border-color); box-shadow: var(--shadow-md); overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff;">

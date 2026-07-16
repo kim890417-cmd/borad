@@ -1701,7 +1701,8 @@ function setupStarRating() {
   const stars = starRatingContainer.querySelectorAll('.star-icon');
   
   function highlightStars(val) {
-    stars.forEach(star => {
+    const liveStars = starRatingContainer.querySelectorAll('.star-icon');
+    liveStars.forEach(star => {
       const starVal = Number(star.getAttribute('data-value'));
       if (starVal <= val) {
         star.classList.add('active');
@@ -2154,11 +2155,16 @@ function setupEventListeners() {
       appContainerEl.className = 'app-container';
       appContainerEl.classList.add(`tab-${target}`);
       
-      // 만약 로그/도감/랭킹/빙고 탭을 선택한 경우 기존 데스크톱 탭 활성화 로직 호출
+      // 만약 로그/도감/랭킹/빙고/도구 탭을 선택한 경우 대응하는 패널 제어
       if (target !== 'home') {
-        const desktopTabBtn = document.querySelector(`.tab-btn[data-tab="${target === 'logs' ? 'logs' : target === 'info' ? 'info' : target === 'rank' ? 'rank' : 'bingo'}"]`);
+        const mappedTab = target === 'logs' ? 'logs' : target === 'info' ? 'info' : target === 'rank' ? 'rank' : target === 'bingo' ? 'bingo' : 'tools';
+        const desktopTabBtn = document.querySelector(`.tab-btn[data-tab="${mappedTab}"]`);
         if (desktopTabBtn) {
           desktopTabBtn.click();
+        } else {
+          // 데스크톱 탭 버튼이 없는 경우(도구 탭 등) 모든 패널을 숨기고 해당 패널만 강제 표시
+          tabPanels.forEach(p => p.style.display = 'none');
+          if (toolsPanel) toolsPanel.style.display = 'flex';
         }
       }
     });
@@ -2321,4 +2327,473 @@ function triggerConfetti() {
       particle.remove();
     }, (duration + 2) * 1000);
   }
+}
+
+// --- Play Tools Logic ---
+
+let selectedDiceType = 6;
+let isRouletteSpinning = false;
+let isDiceRolling = false;
+let roulettePlayerCount = 4;
+
+// Ladder Game State
+let ladderData = {
+  numCols: 3,
+  colsX: [],
+  rungs: [], // { y, col }
+  players: [],
+  results: [],
+  pathsTraced: [],
+  pathsAnimation: null
+};
+
+function initPlayTools() {
+  if (!toolsPanel) return;
+
+  // Sub Tab switching
+  const subTabs = [subTabRoulette, subTabDice, subTabLadder];
+  const sections = [toolSectionRoulette, toolSectionDice, toolSectionLadder];
+
+  subTabs.forEach((tab, index) => {
+    tab.addEventListener('click', () => {
+      subTabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+
+      sections.forEach((sec, idx) => {
+        if (idx === index) {
+          sec.style.display = 'flex';
+        } else {
+          sec.style.display = 'none';
+        }
+      });
+      
+      // Special init for ladder canvas resize
+      if (index === 2) {
+        setTimeout(initLadderCanvas, 100);
+      }
+    });
+  });
+
+  // 1. Roulette Setup
+  const btnDecPlayers = document.getElementById('btnDecPlayers');
+  const btnIncPlayers = document.getElementById('btnIncPlayers');
+  const roulettePlayerCountDisplay = document.getElementById('roulettePlayerCountDisplay');
+
+  if (btnDecPlayers && btnIncPlayers && roulettePlayerCountDisplay) {
+    btnDecPlayers.addEventListener('click', () => {
+      if (roulettePlayerCount > 2) {
+        roulettePlayerCount--;
+        roulettePlayerCountDisplay.innerText = `${roulettePlayerCount} 명`;
+        updateRouletteWheel();
+      }
+    });
+    btnIncPlayers.addEventListener('click', () => {
+      if (roulettePlayerCount < 10) {
+        roulettePlayerCount++;
+        roulettePlayerCountDisplay.innerText = `${roulettePlayerCount} 명`;
+        updateRouletteWheel();
+      }
+    });
+  }
+
+  updateRouletteWheel();
+
+  if (spinRouletteBtn) {
+    spinRouletteBtn.addEventListener('click', () => {
+      if (isRouletteSpinning) return;
+      
+      isRouletteSpinning = true;
+      spinRouletteBtn.disabled = true;
+      rouletteResult.innerText = '선 플레이어 정하는 중...';
+      if (soundEnabled) playCardFlipSound();
+
+      const count = roulettePlayerCount;
+      const anglePerPlayer = 360 / count;
+      
+      const winnerIndex = Math.floor(Math.random() * count);
+      const spins = 5;
+      const targetAngle = spins * 360 - (winnerIndex + 0.5) * anglePerPlayer;
+      
+      rouletteWheel.style.transition = 'transform 4s cubic-bezier(0.15, 0.85, 0.15, 1)';
+      rouletteWheel.style.transform = `rotate(${targetAngle}deg)`;
+
+      setTimeout(() => {
+        isRouletteSpinning = false;
+        spinRouletteBtn.disabled = false;
+        rouletteResult.innerHTML = `선 플레이어: <span style="color:#6c5ce7; font-size:1.4rem;">🎉 ${winnerIndex + 1}번 🎉</span>`;
+        if (soundEnabled) triggerConfetti();
+      }, 4000);
+    });
+  }
+
+  // 2. Dice Setup
+  const diceTypeBtns = document.querySelectorAll('[data-dice-type]');
+  diceTypeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      diceTypeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      selectedDiceType = parseInt(btn.getAttribute('data-dice-type'));
+      diceObject.innerText = selectedDiceType;
+      diceResultText.innerText = `D${selectedDiceType} 주사위가 선택되었습니다.`;
+    });
+  });
+
+  const rollDice = () => {
+    if (isDiceRolling) return;
+    isDiceRolling = true;
+    rollDiceBtn.disabled = true;
+    
+    let count = 0;
+    const interval = setInterval(() => {
+      const tempVal = Math.floor(Math.random() * selectedDiceType) + 1;
+      diceObject.innerText = tempVal;
+      diceObject.style.transform = `rotate(${Math.random() * 30 - 15}deg) scale(0.95)`;
+      if (soundEnabled && count % 2 === 0) playClickSound();
+      count++;
+    }, 60);
+
+    setTimeout(() => {
+      clearInterval(interval);
+      const finalVal = Math.floor(Math.random() * selectedDiceType) + 1;
+      diceObject.innerText = finalVal;
+      diceObject.style.transform = 'rotate(0deg) scale(1.1)';
+      diceResultText.innerHTML = `결과: <span style="color:#0984e3; font-size:1.3rem;">🎲 ${finalVal}</span>`;
+      isDiceRolling = false;
+      rollDiceBtn.disabled = false;
+    }, 700);
+  };
+
+  if (rollDiceBtn) rollDiceBtn.addEventListener('click', rollDice);
+  if (diceObject) diceObject.addEventListener('click', rollDice);
+
+  // 3. Ladder Setup
+  if (ladderNum) {
+    ladderNum.addEventListener('change', buildLadderInputs);
+    ladderPreset.addEventListener('change', buildLadderInputs);
+  }
+  buildLadderInputs();
+
+  if (generateLadderBtn) generateLadderBtn.addEventListener('click', generateLadder);
+  if (resetLadderBtn) resetLadderBtn.addEventListener('click', () => {
+    generateLadder();
+  });
+
+  if (ladderCanvas) {
+    ladderCanvas.addEventListener('click', handleLadderCanvasClick);
+  }
+}
+
+function updateRouletteWheel() {
+  if (!rouletteWheel) return;
+  const count = roulettePlayerCount;
+  const anglePerPlayer = 360 / count;
+  let conicParts = [];
+  const colors = ['#ff7675', '#fdcb6e', '#00cec9', '#6c5ce7', '#e84393', '#0984e3', '#2ecc71', '#f1c40f', '#e67e22', '#16a085'];
+  
+  for (let i = 0; i < count; i++) {
+    const color = colors[i % colors.length];
+    conicParts.push(`${color} ${i * anglePerPlayer}deg ${(i + 1) * anglePerPlayer}deg`);
+  }
+  
+  rouletteWheel.style.transition = 'none';
+  rouletteWheel.style.transform = 'rotate(0deg)';
+  rouletteWheel.style.background = `conic-gradient(${conicParts.join(', ')})`;
+}
+
+function buildLadderInputs() {
+  const count = parseInt(ladderNum.value);
+  const preset = ladderPreset.value;
+  ladderInputsArea.innerHTML = '';
+
+  const colors = ['#ff7675', '#fdcb6e', '#00cec9', '#6c5ce7', '#e84393', '#2ecc71'];
+
+  for (let i = 0; i < count; i++) {
+    const row = document.createElement('div');
+    row.style.display = 'flex';
+    row.style.gap = '8px';
+    row.style.alignItems = 'center';
+
+    const colorDot = document.createElement('span');
+    colorDot.style.width = '10px';
+    colorDot.style.height = '10px';
+    colorDot.style.borderRadius = '50%';
+    colorDot.style.backgroundColor = colors[i % colors.length];
+
+    const pInput = document.createElement('input');
+    pInput.type = 'text';
+    pInput.placeholder = `참여자 ${i + 1}`;
+    pInput.value = `참여자 ${i + 1}`;
+    pInput.className = 'ladder-player-input';
+    pInput.style.flex = '1';
+    pInput.style.padding = '0.4rem';
+    pInput.style.fontSize = '0.85rem';
+    pInput.style.borderRadius = '6px';
+    pInput.style.border = '1px solid var(--border-color)';
+    pInput.style.background = 'var(--card-bg)';
+    pInput.style.color = 'var(--text-main)';
+
+    const rInput = document.createElement('input');
+    rInput.type = 'text';
+    rInput.placeholder = `결과 ${i + 1}`;
+    rInput.className = 'ladder-result-input';
+    rInput.style.flex = '1';
+    rInput.style.padding = '0.4rem';
+    rInput.style.fontSize = '0.85rem';
+    rInput.style.borderRadius = '6px';
+    rInput.style.border = '1px solid var(--border-color)';
+    rInput.style.background = 'var(--card-bg)';
+    rInput.style.color = 'var(--text-main)';
+
+    if (preset === 'default') {
+      rInput.value = i === 0 ? '🎉 당첨!' : '꽝';
+    } else if (preset === 'penalty') {
+      rInput.value = i === 0 ? '😈 벌칙!' : '통과';
+    } else {
+      rInput.value = `결과 ${i + 1}`;
+    }
+
+    row.appendChild(colorDot);
+    row.appendChild(pInput);
+    row.appendChild(rInput);
+    ladderInputsArea.appendChild(row);
+  }
+  
+  setTimeout(initLadderCanvas, 50);
+}
+
+function initLadderCanvas() {
+  if (!ladderCanvas) return;
+  const rect = ladderCanvas.parentNode.getBoundingClientRect();
+  ladderCanvas.width = rect.width;
+  ladderCanvas.height = rect.height;
+  
+  const ctx = ladderCanvas.getContext('2d');
+  ctx.clearRect(0, 0, ladderCanvas.width, ladderCanvas.height);
+  
+  ctx.strokeStyle = '#d7c0ae';
+  ctx.lineWidth = 2.5;
+  ctx.setLineDash([4, 4]);
+  
+  const count = parseInt(ladderNum.value);
+  const padding = 40;
+  const colWidth = (ladderCanvas.width - 2 * padding) / (count - 1);
+  
+  for (let i = 0; i < count; i++) {
+    const x = padding + i * colWidth;
+    ctx.beginPath();
+    ctx.moveTo(x, 25);
+    ctx.lineTo(x, ladderCanvas.height - 25);
+    ctx.stroke();
+  }
+  ctx.setLineDash([]);
+}
+
+function generateLadder() {
+  const count = parseInt(ladderNum.value);
+  const pInputs = document.querySelectorAll('.ladder-player-input');
+  const rInputs = document.querySelectorAll('.ladder-result-input');
+  
+  ladderData.players = Array.from(pInputs).map(inp => inp.value.trim() || '이름');
+  ladderData.results = Array.from(rInputs).map(inp => inp.value.trim() || '꽝');
+  ladderData.numCols = count;
+  ladderData.pathsTraced = [];
+  ladderData.rungs = [];
+  
+  const startY = 35;
+  const endY = ladderCanvas.height - 35;
+  const levelHeight = (endY - startY) / 7;
+  
+  for (let lvl = 1; lvl <= 6; lvl++) {
+    const y = startY + lvl * levelHeight + (Math.random() * 12 - 6);
+    
+    for (let c = 0; c < count - 1; c++) {
+      if (Math.random() < 0.6) {
+        const leftExist = ladderData.rungs.some(r => Math.abs(r.y - y) < 8 && r.col === c - 1);
+        if (!leftExist) {
+          ladderData.rungs.push({ y, col: c });
+        }
+      }
+    }
+  }
+
+  drawLadder();
+  ladderResultText.innerText = '사다리 준비 완료! 위에 이름을 클릭해서 결과를 확인해 보세요.';
+  if (soundEnabled) playClickSound();
+}
+
+function drawLadder() {
+  const ctx = ladderCanvas.getContext('2d');
+  ctx.clearRect(0, 0, ladderCanvas.width, ladderCanvas.height);
+  
+  const count = ladderData.numCols;
+  const padding = 40;
+  const colWidth = (ladderCanvas.width - 2 * padding) / (count - 1);
+  
+  ladderData.colsX = [];
+  for (let i = 0; i < count; i++) {
+    ladderData.colsX.push(padding + i * colWidth);
+  }
+
+  ctx.font = 'bold 0.8rem Outfit, Noto Sans KR';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  
+  for (let i = 0; i < count; i++) {
+    const x = ladderData.colsX[i];
+    
+    ctx.fillStyle = '#795548';
+    ctx.fillRect(x - 30, ladderCanvas.height - 24, 60, 20);
+    
+    ctx.fillStyle = '#ffffff';
+    let label = ladderData.results[i];
+    if (label.length > 5) label = label.substring(0, 4) + '..';
+    ctx.fillText(label, x, ladderCanvas.height - 14);
+  }
+
+  ctx.strokeStyle = '#8b5a2b';
+  ctx.lineWidth = 4;
+  for (let i = 0; i < count; i++) {
+    const x = ladderData.colsX[i];
+    ctx.beginPath();
+    ctx.moveTo(x, 25);
+    ctx.lineTo(x, ladderCanvas.height - 25);
+    ctx.stroke();
+  }
+
+  ctx.strokeStyle = '#8b5a2b';
+  ctx.lineWidth = 3.5;
+  ladderData.rungs.forEach(rung => {
+    const x1 = ladderData.colsX[rung.col];
+    const x2 = ladderData.colsX[rung.col + 1];
+    ctx.beginPath();
+    ctx.moveTo(x1, rung.y);
+    ctx.lineTo(x2, rung.y);
+    ctx.stroke();
+  });
+
+  for (let i = 0; i < count; i++) {
+    const x = ladderData.colsX[i];
+    
+    ctx.fillStyle = '#8b5a2b';
+    ctx.beginPath();
+    ctx.arc(x, 15, 12, 0, Math.PI * 2);
+    ctx.fill();
+    
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 0.75rem Outfit';
+    ctx.fillText(String.fromCharCode(65 + i), x, 15);
+  }
+
+  ladderData.pathsTraced.forEach(path => {
+    drawTracedPath(path.startCol, path.color);
+  });
+}
+
+function drawTracedPath(startCol, color) {
+  const ctx = ladderCanvas.getContext('2d');
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 5;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+
+  const pathPoints = calculatePathPoints(startCol);
+  ctx.beginPath();
+  ctx.moveTo(pathPoints[0].x, pathPoints[0].y);
+  for (let i = 1; i < pathPoints.length; i++) {
+    ctx.lineTo(pathPoints[i].x, pathPoints[i].y);
+  }
+  ctx.stroke();
+}
+
+function calculatePathPoints(startCol) {
+  const points = [];
+  let col = startCol;
+  let currentY = 25;
+  
+  points.push({ x: ladderData.colsX[col], y: currentY });
+
+  const sortedRungs = [...ladderData.rungs].sort((a, b) => a.y - b.y);
+
+  while (currentY < ladderCanvas.height - 25) {
+    const nextRung = sortedRungs.find(r => r.y > currentY && (r.col === col || r.col === col - 1));
+    
+    if (nextRung) {
+      points.push({ x: ladderData.colsX[col], y: nextRung.y });
+      
+      const targetCol = nextRung.col === col ? col + 1 : col - 1;
+      points.push({ x: ladderData.colsX[targetCol], y: nextRung.y });
+      
+      col = targetCol;
+      currentY = nextRung.y;
+    } else {
+      points.push({ x: ladderData.colsX[col], y: ladderCanvas.height - 25 });
+      currentY = ladderCanvas.height - 25;
+    }
+  }
+  
+  return points;
+}
+
+function handleLadderCanvasClick(e) {
+  if (ladderData.colsX.length === 0) return;
+  
+  const rect = ladderCanvas.getBoundingClientRect();
+  const x = e.clientX - rect.left;
+  const y = e.clientY - rect.top;
+  
+  for (let i = 0; i < ladderData.numCols; i++) {
+    const colX = ladderData.colsX[i];
+    const dist = Math.sqrt((x - colX) ** 2 + (y - 15) ** 2);
+    
+    if (dist < 18) {
+      traceLadderPath(i);
+      break;
+    }
+  }
+}
+
+function traceLadderPath(startCol) {
+  if (ladderData.pathsTraced.some(p => p.startCol === startCol)) {
+    return;
+  }
+
+  const colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6'];
+  const traceColor = colors[startCol % colors.length];
+  
+  const pathPoints = calculatePathPoints(startCol);
+  let ptIdx = 0;
+  const ctx = ladderCanvas.getContext('2d');
+  
+  if (soundEnabled) playClickSound();
+
+  const animatePath = () => {
+    if (ptIdx >= pathPoints.length - 1) {
+      const finalCol = ladderData.colsX.indexOf(pathPoints[pathPoints.length - 1].x);
+      const result = ladderData.results[finalCol];
+      const player = ladderData.players[startCol];
+      
+      ladderData.pathsTraced.push({ startCol, color: traceColor });
+      
+      ladderResultText.innerHTML = `<span style="color:${traceColor}; font-weight:bold;">${player}</span> 님의 결과는 <span style="font-size:1.15rem; color:#b25d22; font-weight:800;">🎉 ${result} 🎉</span> 입니다!`;
+      if (soundEnabled) playCardFlipSound();
+      
+      drawLadder();
+      return;
+    }
+
+    const startPt = pathPoints[ptIdx];
+    const endPt = pathPoints[ptIdx + 1];
+    
+    ctx.strokeStyle = traceColor;
+    ctx.lineWidth = 5;
+    ctx.beginPath();
+    ctx.moveTo(startPt.x, startPt.y);
+    ctx.lineTo(endPt.x, endPt.y);
+    ctx.stroke();
+
+    ptIdx++;
+    setTimeout(animatePath, 150);
+  };
+
+  animatePath();
 }

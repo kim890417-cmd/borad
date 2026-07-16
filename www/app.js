@@ -623,6 +623,12 @@ document.addEventListener('DOMContentLoaded', () => {
   renderColorPicker();
   setupStarRating();
   setupEventListeners();
+  
+  const appContainer = document.querySelector('.app-container');
+  if (appContainer) {
+    appContainer.classList.add('tab-home');
+  }
+
   render();
 });
 
@@ -2028,7 +2034,34 @@ function setupEventListeners() {
       alert('이미지 저장 중 오류가 발생했습니다.');
     });
   });
+
+  // --- 모바일 하단 탭 전환 이벤트 리스너 추가 ---
+  const mobileNavItems = document.querySelectorAll('.mobile-nav-bar .nav-item');
+  const appContainerEl = document.querySelector('.app-container');
+
+  mobileNavItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const target = item.getAttribute('data-mobile-tab');
+      
+      // 하단 탭 활성화 상태 변경
+      mobileNavItems.forEach(i => i.classList.remove('active'));
+      item.classList.add('active');
+      
+      // app-container 클래스 제어로 화면 레이아웃 토글
+      appContainerEl.className = 'app-container';
+      appContainerEl.classList.add(`tab-${target}`);
+      
+      // 만약 로그/도감/랭킹/빙고 탭을 선택한 경우 기존 데스크톱 탭 활성화 로직 호출
+      if (target !== 'home') {
+        const desktopTabBtn = document.querySelector(`.tab-btn[data-tab="${target === 'logs' ? 'logs' : target === 'info' ? 'info' : target === 'rank' ? 'rank' : 'bingo'}"]`);
+        if (desktopTabBtn) {
+          desktopTabBtn.click();
+        }
+      }
+    });
+  });
 }
+
 
 // --- Bingo Helper Functions ---
 function renderBingoBoard() {

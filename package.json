@@ -1,0 +1,15 @@
+{
+  "name": "dadok-board",
+  "version": "1.0.0",
+  "description": "다독다독보드 - 안드로이드 앱",
+  "main": "index.js",
+  "scripts": {
+    "build": "echo 'No build step required for vanilla JS'",
+    "sync": "cap sync"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/cli": "^6.0.0",
+    "@capacitor/core": "^6.0.0"
+  }
+}

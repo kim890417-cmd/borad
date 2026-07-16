@@ -1979,7 +1979,7 @@ select:focus {
     display: block !important;
     flex: 1;
     overflow-y: auto;
-    padding: 1.2rem 1rem;
+    padding: 1.2rem 1rem 90px 1rem !important;
   }
   
   .app-container.tab-home .dashboard-section {
@@ -2011,7 +2011,7 @@ select:focus {
     display: block !important;
     flex: 1;
     overflow-y: auto;
-    padding: 1.2rem 1rem;
+    padding: 1.2rem 1rem 90px 1rem !important;
     height: 100%;
   }
   
@@ -2124,7 +2124,7 @@ select:focus {
   
   .content-panel {
     max-height: none;
-    padding: 1.5rem 1rem;
+    padding: 1.5rem 1rem 90px 1rem !important;
   }
   
   .dashboard-header {

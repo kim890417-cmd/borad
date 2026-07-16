@@ -3267,9 +3267,11 @@ function buildLadderInputs() {
     rInput.style.color = 'var(--text-main)';
 
     if (preset === 'default') {
-      rInput.value = i === 0 ? '🎉 당첨!' : '꽝';
+      const winnerIdx = Math.floor(Math.random() * count);
+      rInput.value = i === winnerIdx ? '🎉 당첨!' : '꽝';
     } else if (preset === 'penalty') {
-      rInput.value = i === 0 ? '😈 벌칙!' : '통과';
+      const penaltyIdx = Math.floor(Math.random() * count);
+      rInput.value = i === penaltyIdx ? '😈 벌칙!' : '통과';
     } else {
       rInput.value = `결과 ${i + 1}`;
     }

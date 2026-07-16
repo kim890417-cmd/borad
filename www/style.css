@@ -763,6 +763,20 @@ body {
   box-shadow: 0 2px 8px rgba(108, 92, 231, 0.2);
 }
 
+/* PC에서 도감 필터 세로 배치 */
+@media (min-width: 901px) {
+  .encyclopedia-filters {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .encyclopedia-filters .filter-group {
+    width: 100%;
+  }
+  .encyclopedia-filters .filter-buttons {
+    flex-wrap: wrap;
+  }
+}
+
 /* Board Game Info Grid */
 .game-info-grid {
   display: grid;

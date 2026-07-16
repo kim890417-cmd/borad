@@ -554,6 +554,62 @@ function playCardFlipSound() {
   } catch (e) {}
 }
 
+function playClickSound() {
+  if (!soundEnabled) return;
+  try {
+    initAudioContext();
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(800, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.05);
+    gainNode.gain.setValueAtTime(0.2, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.08);
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    osc.start(audioCtx.currentTime);
+    osc.stop(audioCtx.currentTime + 0.1);
+  } catch (e) {}
+}
+
+function playPopSound() {
+  if (!soundEnabled) return;
+  try {
+    initAudioContext();
+    const osc = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(200, audioCtx.currentTime + 0.15);
+    gainNode.gain.setValueAtTime(0.3, audioCtx.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
+    osc.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    osc.start(audioCtx.currentTime);
+    osc.stop(audioCtx.currentTime + 0.2);
+  } catch (e) {}
+}
+
+function playWinSound() {
+  if (!soundEnabled) return;
+  try {
+    initAudioContext();
+    const now = audioCtx.currentTime;
+    [523, 659, 784, 1047].forEach((freq, i) => {
+      const osc = audioCtx.createOscillator();
+      const gainNode = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now + i * 0.12);
+      gainNode.gain.setValueAtTime(0.25, now + i * 0.12);
+      gainNode.gain.exponentialRampToValueAtTime(0.01, now + i * 0.12 + 0.3);
+      osc.connect(gainNode);
+      gainNode.connect(audioCtx.destination);
+      osc.start(now + i * 0.12);
+      osc.stop(now + i * 0.12 + 0.35);
+    });
+  } catch (e) {}
+}
+
 // --- DOM Elements ---
 const stackContainer = document.getElementById('stackContainer');
 const decoLayer = document.getElementById('decoLayer');
@@ -645,6 +701,7 @@ const ladderCanvas = document.getElementById('ladderCanvas');
 const ladderResultText = document.getElementById('ladderResultText');
 const resetLadderBtn = document.getElementById('resetLadderBtn');
 const generateLadderBtn = document.getElementById('generateLadderBtn');
+const viewLadderResultBtn = document.getElementById('viewLadderResultBtn');
 
 // New Tools DOM References (populated in initPlayTools after DOMContentLoaded)
 let recommendPlayers = null;
@@ -2187,6 +2244,31 @@ function setupEventListeners() {
     }
   });
 
+  const shuffleBingoBtn = document.getElementById('shuffleBingoBtn');
+  if (shuffleBingoBtn) {
+    shuffleBingoBtn.addEventListener('click', () => {
+      if (soundEnabled) playClickSound();
+      const allEntries = Object.values(ENCYCLOPEDIA_DB);
+      const shuffled = [...allEntries].sort(() => Math.random() - 0.5);
+      const selected = shuffled.slice(0, 16);
+
+      const diffMap = { easy: 1, medium: 3, heavy: 5 };
+      const genreMap = { easy: '가벼움', medium: '전략', heavy: '전략' };
+
+      bingoSlots = selected.map(g => ({
+        name: g.name,
+        difficulty: diffMap[g.difficulty] || 2,
+        genre: genreMap[g.difficulty] || '가벼움',
+        img: g.img,
+        completed: false
+      }));
+      isBingoRewardClaimed = false;
+      saveData();
+      renderBingoBoard();
+      if (soundEnabled) playCardFlipSound();
+    });
+  }
+
   const captureBingoBtn = document.getElementById('captureBingoBtn');
   captureBingoBtn.addEventListener('click', () => {
     captureBingoBtn.disabled = true;
@@ -2418,6 +2500,19 @@ let isRouletteSpinning = false;
 let isDiceRolling = false;
 let roulettePlayerCount = 4;
 
+const ROULE_COLORS = [
+  { hex: '#ff7675', name: '빨강' },
+  { hex: '#fdcb6e', name: '노랑' },
+  { hex: '#00cec9', name: '청록' },
+  { hex: '#6c5ce7', name: '보라' },
+  { hex: '#e84393', name: '분홍' },
+  { hex: '#0984e3', name: '파랑' },
+  { hex: '#2ecc71', name: '초록' },
+  { hex: '#f1c40f', name: '금색' },
+  { hex: '#e67e22', name: '주황' },
+  { hex: '#16a085', name: '다크민트' }
+];
+
 // Ladder Game State
 let ladderData = {
   numCols: 3,
@@ -2426,7 +2521,8 @@ let ladderData = {
   players: [],
   results: [],
   pathsTraced: [],
-  pathsAnimation: null
+  pathsAnimation: null,
+  isViewingAll: false
 };
 
 function initPlayTools() {
@@ -2546,7 +2642,8 @@ function initPlayTools() {
       setTimeout(() => {
         isRouletteSpinning = false;
         spinRouletteBtn.disabled = false;
-        rouletteResult.innerHTML = `선 플레이어: <span style="color:#6c5ce7; font-size:1.4rem;">🎉 ${winnerIndex + 1}번 🎉</span>`;
+        const winColor = ROULE_COLORS[winnerIndex % ROULE_COLORS.length];
+        rouletteResult.innerHTML = `선 플레이어: <span style="display:inline-flex;align-items:center;gap:6px;font-size:1.4rem;font-weight:800;">🎉 <span style="display:inline-block;width:18px;height:18px;border-radius:50%;background:${winColor.hex};border:2px solid rgba(0,0,0,0.15);"></span> ${winColor.name} 팀 🎉</span>`;
         if (soundEnabled) triggerConfetti();
       }, 4000);
     });
@@ -2603,6 +2700,7 @@ function initPlayTools() {
   if (resetLadderBtn) resetLadderBtn.addEventListener('click', () => {
     generateLadder();
   });
+  if (viewLadderResultBtn) viewLadderResultBtn.addEventListener('click', viewLadderResults);
 
   if (ladderCanvas) {
     ladderCanvas.addEventListener('click', handleLadderCanvasClick);
@@ -2651,6 +2749,16 @@ function initPlayTools() {
   updateToolsSoundUI();
 
   // --- 6. Game Recommender Setup ---
+  const parsePlayers = (str) => {
+    const m = str.match(/(\d+)\s*-\s*(\d+)/);
+    if (m) return { minP: parseInt(m[1]), maxP: parseInt(m[2]) };
+    const s = str.match(/(\d+)\s*\+?/);
+    if (s) return { minP: parseInt(s[1]), maxP: 99 };
+    return { minP: 1, maxP: 99 };
+  };
+
+  const diffWeight = { easy: 1.5, medium: 2.5, heavy: 3.5 };
+
   if (btnGetRecommend) {
     btnGetRecommend.addEventListener('click', () => {
       if (soundEnabled) playClickSound();
@@ -2658,15 +2766,15 @@ function initPlayTools() {
       const timeVal = recommendTime.value;
       const diffVal = recommendDiff.value;
 
-      // Filter encyclopedia games
-      let candidates = ENCYCLOPEDIA_DB.filter(game => {
-        // Player count check
-        if (playersVal < game.minP || playersVal > game.maxP) return false;
-        
-        // Time check
+      const allGames = Object.values(ENCYCLOPEDIA_DB);
+
+      let candidates = allGames.filter(game => {
+        const { minP, maxP } = parsePlayers(game.players);
+        if (playersVal < minP || playersVal > maxP) return false;
+
         if (timeVal !== 'all') {
           const maxTime = parseInt(timeVal);
-          let estTime = 30; // default
+          let estTime = 30;
           if (game.name.includes('카탄')) estTime = 75;
           else if (game.name.includes('스플렌더')) estTime = 40;
           else if (game.name.includes('루미큐브')) estTime = 35;
@@ -2676,36 +2784,36 @@ function initPlayTools() {
           else if (game.name.includes('카르카손')) estTime = 40;
           else if (game.name.includes('딕싯')) estTime = 30;
           else if (game.name.includes('우노')) estTime = 20;
-
           if (estTime > maxTime) return false;
         }
 
-        // Difficulty check
         if (diffVal !== 'all') {
-          if (diffVal === 'easy' && game.weight > 2.0) return false;
-          if (diffVal === 'medium' && (game.weight <= 2.0 || game.weight > 3.0)) return false;
-          if (diffVal === 'heavy' && game.weight <= 3.0) return false;
+          const w = diffWeight[game.difficulty] || 2.0;
+          if (diffVal === 'easy' && w > 2.0) return false;
+          if (diffVal === 'medium' && (w <= 2.0 || w > 3.0)) return false;
+          if (diffVal === 'heavy' && w <= 3.0) return false;
         }
 
         return true;
       });
 
       if (candidates.length === 0) {
-        candidates = ENCYCLOPEDIA_DB;
+        candidates = allGames;
       }
 
       const selectedGame = candidates[Math.floor(Math.random() * candidates.length)];
+      const { minP, maxP } = parsePlayers(selectedGame.players);
       
       recommendGameTitle.innerText = selectedGame.name;
       recommendGameImg.src = getGameImage(selectedGame.name);
       
-      let diffLabel = "가벼움 (쉬움)";
-      if (selectedGame.weight > 3.0) diffLabel = "묵직함 (하드)";
-      else if (selectedGame.weight > 2.0) diffLabel = "보통 (미디엄)";
+      const diffLabels = { easy: '가벼움 (쉬움)', medium: '보통 (미디엄)', heavy: '묵직함 (하드)' };
+      const diffLabel = diffLabels[selectedGame.difficulty] || '보통 (미디엄)';
+      const w = diffWeight[selectedGame.difficulty] || 2.0;
       
       recommendGameDesc.innerHTML = `
-        <strong>난이도</strong>: ${diffLabel} (${selectedGame.weight})<br>
-        <strong>인원</strong>: ${selectedGame.minP}~${selectedGame.maxP}명<br>
+        <strong>난이도</strong>: ${diffLabel} (${w})<br>
+        <strong>인원</strong>: ${minP}~${maxP}명<br>
         <span style="display:inline-block; margin-top:5px; color:var(--text-muted); font-size:0.75rem;">💡 오늘 이 보드게임 상자를 탑에 차곡차곡 올려 보세요!</span>
       `;
       recommendResultCard.style.display = 'flex';
@@ -3100,10 +3208,9 @@ function updateRouletteWheel() {
   const count = roulettePlayerCount;
   const anglePerPlayer = 360 / count;
   let conicParts = [];
-  const colors = ['#ff7675', '#fdcb6e', '#00cec9', '#6c5ce7', '#e84393', '#0984e3', '#2ecc71', '#f1c40f', '#e67e22', '#16a085'];
   
   for (let i = 0; i < count; i++) {
-    const color = colors[i % colors.length];
+    const color = ROULE_COLORS[i % ROULE_COLORS.length].hex;
     conicParts.push(`${color} ${i * anglePerPlayer}deg ${(i + 1) * anglePerPlayer}deg`);
   }
   
@@ -3371,8 +3478,9 @@ function handleLadderCanvasClick(e) {
   }
 }
 
-function traceLadderPath(startCol) {
+function traceLadderPath(startCol, onComplete) {
   if (ladderData.pathsTraced.some(p => p.startCol === startCol)) {
+    if (onComplete) onComplete();
     return;
   }
 
@@ -3397,6 +3505,7 @@ function traceLadderPath(startCol) {
       if (soundEnabled) playCardFlipSound();
       
       drawLadder();
+      if (onComplete) setTimeout(onComplete, 300);
       return;
     }
 
@@ -3415,4 +3524,39 @@ function traceLadderPath(startCol) {
   };
 
   animatePath();
+}
+
+function viewLadderResults() {
+  if (ladderData.players.length === 0) {
+    ladderResultText.innerText = '먼저 사다리를 만들어 주세요!';
+    if (soundEnabled) playClickSound();
+    return;
+  }
+  if (soundEnabled) playClickSound();
+
+  ladderData.pathsTraced = [];
+  drawLadder();
+  ladderResultText.innerText = '결과를 공개 중입니다...';
+
+  const colors = ['#ef4444', '#f59e0b', '#10b981', '#3b82f6', '#ec4899', '#8b5cf6'];
+
+  let currentCol = 0;
+  const traceNext = () => {
+    if (currentCol >= ladderData.players.length) {
+      let summary = '<div style="display:flex;flex-direction:column;gap:4px;font-size:0.9rem;text-align:center;">';
+      ladderData.players.forEach((player, idx) => {
+        const c = colors[idx % colors.length];
+        const result = ladderData.results[idx];
+        summary += `<div><span style="color:${c};font-weight:bold;">${player}</span> → <span style="font-weight:800;color:#b25d22;">🎉 ${result}</span></div>`;
+      });
+      summary += '</div>';
+      ladderResultText.innerHTML = summary;
+      if (soundEnabled) triggerConfetti();
+      return;
+    }
+    traceLadderPath(currentCol, traceNext);
+    currentCol++;
+  };
+
+  traceNext();
 }

@@ -242,6 +242,9 @@
               <button class="btn btn-reward" id="claimRewardBtn" disabled style="flex: 1; background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); color: white; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; border: none; padding: 0.8rem; border-radius: 12px; cursor: not-allowed; opacity: 0.6; transition: all 0.3s ease;">
                 <i data-lucide="gift"></i> 미션 완료 보상 받기
               </button>
+              <button class="btn btn-secondary" id="shuffleBingoBtn" style="flex: 1; justify-content: center; font-size: 0.8rem;">
+                <i data-lucide="shuffle"></i> 빙고 랜덤 생성
+              </button>
               <button class="btn btn-capture" id="captureBingoBtn" style="flex: 1;">
                 <i data-lucide="camera"></i> 빙고 이미지 저장
               </button>
@@ -354,8 +357,11 @@
             <!-- 결과 안내 및 액션 버튼 -->
             <div id="ladderResultText" style="font-size: 0.95rem; font-weight: 700; color: var(--text-muted); min-height: 25px; line-height: 1.4; word-break: keep-all;">이름을 클릭하여 결과를 하나씩 확인해 보세요!</div>
             <div style="display: flex; gap: 8px;">
+              <button class="btn btn-primary" id="generateLadderBtn" style="flex: 1; justify-content: center; font-weight: bold; font-size: 0.9rem;"><i data-lucide="grid-3x3"></i> 사다리 만들기</button>
+              <button class="btn btn-primary" id="viewLadderResultBtn" style="flex: 1; justify-content: center; font-weight: bold; font-size: 0.9rem;"><i data-lucide="eye"></i> 결과보기</button>
+            </div>
+            <div style="display: flex; gap: 8px;">
               <button class="btn btn-secondary" id="resetLadderBtn" style="flex: 1; justify-content: center; font-size: 0.85rem;"><i data-lucide="rotate-ccw"></i> 다시 그리기</button>
-              <button class="btn btn-primary" id="generateLadderBtn" style="flex: 2; justify-content: center; font-weight: bold; font-size: 0.9rem;"><i data-lucide="grid-3x3"></i> 사다리 만들기!</button>
             </div>
           </div>
 

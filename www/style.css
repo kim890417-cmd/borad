@@ -1851,6 +1851,11 @@ select:focus {
   height: 48px;
 }
 
+.bingo-btn-row {
+  display: flex;
+  gap: 10px;
+}
+
 /* Responsive CSS */
 @media (max-width: 900px) {
   /* Bottom navigation bar styles */
@@ -2240,6 +2245,16 @@ select:focus {
   
   .meeple-stamp {
     font-size: 1.8rem;
+  }
+  
+  .bingo-btn-row {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+  
+  .bingo-board-wrapper {
+    padding: 0.5rem !important;
+    border-width: 4px !important;
   }
 }
 

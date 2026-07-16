@@ -1,7 +1,7 @@
 {
-  "name": "dadok-board",
+  "name": "board-village",
   "version": "1.0.0",
-  "description": "다독다독보드 - 안드로이드 앱",
+  "description": "보드빌리지 - 안드로이드 앱",
   "main": "index.js",
   "scripts": {
     "build": "echo 'No build step required for vanilla JS'",

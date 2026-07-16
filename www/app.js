@@ -1667,7 +1667,7 @@ function setupEventListeners() {
       const dataUrl = canvas.toDataURL('image/jpeg', 0.7);
       
       const link = document.createElement('a');
-      link.download = `다독다독보드-탑-${new Date().toISOString().substring(2,10)}.jpg`;
+      link.download = `보드빌리지-탑-${new Date().toISOString().substring(2,10)}.jpg`;
       link.href = dataUrl;
       link.click();
       

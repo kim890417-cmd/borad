@@ -199,6 +199,16 @@
           <div class="rank-grid" id="rankGrid">
             <!-- JS로 랭킹을 그려냄 -->
           </div>
+          
+          <!-- 업적 및 배지 수집 섹션 -->
+          <div class="achievements-section" style="background: var(--card-bg); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color); margin-top: 20px; box-shadow: var(--shadow-sm); width: 100%; box-sizing: border-box;">
+            <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; color: var(--text-main);">
+              <i data-lucide="award" style="color: var(--primary-color);"></i> 보드빌리지 해금 업적 &amp; 칭호
+            </h3>
+            <div class="achievements-grid" id="achievementsGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+              <!-- JS에서 실시간 판정 후 업적 배지 카드를 렌더링 -->
+            </div>
+          </div>
         </div>
 
         <!-- 탭 패널 4: 월간 빙고 미션 -->
@@ -245,11 +255,14 @@
         <!-- 탭 패널 5: 플레이 툴 (도구) -->
         <div class="tab-panel" id="toolsPanel" style="display: none; flex-direction: column; gap: 20px; max-width: 620px; margin: 0 auto;">
           
-          <!-- 툴 선택 서브 버튼 -->
-          <div class="tools-sub-tabs" style="display: flex; gap: 8px; justify-content: center; margin-bottom: 10px;">
-            <button class="btn btn-secondary active" id="subTabRoulette" style="flex: 1; padding: 0.6rem; font-size: 0.85rem; border-radius: 8px;">선 뽑기 🎡</button>
-            <button class="btn btn-secondary" id="subTabDice" style="flex: 1; padding: 0.6rem; font-size: 0.85rem; border-radius: 8px;">주사위 🎲</button>
-            <button class="btn btn-secondary" id="subTabLadder" style="flex: 1; padding: 0.6rem; font-size: 0.85rem; border-radius: 8px;">사다리 🪜</button>
+          <!-- 툴 선택 서브 버튼: 3x2 격자형 탭 레이아웃 -->
+          <div class="tools-sub-tabs" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px;">
+            <button class="btn btn-secondary active" id="subTabRoulette" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">선 뽑기 🎡</button>
+            <button class="btn btn-secondary" id="subTabDice" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">주사위 🎲</button>
+            <button class="btn btn-secondary" id="subTabLadder" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">사다리 🪜</button>
+            <button class="btn btn-secondary" id="subTabRecommend" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">추천기 🎯</button>
+            <button class="btn btn-secondary" id="subTabTimer" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">타이머 ⏱️</button>
+            <button class="btn btn-secondary" id="subTabScoreboard" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">점수판 📝</button>
           </div>
 
           <!-- 1. 선 뽑기 (룰렛) 콘텐츠 -->
@@ -343,6 +356,120 @@
             <div style="display: flex; gap: 8px;">
               <button class="btn btn-secondary" id="resetLadderBtn" style="flex: 1; justify-content: center; font-size: 0.85rem;"><i data-lucide="rotate-ccw"></i> 다시 그리기</button>
               <button class="btn btn-primary" id="generateLadderBtn" style="flex: 2; justify-content: center; font-weight: bold; font-size: 0.9rem;"><i data-lucide="grid-3x3"></i> 사다리 만들기!</button>
+            </div>
+          </div>
+
+          <!-- 4. 오늘의 추천기 콘텐츠 -->
+          <div class="tool-content-section" id="toolSectionRecommend" style="display: none; flex-direction: column; gap: 15px; background: var(--card-bg); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color); text-align: center;">
+            <h3 style="font-size: 1.2rem; font-weight: 700;">🎯 오늘의 보드게임 추천</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;">플레이할 인원수와 난이도를 선택해 보세요.</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px; text-align: left;">
+              <div class="form-group">
+                <label style="font-size: 0.8rem; font-weight: 700; margin-bottom: 4px;">참여 인원수</label>
+                <select id="recommendPlayers" style="padding: 0.5rem; font-size: 0.85rem; border-radius: 8px; width: 100%;">
+                  <option value="1">1명 (1인 플레이)</option>
+                  <option value="2" selected>2명</option>
+                  <option value="3">3명</option>
+                  <option value="4">4명</option>
+                  <option value="5">5명 이상</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label style="font-size: 0.8rem; font-weight: 700; margin-bottom: 4px;">가용한 최대 시간</label>
+                <select id="recommendTime" style="padding: 0.5rem; font-size: 0.85rem; border-radius: 8px; width: 100%;">
+                  <option value="all" selected>상관없음</option>
+                  <option value="30">30분 이하</option>
+                  <option value="60">1시간 이하</option>
+                  <option value="120">2시간 이하</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label style="font-size: 0.8rem; font-weight: 700; margin-bottom: 4px;">난이도</label>
+                <select id="recommendDiff" style="padding: 0.5rem; font-size: 0.85rem; border-radius: 8px; width: 100%;">
+                  <option value="all" selected>상관없음</option>
+                  <option value="easy">가벼움</option>
+                  <option value="medium">보통</option>
+                  <option value="heavy">묵직함</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="btnGetRecommend" style="width: 100%; justify-content: center; font-weight: bold; padding: 0.8rem; border-radius: 12px; margin-top: 5px;">
+              <i data-lucide="sparkles"></i> 오늘의 게임 추천받기
+            </button>
+
+            <!-- 추천 결과 영역 -->
+            <div id="recommendResultCard" style="display: none; background: rgba(0,0,0,0.03); border: 1.5px dashed var(--border-color); border-radius: 16px; padding: 1.2rem; margin-top: 10px; flex-direction: column; align-items: center; gap: 10px; animation: fadeIn 0.3s ease;">
+              <img id="recommendGameImg" src="" style="width: 70px; height: 70px; border-radius: 12px; object-fit: cover; border: 1px solid var(--border-color);" alt="game img">
+              <div>
+                <h4 id="recommendGameTitle" style="font-weight: 800; font-size: 1.1rem; color: var(--primary-color);">루미큐브</h4>
+                <p id="recommendGameDesc" style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; margin-top: 4px;">설명이 로드됩니다.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. 제한시간 타이머 콘텐츠 -->
+          <div class="tool-content-section" id="toolSectionTimer" style="display: none; flex-direction: column; gap: 15px; background: var(--card-bg); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color); text-align: center;">
+            <h3 style="font-size: 1.2rem; font-weight: 700;">⏱️ 턴 제한 타이머</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;">제한시간을 고르고 타이머를 가동해 보세요.</p>
+            
+            <!-- 타이머 시각화 영역 -->
+            <div style="position: relative; width: 140px; height: 140px; margin: 10px auto; display: flex; align-items: center; justify-content: center;">
+              <!-- 백그라운드 원형 게이지 -->
+              <svg width="100%" height="100%" viewBox="0 0 100 100" style="transform: rotate(-90deg);">
+                <circle cx="50" cy="50" r="42" stroke="rgba(0,0,0,0.05)" stroke-width="8" fill="transparent"></circle>
+                <circle id="timerProgressRing" cx="50" cy="50" r="42" stroke="var(--primary-color)" stroke-width="8" fill="transparent" stroke-dasharray="263.89" stroke-dashoffset="0" style="transition: stroke-dashoffset 0.1s linear; stroke-linecap: round;"></circle>
+              </svg>
+              <!-- 텍스트 시간 표시 -->
+              <div id="timerDisplay" style="position: absolute; font-size: 2.2rem; font-weight: 800; color: var(--text-main); font-family: monospace;">01:00</div>
+            </div>
+
+            <!-- 프리셋 시간 버튼 -->
+            <div style="display: flex; gap: 5px; justify-content: center; width: 100%;">
+              <button class="btn btn-secondary btn-sm" data-time-preset="30" style="flex: 1; padding: 0.4rem; font-size: 0.75rem; border-radius: 6px;">30초</button>
+              <button class="btn btn-secondary btn-sm active" data-time-preset="60" style="flex: 1; padding: 0.4rem; font-size: 0.75rem; border-radius: 6px;">1분</button>
+              <button class="btn btn-secondary btn-sm" data-time-preset="180" style="flex: 1; padding: 0.4rem; font-size: 0.75rem; border-radius: 6px;">3분</button>
+              <button class="btn btn-secondary btn-sm" data-time-preset="300" style="flex: 1; padding: 0.4rem; font-size: 0.75rem; border-radius: 6px;">5분</button>
+            </div>
+
+            <!-- 제어 버튼들 -->
+            <div style="display: flex; gap: 8px; margin-top: 5px;">
+              <button class="btn btn-secondary" id="btnResetTimer" style="flex: 1; justify-content: center; font-size: 0.85rem;"><i data-lucide="rotate-ccw"></i> 리셋</button>
+              <button class="btn btn-primary" id="btnStartPauseTimer" style="flex: 2; justify-content: center; font-weight: bold; font-size: 0.9rem;"><i data-lucide="play" id="timerPlayIcon"></i> 시작</button>
+            </div>
+          </div>
+
+          <!-- 6. 디지털 점수 계산판 콘텐츠 -->
+          <div class="tool-content-section" id="toolSectionScoreboard" style="display: none; flex-direction: column; gap: 15px; background: var(--card-bg); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color); text-align: center;">
+            <h3 style="font-size: 1.2rem; font-weight: 700;">📝 디지털 점수판</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;">플레이어를 추가하고 점수를 계산해 보세요.</p>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+              <button type="button" class="btn btn-secondary btn-sm" id="btnScoreAddPlayer" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 4px;"><i data-lucide="user-plus" style="width: 14px; height: 14px;"></i> 인원 추가</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnScoreAddRound" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 4px;"><i data-lucide="plus-circle" style="width: 14px; height: 14px;"></i> 라운드 추가</button>
+            </div>
+
+            <!-- 점수 테이블 래퍼 -->
+            <div style="width: 100%; overflow-x: auto; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-color);">
+              <table id="scoreTable" style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.8rem;">
+                <thead>
+                  <tr style="border-bottom: 1.5px solid var(--border-color); background: rgba(0,0,0,0.02);">
+                    <th style="padding: 6px 4px; font-weight: 700;">이름</th>
+                    <th style="padding: 6px 4px; font-weight: 700; width: 60px;">R1</th>
+                    <th style="padding: 6px 4px; font-weight: 700; width: 60px; color: var(--primary-color);">합계</th>
+                    <th style="padding: 6px 4px; font-weight: 700; width: 30px;">삭제</th>
+                  </tr>
+                </thead>
+                <tbody id="scoreTableBody">
+                  <!-- JS에서 행 동적 추가 -->
+                </tbody>
+              </table>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 5px;">
+              <button type="button" class="btn btn-secondary" id="btnScoreReset" style="flex: 1; justify-content: center; font-size: 0.85rem;"><i data-lucide="rotate-ccw"></i> 리셋</button>
+              <button type="button" class="btn btn-primary" id="btnScoreSaveLog" style="flex: 2; justify-content: center; font-weight: bold; font-size: 0.9rem;"><i data-lucide="save"></i> 플레이 로그 연동 기록</button>
             </div>
           </div>
 

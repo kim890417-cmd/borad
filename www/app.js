@@ -618,9 +618,16 @@ const toolsPanel = document.getElementById('toolsPanel');
 const subTabRoulette = document.getElementById('subTabRoulette');
 const subTabDice = document.getElementById('subTabDice');
 const subTabLadder = document.getElementById('subTabLadder');
+const subTabRecommend = document.getElementById('subTabRecommend');
+const subTabTimer = document.getElementById('subTabTimer');
+const subTabScoreboard = document.getElementById('subTabScoreboard');
+
 const toolSectionRoulette = document.getElementById('toolSectionRoulette');
 const toolSectionDice = document.getElementById('toolSectionDice');
 const toolSectionLadder = document.getElementById('toolSectionLadder');
+const toolSectionRecommend = document.getElementById('toolSectionRecommend');
+const toolSectionTimer = document.getElementById('toolSectionTimer');
+const toolSectionScoreboard = document.getElementById('toolSectionScoreboard');
 
 const roulettePlayers = document.getElementById('roulettePlayers');
 const rouletteWheel = document.getElementById('rouletteWheel');
@@ -638,6 +645,30 @@ const ladderCanvas = document.getElementById('ladderCanvas');
 const ladderResultText = document.getElementById('ladderResultText');
 const resetLadderBtn = document.getElementById('resetLadderBtn');
 const generateLadderBtn = document.getElementById('generateLadderBtn');
+
+// New Tools DOM References
+const recommendPlayers = document.getElementById('recommendPlayers');
+const recommendTime = document.getElementById('recommendTime');
+const recommendDiff = document.getElementById('recommendDiff');
+const btnGetRecommend = document.getElementById('btnGetRecommend');
+const recommendResultCard = document.getElementById('recommendResultCard');
+const recommendGameImg = document.getElementById('recommendGameImg');
+const recommendGameTitle = document.getElementById('recommendGameTitle');
+const recommendGameDesc = document.getElementById('recommendGameDesc');
+
+const timerProgressRing = document.getElementById('timerProgressRing');
+const timerDisplay = document.getElementById('timerDisplay');
+const btnResetTimer = document.getElementById('btnResetTimer');
+const btnStartPauseTimer = document.getElementById('btnStartPauseTimer');
+const timerPlayIcon = document.getElementById('timerPlayIcon');
+
+const btnScoreAddPlayer = document.getElementById('btnScoreAddPlayer');
+const btnScoreAddRound = document.getElementById('btnScoreAddRound');
+const scoreTableBody = document.getElementById('scoreTableBody');
+const btnScoreReset = document.getElementById('btnScoreReset');
+const btnScoreSaveLog = document.getElementById('btnScoreSaveLog');
+
+const achievementsGrid = document.getElementById('achievementsGrid');
 
 const cardDrawOverlay = document.getElementById('cardDrawOverlay');
 const flipCard = document.getElementById('flipCard');
@@ -744,6 +775,7 @@ function render(isNewAddition = false) {
   renderLogFeed();
   renderGameInfoTab();
   renderRankingTab();
+  renderAchievements();
   renderCharacters();
   updateSoundButtonUI();
   if (typeof renderBingoBoard === 'function') {
@@ -1863,6 +1895,10 @@ function setupEventListeners() {
       if (targetTab === 'bingo') {
         renderBingoBoard();
       }
+      if (targetTab === 'rank') {
+        renderRankingTab();
+        renderAchievements();
+      }
     });
   });
 
@@ -2396,8 +2432,8 @@ function initPlayTools() {
   if (!toolsPanel) return;
 
   // Sub Tab switching
-  const subTabs = [subTabRoulette, subTabDice, subTabLadder];
-  const sections = [toolSectionRoulette, toolSectionDice, toolSectionLadder];
+  const subTabs = [subTabRoulette, subTabDice, subTabLadder, subTabRecommend, subTabTimer, subTabScoreboard];
+  const sections = [toolSectionRoulette, toolSectionDice, toolSectionLadder, toolSectionRecommend, toolSectionTimer, toolSectionScoreboard];
 
   subTabs.forEach((tab, index) => {
     tab.addEventListener('click', () => {
@@ -2569,6 +2605,312 @@ function initPlayTools() {
   }
   updateToolsSoundUI();
 
+  // --- 6. Game Recommender Setup ---
+  if (btnGetRecommend) {
+    btnGetRecommend.addEventListener('click', () => {
+      if (soundEnabled) playClickSound();
+      const playersVal = parseInt(recommendPlayers.value);
+      const timeVal = recommendTime.value;
+      const diffVal = recommendDiff.value;
+
+      // Filter encyclopedia games
+      let candidates = ENCYCLOPEDIA_DB.filter(game => {
+        // Player count check
+        if (playersVal < game.minP || playersVal > game.maxP) return false;
+        
+        // Time check
+        if (timeVal !== 'all') {
+          const maxTime = parseInt(timeVal);
+          let estTime = 30; // default
+          if (game.name.includes('카탄')) estTime = 75;
+          else if (game.name.includes('스플렌더')) estTime = 40;
+          else if (game.name.includes('루미큐브')) estTime = 35;
+          else if (game.name.includes('할리갈리')) estTime = 15;
+          else if (game.name.includes('젠가')) estTime = 10;
+          else if (game.name.includes('티켓 투 라이드')) estTime = 50;
+          else if (game.name.includes('카르카손')) estTime = 40;
+          else if (game.name.includes('딕싯')) estTime = 30;
+          else if (game.name.includes('우노')) estTime = 20;
+
+          if (estTime > maxTime) return false;
+        }
+
+        // Difficulty check
+        if (diffVal !== 'all') {
+          if (diffVal === 'easy' && game.weight > 2.0) return false;
+          if (diffVal === 'medium' && (game.weight <= 2.0 || game.weight > 3.0)) return false;
+          if (diffVal === 'heavy' && game.weight <= 3.0) return false;
+        }
+
+        return true;
+      });
+
+      if (candidates.length === 0) {
+        candidates = ENCYCLOPEDIA_DB;
+      }
+
+      const selectedGame = candidates[Math.floor(Math.random() * candidates.length)];
+      
+      recommendGameTitle.innerText = selectedGame.name;
+      recommendGameImg.src = getGameImage(selectedGame.name);
+      
+      let diffLabel = "가벼움 (쉬움)";
+      if (selectedGame.weight > 3.0) diffLabel = "묵직함 (하드)";
+      else if (selectedGame.weight > 2.0) diffLabel = "보통 (미디엄)";
+      
+      recommendGameDesc.innerHTML = `
+        <strong>난이도</strong>: ${diffLabel} (${selectedGame.weight})<br>
+        <strong>인원</strong>: ${selectedGame.minP}~${selectedGame.maxP}명<br>
+        <span style="display:inline-block; margin-top:5px; color:var(--text-muted); font-size:0.75rem;">💡 오늘 이 보드게임 상자를 탑에 차곡차곡 올려 보세요!</span>
+      `;
+      recommendResultCard.style.display = 'flex';
+      
+      if (soundEnabled) triggerConfetti();
+    });
+  }
+
+  // --- 7. Turn Timer Setup ---
+  let timerInterval = null;
+  let timerTotalSeconds = 60;
+  let timerRemainingSeconds = 60;
+  let isTimerRunning = false;
+
+  const updateTimerDisplay = () => {
+    const mins = Math.floor(timerRemainingSeconds / 60);
+    const secs = timerRemainingSeconds % 60;
+    timerDisplay.innerText = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+    if (timerProgressRing) {
+      const totalDash = 263.89; // 2 * Math.PI * 42
+      const offset = totalDash * (1 - timerRemainingSeconds / timerTotalSeconds);
+      timerProgressRing.style.strokeDashoffset = offset;
+    }
+  };
+
+  const startPauseTimer = () => {
+    if (soundEnabled) playClickSound();
+    if (isTimerRunning) {
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      timerPlayIcon.setAttribute('data-lucide', 'play');
+      if (window.lucide) window.lucide.createIcons();
+    } else {
+      isTimerRunning = true;
+      timerPlayIcon.setAttribute('data-lucide', 'pause');
+      if (window.lucide) window.lucide.createIcons();
+
+      timerInterval = setInterval(() => {
+        timerRemainingSeconds--;
+        updateTimerDisplay();
+
+        if (timerRemainingSeconds <= 0) {
+          clearInterval(timerInterval);
+          isTimerRunning = false;
+          timerPlayIcon.setAttribute('data-lucide', 'play');
+          if (window.lucide) window.lucide.createIcons();
+          
+          timerDisplay.style.color = '#ef4444';
+          timerDisplay.style.transform = 'scale(1.2)';
+          if (soundEnabled) {
+            playWinSound();
+          }
+          setTimeout(() => {
+            timerDisplay.style.color = '';
+            timerDisplay.style.transform = '';
+          }, 1500);
+
+          timerRemainingSeconds = timerTotalSeconds;
+          updateTimerDisplay();
+        } else if (timerRemainingSeconds <= 5) {
+          if (soundEnabled) playClickSound();
+        }
+      }, 1000);
+    }
+  };
+
+  const resetTimer = () => {
+    if (soundEnabled) playClickSound();
+    clearInterval(timerInterval);
+    isTimerRunning = false;
+    timerRemainingSeconds = timerTotalSeconds;
+    timerPlayIcon.setAttribute('data-lucide', 'play');
+    if (window.lucide) window.lucide.createIcons();
+    updateTimerDisplay();
+  };
+
+  if (btnStartPauseTimer) {
+    btnStartPauseTimer.addEventListener('click', startPauseTimer);
+  }
+  if (btnResetTimer) {
+    btnResetTimer.addEventListener('click', resetTimer);
+  }
+
+  const presetBtns = document.querySelectorAll('[data-time-preset]');
+  presetBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      if (soundEnabled) playClickSound();
+      presetBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const val = parseInt(btn.getAttribute('data-time-preset'));
+      timerTotalSeconds = val;
+      timerRemainingSeconds = val;
+      resetTimer();
+    });
+  });
+
+  // --- 8. Scoreboard Setup ---
+  let scoreboardPlayers = [
+    { name: "참여자1", scores: [0] },
+    { name: "참여자2", scores: [0] }
+  ];
+
+  const renderScoreboard = () => {
+    if (!scoreTableBody) return;
+    scoreTableBody.innerHTML = '';
+
+    const roundCount = scoreboardPlayers[0].scores.length;
+
+    const headerRow = document.querySelector('#scoreTable thead tr');
+    if (headerRow) {
+      headerRow.innerHTML = `<th style="padding: 6px 4px; font-weight: 700;">이름</th>`;
+      for (let r = 0; r < roundCount; r++) {
+        headerRow.innerHTML += `<th style="padding: 6px 4px; font-weight: 700; width: 50px;">R${r+1}</th>`;
+      }
+      headerRow.innerHTML += `<th style="padding: 6px 4px; font-weight: 700; width: 60px; color: var(--primary-color);">합계</th>`;
+      headerRow.innerHTML += `<th style="padding: 6px 4px; font-weight: 700; width: 30px;">삭제</th>`;
+    }
+
+    scoreboardPlayers.forEach((player, pIdx) => {
+      const tr = document.createElement('tr');
+      
+      let td = document.createElement('td');
+      td.style.padding = '4px';
+      td.innerHTML = `<input type="text" value="${player.name}" data-player-idx="${pIdx}" class="score-player-name-input">`;
+      tr.appendChild(td);
+
+      let total = 0;
+      for (let r = 0; r < roundCount; r++) {
+        const val = player.scores[r] || 0;
+        total += val;
+        td = document.createElement('td');
+        td.style.padding = '4px';
+        td.innerHTML = `<input type="number" value="${val}" data-player-idx="${pIdx}" data-round-idx="${r}" class="score-value-input">`;
+        tr.appendChild(td);
+      }
+
+      td = document.createElement('td');
+      td.style.padding = '6px 4px';
+      td.style.fontWeight = 'bold';
+      td.style.color = 'var(--primary-color)';
+      td.innerText = total;
+      tr.appendChild(td);
+
+      td = document.createElement('td');
+      td.style.padding = '4px';
+      td.innerHTML = `<button type="button" class="btn-delete-row" data-player-idx="${pIdx}" style="background:none; border:none; color:#ef4444; cursor:pointer; display:flex; align-items:center; justify-content:center; width:100%;"><i data-lucide="trash-2" style="width: 14px; height: 14px;"></i></button>`;
+      tr.appendChild(td);
+
+      scoreTableBody.appendChild(tr);
+    });
+
+    if (window.lucide) window.lucide.createIcons();
+
+    document.querySelectorAll('.score-player-name-input').forEach(input => {
+      input.addEventListener('change', (e) => {
+        const pIdx = parseInt(e.target.getAttribute('data-player-idx'));
+        scoreboardPlayers[pIdx].name = e.target.value;
+      });
+    });
+
+    document.querySelectorAll('.score-value-input').forEach(input => {
+      input.addEventListener('change', (e) => {
+        const pIdx = parseInt(e.target.getAttribute('data-player-idx'));
+        const rIdx = parseInt(e.target.getAttribute('data-round-idx'));
+        scoreboardPlayers[pIdx].scores[rIdx] = parseInt(e.target.value) || 0;
+        renderScoreboard();
+      });
+    });
+
+    document.querySelectorAll('.btn-delete-row').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        if (soundEnabled) playClickSound();
+        const pIdx = parseInt(btn.closest('button').getAttribute('data-player-idx'));
+        if (scoreboardPlayers.length <= 1) return;
+        scoreboardPlayers.splice(pIdx, 1);
+        renderScoreboard();
+      });
+    });
+  };
+
+  if (btnScoreAddPlayer) {
+    btnScoreAddPlayer.addEventListener('click', () => {
+      if (soundEnabled) playClickSound();
+      const roundCount = scoreboardPlayers[0].scores.length;
+      const newScores = Array(roundCount).fill(0);
+      scoreboardPlayers.push({ name: `참여자${scoreboardPlayers.length + 1}`, scores: newScores });
+      renderScoreboard();
+    });
+  }
+
+  if (btnScoreAddRound) {
+    btnScoreAddRound.addEventListener('click', () => {
+      if (soundEnabled) playClickSound();
+      scoreboardPlayers.forEach(p => {
+        p.scores.push(0);
+      });
+      renderScoreboard();
+    });
+  }
+
+  if (btnScoreReset) {
+    btnScoreReset.addEventListener('click', () => {
+      if (soundEnabled) playClickSound();
+      scoreboardPlayers = [
+        { name: "참여자1", scores: [0] },
+        { name: "참여자2", scores: [0] }
+      ];
+      renderScoreboard();
+    });
+  }
+
+  if (btnScoreSaveLog) {
+    btnScoreSaveLog.addEventListener('click', () => {
+      if (soundEnabled) playClickSound();
+      let highestScore = -Infinity;
+      let winnerName = "";
+      let companions = [];
+
+      scoreboardPlayers.forEach(p => {
+        const total = p.scores.reduce((a, b) => a + b, 0);
+        if (total > highestScore) {
+          highestScore = total;
+          winnerName = p.name;
+        }
+        companions.push(p.name);
+      });
+
+      modalTitle.innerText = "🎲 새 보드게임 플레이 기록";
+      submitBtn.innerText = "상자 탑에 올리기";
+      editingLogIdInput.value = "";
+      selectedGamePreview.style.display = 'none';
+
+      recordForm.reset();
+      document.getElementById('playDate').value = new Date().toISOString().substring(0, 10);
+      
+      document.getElementById('playCompanion').value = companions.filter(c => c !== winnerName).join(', ');
+      
+      const resultSelect = document.getElementById('playResult');
+      if (resultSelect) {
+        resultSelect.value = "win";
+      }
+
+      addModal.classList.add('active');
+    });
+  }
+
+  renderScoreboard();
+
   // 5. Help Guide Modal Close & Sub-tab Setup
   if (closeHelpModalBtn) {
     closeHelpModalBtn.addEventListener('click', () => {
@@ -2596,6 +2938,115 @@ function initPlayTools() {
         }
       });
     });
+  });
+}
+
+// --- 9. Achievements & Badges Engine ---
+function renderAchievements() {
+  if (!achievementsGrid) return;
+  achievementsGrid.innerHTML = '';
+
+  const totalLogs = logs.length;
+  
+  // 1. 루미 마스터: 루미큐브 5회 이상 플레이
+  const rummyCount = logs.filter(l => l.gameTitle && l.gameTitle.includes('루미큐브')).length;
+  const badgeRummy = {
+    emoji: "🧩",
+    title: "루미 마스터",
+    desc: "루미큐브 5회 이상 플레이 완료",
+    current: rummyCount,
+    target: 5,
+    unlocked: rummyCount >= 5
+  };
+
+  // 2. 인싸 보드게이머: 동반자 5명 이상 등록
+  const uniqueCompanions = new Set();
+  logs.forEach(l => {
+    if (l.companion) {
+      l.companion.split(',').forEach(c => {
+        const name = c.trim();
+        if (name) uniqueCompanions.add(name);
+      });
+    }
+  });
+  const companionCount = uniqueCompanions.size;
+  const badgeCompanion = {
+    emoji: "👥",
+    title: "인싸 보드게이머",
+    desc: "등록된 고유 동반자 5명 이상",
+    current: companionCount,
+    target: 5,
+    unlocked: companionCount >= 5
+  };
+
+  // 3. 올빼미 게이머: 밤 10시 이후 기록 존재 또는 8회 이상 플레이
+  const owlPlay = logs.some(l => l.notes && (l.notes.includes('밤') || l.notes.includes('새벽') || l.notes.includes('야간'))) || totalLogs >= 8;
+  const badgeOwl = {
+    emoji: "🦉",
+    title: "올빼미 게이머",
+    desc: "밤 10시 이후 플레이 기록 (or 8개 로그 기록)",
+    current: owlPlay ? 1 : 0,
+    target: 1,
+    unlocked: owlPlay
+  };
+
+  // 4. 다독다독 수집가: 도감 게임 5종 이상 해금
+  const uniqueGames = new Set(logs.map(l => l.gameTitle).filter(Boolean));
+  const uniqueGamesCount = uniqueGames.size;
+  const badgeCollector = {
+    emoji: "📚",
+    title: "다독다독 수집가",
+    desc: "도감 게임 5종 이상 플레이 완료",
+    current: uniqueGamesCount,
+    target: 5,
+    unlocked: uniqueGamesCount >= 5
+  };
+
+  // 5. 스피드스타: 플레이 시간 30분 이하 기록
+  const speedPlay = logs.some(l => l.playTime && l.playTime <= 30);
+  const badgeSpeed = {
+    emoji: "⚡",
+    title: "스피드스타",
+    desc: "플레이 타임 30분 이하 게임 완수",
+    current: speedPlay ? 1 : 0,
+    target: 1,
+    unlocked: speedPlay
+  };
+
+  // 6. 골든 메카: 월간 빙고 완료 보상 받기 성공
+  const goldenMecha = isBingoRewardClaimed;
+  const badgeGolden = {
+    emoji: "🤖",
+    title: "골든 메카",
+    desc: "월간 빙고 미션 최종 완료 보상 해금",
+    current: goldenMecha ? 1 : 0,
+    target: 1,
+    unlocked: goldenMecha
+  };
+
+  const badgeList = [badgeRummy, badgeCompanion, badgeOwl, badgeCollector, badgeSpeed, badgeGolden];
+
+  badgeList.forEach(badge => {
+    const card = document.createElement('div');
+    card.className = `achievement-card ${badge.unlocked ? 'unlocked' : 'locked'}`;
+
+    const percent = Math.min(100, (badge.current / badge.target) * 100);
+
+    card.innerHTML = `
+      <div class="achievement-icon">${badge.emoji}</div>
+      <div class="achievement-info">
+        <div class="achievement-title">${badge.title}</div>
+        <div class="achievement-desc">${badge.desc}</div>
+        <div style="font-size:0.65rem; color:var(--text-muted); margin-top:2px;">
+          진행도: ${badge.current} / ${badge.target} (${Math.round(percent)}%)
+        </div>
+        <div class="achievement-progress-bar-wrap">
+          <div class="achievement-progress-bar" style="width: ${percent}%;"></div>
+        </div>
+      </div>
+    `;
+
+    achievementsGrid.appendChild(card);
   });
 }
 

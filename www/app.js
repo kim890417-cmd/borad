@@ -2514,10 +2514,11 @@ function buildLadderInputs() {
     row.style.alignItems = 'center';
 
     const colorDot = document.createElement('span');
-    colorDot.style.width = '10px';
-    colorDot.style.height = '10px';
+    colorDot.style.width = '8px';
+    colorDot.style.height = '8px';
     colorDot.style.borderRadius = '50%';
     colorDot.style.backgroundColor = colors[i % colors.length];
+    colorDot.style.flexShrink = '0';
 
     const pInput = document.createElement('input');
     pInput.type = 'text';
@@ -2525,8 +2526,9 @@ function buildLadderInputs() {
     pInput.value = `참여자 ${i + 1}`;
     pInput.className = 'ladder-player-input';
     pInput.style.flex = '1';
-    pInput.style.padding = '0.4rem';
-    pInput.style.fontSize = '0.85rem';
+    pInput.style.minWidth = '0';
+    pInput.style.padding = '0.35rem 0.5rem';
+    pInput.style.fontSize = '0.8rem';
     pInput.style.borderRadius = '6px';
     pInput.style.border = '1px solid var(--border-color)';
     pInput.style.background = 'var(--card-bg)';
@@ -2537,8 +2539,9 @@ function buildLadderInputs() {
     rInput.placeholder = `결과 ${i + 1}`;
     rInput.className = 'ladder-result-input';
     rInput.style.flex = '1';
-    rInput.style.padding = '0.4rem';
-    rInput.style.fontSize = '0.85rem';
+    rInput.style.minWidth = '0';
+    rInput.style.padding = '0.35rem 0.5rem';
+    rInput.style.fontSize = '0.8rem';
     rInput.style.borderRadius = '6px';
     rInput.style.border = '1px solid var(--border-color)';
     rInput.style.background = 'var(--card-bg)';
@@ -2638,15 +2641,19 @@ function drawLadder() {
   ctx.textAlign = 'center';
   ctx.textBaseline = 'middle';
   
+  const rectWidth = Math.min(60, colWidth * 0.9);
   for (let i = 0; i < count; i++) {
     const x = ladderData.colsX[i];
     
     ctx.fillStyle = '#795548';
-    ctx.fillRect(x - 30, ladderCanvas.height - 24, 60, 20);
+    ctx.fillRect(x - rectWidth / 2, ladderCanvas.height - 24, rectWidth, 20);
     
     ctx.fillStyle = '#ffffff';
     let label = ladderData.results[i];
-    if (label.length > 5) label = label.substring(0, 4) + '..';
+    const maxChars = Math.max(2, Math.floor(rectWidth / 10));
+    if (label.length > maxChars) {
+      label = label.substring(0, maxChars - 1) + '..';
+    }
     ctx.fillText(label, x, ladderCanvas.height - 14);
   }
 

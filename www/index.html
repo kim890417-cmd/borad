@@ -474,15 +474,10 @@
           </div>
 
           <!-- 환경 설정 및 안내 카드 -->
-          <div style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 1rem; border-radius: 16px; display: flex; justify-content: space-around; align-items: center; box-shadow: var(--shadow-sm); margin-top: 10px; gap: 8px;">
-            <button class="btn btn-secondary" id="toolsThemeBtn" style="flex: 1; padding: 0.5rem; font-size: 0.8rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+          <!-- 환경 설정 카드 -->
+          <div style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 0.8rem 1rem; border-radius: 16px; display: flex; justify-content: flex-start; align-items: center; box-shadow: var(--shadow-sm); margin-top: 10px; gap: 8px;">
+            <button class="btn btn-secondary" id="toolsThemeBtn" style="padding: 0.5rem 1.2rem; font-size: 0.8rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 4px;">
               <i data-lucide="palette"></i> 테마
-            </button>
-            <button class="btn btn-secondary" id="toolsHelpBtn" style="flex: 1; padding: 0.5rem; font-size: 0.8rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 4px;">
-              <i data-lucide="help-circle"></i> 가이드
-            </button>
-            <button class="btn btn-secondary" id="toolsSoundBtn" style="flex: 1; padding: 0.5rem; font-size: 0.8rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 4px;">
-              <i data-lucide="volume-2" id="toolsSoundIcon"></i> 효과음
             </button>
           </div>
 
@@ -512,11 +507,11 @@
         </div>
 
         <!-- 선택된 게임 메타 정보 카드 -->
-        <div class="selected-game-preview" id="selectedGamePreview" style="display: none;">
-          <img src="" alt="Thumbnail" class="preview-thumbnail" id="previewImg">
-          <div class="preview-info">
-            <h4 id="previewTitle">선택된 게임 제목</h4>
-            <p class="preview-desc" id="previewDesc">게임 설명이 들어갑니다.</p>
+        <div class="selected-game-preview" id="selectedGamePreview" style="display: none; flex-direction: column; align-items: center; gap: 0.6rem; padding: 0.8rem; background: var(--bg-color); border-radius: 12px; border: 1px solid var(--border-color);">
+          <img src="" alt="Thumbnail" class="preview-thumbnail" id="previewImg" style="width: 80px; height: 80px; object-fit: cover; border-radius: 10px; flex-shrink: 0;">
+          <div class="preview-info" style="width: 100%; text-align: center;">
+            <h4 id="previewTitle" style="font-size: 0.95rem; margin-bottom: 4px;">선택된 게임 제목</h4>
+            <p class="preview-desc" id="previewDesc" style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">게임 설명이 들어갑니다.</p>
           </div>
           <input type="hidden" id="gameThumbnail" value="">
           <input type="hidden" id="gameDescription" value="">

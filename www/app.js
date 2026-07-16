@@ -646,27 +646,27 @@ const ladderResultText = document.getElementById('ladderResultText');
 const resetLadderBtn = document.getElementById('resetLadderBtn');
 const generateLadderBtn = document.getElementById('generateLadderBtn');
 
-// New Tools DOM References
-const recommendPlayers = document.getElementById('recommendPlayers');
-const recommendTime = document.getElementById('recommendTime');
-const recommendDiff = document.getElementById('recommendDiff');
-const btnGetRecommend = document.getElementById('btnGetRecommend');
-const recommendResultCard = document.getElementById('recommendResultCard');
-const recommendGameImg = document.getElementById('recommendGameImg');
-const recommendGameTitle = document.getElementById('recommendGameTitle');
-const recommendGameDesc = document.getElementById('recommendGameDesc');
+// New Tools DOM References (populated in initPlayTools after DOMContentLoaded)
+let recommendPlayers = null;
+let recommendTime = null;
+let recommendDiff = null;
+let btnGetRecommend = null;
+let recommendResultCard = null;
+let recommendGameImg = null;
+let recommendGameTitle = null;
+let recommendGameDesc = null;
 
-const timerProgressRing = document.getElementById('timerProgressRing');
-const timerDisplay = document.getElementById('timerDisplay');
-const btnResetTimer = document.getElementById('btnResetTimer');
-const btnStartPauseTimer = document.getElementById('btnStartPauseTimer');
-const timerPlayIcon = document.getElementById('timerPlayIcon');
+let timerProgressRing = null;
+let timerDisplay = null;
+let btnResetTimer = null;
+let btnStartPauseTimer = null;
+let timerPlayIcon = null;
 
-const btnScoreAddPlayer = document.getElementById('btnScoreAddPlayer');
-const btnScoreAddRound = document.getElementById('btnScoreAddRound');
-const scoreTableBody = document.getElementById('scoreTableBody');
-const btnScoreReset = document.getElementById('btnScoreReset');
-const btnScoreSaveLog = document.getElementById('btnScoreSaveLog');
+let btnScoreAddPlayer = null;
+let btnScoreAddRound = null;
+let scoreTableBody = null;
+let btnScoreReset = null;
+let btnScoreSaveLog = null;
 
 const achievementsGrid = document.getElementById('achievementsGrid');
 
@@ -2433,26 +2433,27 @@ function initPlayTools() {
   const toolsPanel = document.getElementById('toolsPanel');
   if (!toolsPanel) return;
 
-  const btnGetRecommend = document.getElementById('btnGetRecommend');
-  const recommendPlayers = document.getElementById('recommendPlayers');
-  const recommendTime = document.getElementById('recommendTime');
-  const recommendDiff = document.getElementById('recommendDiff');
-  const recommendResultCard = document.getElementById('recommendResultCard');
-  const recommendGameImg = document.getElementById('recommendGameImg');
-  const recommendGameTitle = document.getElementById('recommendGameTitle');
-  const recommendGameDesc = document.getElementById('recommendGameDesc');
+  // Populate global let references now that DOM is ready
+  btnGetRecommend = document.getElementById('btnGetRecommend');
+  recommendPlayers = document.getElementById('recommendPlayers');
+  recommendTime = document.getElementById('recommendTime');
+  recommendDiff = document.getElementById('recommendDiff');
+  recommendResultCard = document.getElementById('recommendResultCard');
+  recommendGameImg = document.getElementById('recommendGameImg');
+  recommendGameTitle = document.getElementById('recommendGameTitle');
+  recommendGameDesc = document.getElementById('recommendGameDesc');
 
-  const timerProgressRing = document.getElementById('timerProgressRing');
-  const timerDisplay = document.getElementById('timerDisplay');
-  const btnResetTimer = document.getElementById('btnResetTimer');
-  const btnStartPauseTimer = document.getElementById('btnStartPauseTimer');
-  const timerPlayIcon = document.getElementById('timerPlayIcon');
+  timerProgressRing = document.getElementById('timerProgressRing');
+  timerDisplay = document.getElementById('timerDisplay');
+  btnResetTimer = document.getElementById('btnResetTimer');
+  btnStartPauseTimer = document.getElementById('btnStartPauseTimer');
+  timerPlayIcon = document.getElementById('timerPlayIcon');
 
-  const btnScoreAddPlayer = document.getElementById('btnScoreAddPlayer');
-  const btnScoreAddRound = document.getElementById('btnScoreAddRound');
-  const scoreTableBody = document.getElementById('scoreTableBody');
-  const btnScoreReset = document.getElementById('btnScoreReset');
-  const btnScoreSaveLog = document.getElementById('btnScoreSaveLog');
+  btnScoreAddPlayer = document.getElementById('btnScoreAddPlayer');
+  btnScoreAddRound = document.getElementById('btnScoreAddRound');
+  scoreTableBody = document.getElementById('scoreTableBody');
+  btnScoreReset = document.getElementById('btnScoreReset');
+  btnScoreSaveLog = document.getElementById('btnScoreSaveLog');
 
   const helpModal = document.getElementById('helpModal');
   const closeHelpModalBtn = document.getElementById('closeHelpModalBtn');

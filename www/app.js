@@ -3266,12 +3266,9 @@ function buildLadderInputs() {
     rInput.style.background = 'var(--card-bg)';
     rInput.style.color = 'var(--text-main)';
 
-    if (preset === 'default') {
+    if (preset === 'auto') {
       const winnerIdx = Math.floor(Math.random() * count);
-      rInput.value = i === winnerIdx ? '🎉 당첨!' : '꽝';
-    } else if (preset === 'penalty') {
-      const penaltyIdx = Math.floor(Math.random() * count);
-      rInput.value = i === penaltyIdx ? '😈 벌칙!' : '통과';
+      rInput.value = i === winnerIdx ? '★당첨!' : '꽝';
     } else {
       rInput.value = `결과 ${i + 1}`;
     }
@@ -3501,9 +3498,9 @@ function traceLadderPath(startCol, onComplete) {
       const result = ladderData.results[finalCol];
       const player = ladderData.players[startCol];
       
-      ladderData.pathsTraced.push({ startCol, color: traceColor });
+      ladderData.pathsTraced.push({ startCol, finalCol, color: traceColor });
       
-      ladderResultText.innerHTML = `<span style="color:${traceColor}; font-weight:bold;">${player}</span> 님의 결과는 <span style="font-size:1.15rem; color:#b25d22; font-weight:800;">🎉 ${result} 🎉</span> 입니다!`;
+      ladderResultText.innerHTML = `<span style="color:${traceColor}; font-weight:bold;">${player}</span> 님의 결과는 <span style="font-size:1.15rem; color:#b25d22; font-weight:800;">★${result}</span> 입니다!`;
       if (soundEnabled) playCardFlipSound();
       
       drawLadder();
@@ -3548,8 +3545,10 @@ function viewLadderResults() {
       let summary = '<div style="display:flex;flex-direction:column;gap:4px;font-size:0.9rem;text-align:center;">';
       ladderData.players.forEach((player, idx) => {
         const c = colors[idx % colors.length];
-        const result = ladderData.results[idx];
-        summary += `<div><span style="color:${c};font-weight:bold;">${player}</span> → <span style="font-weight:800;color:#b25d22;">🎉 ${result}</span></div>`;
+        const pathInfo = ladderData.pathsTraced.find(p => p.startCol === idx);
+        const finalIdx = pathInfo ? pathInfo.finalCol : idx;
+        const result = ladderData.results[finalIdx];
+        summary += `<div><span style="color:${c};font-weight:bold;">${player}</span> → <span style="font-weight:800;color:#b25d22;">★${result}</span></div>`;
       });
       summary += '</div>';
       ladderResultText.innerHTML = summary;

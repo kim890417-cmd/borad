@@ -157,36 +157,37 @@
 
         <!-- 탭 패널 2: 보드게임 도감 서재 -->
         <div class="tab-panel" id="infoPanel">
-          <!-- 도감 수집 진행률 카드 -->
-          <div class="encyclopedia-progress-card" style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 1.2rem; border-radius: 16px; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--shadow-sm);">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-              <span style="font-weight: 700; font-size: 0.95rem; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
-                <i data-lucide="book-marked" style="color: var(--primary-color); width: 18px; height: 18px;"></i> 도감 수집 달성률
-              </span>
-              <span id="encyclopediaProgressText" style="font-weight: 800; font-size: 0.95rem; color: var(--primary-color);">0 / 0개 플레이 (0%)</span>
-            </div>
-            <div class="progress-bar-container" style="width: 100%; height: 10px; background: rgba(0,0,0,0.05); border-radius: 5px; overflow: hidden; position: relative;">
-              <div id="encyclopediaProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-light), var(--primary-color)); border-radius: 5px; transition: width 0.5s ease;"></div>
-            </div>
-          </div>
-          <div class="encyclopedia-filters">
-            <div class="filter-group">
-              <span class="filter-label">난이도</span>
-              <div class="filter-buttons" id="diffFilter">
-                <button class="filter-btn active" data-diff="all">전체</button>
-                <button class="filter-btn" data-diff="easy">쉬움</button>
-                <button class="filter-btn" data-diff="medium">보통</button>
-                <button class="filter-btn" data-diff="heavy">어려움</button>
+          <div class="encyclopedia-header">
+            <div class="encyclopedia-progress-card" style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 1.2rem; border-radius: 16px; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--shadow-sm);">
+              <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: 700; font-size: 0.95rem; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+                  <i data-lucide="book-marked" style="color: var(--primary-color); width: 18px; height: 18px;"></i> 도감 수집 달성률
+                </span>
+                <span id="encyclopediaProgressText" style="font-weight: 800; font-size: 0.95rem; color: var(--primary-color);">0 / 0개 플레이 (0%)</span>
+              </div>
+              <div class="progress-bar-container" style="width: 100%; height: 10px; background: rgba(0,0,0,0.05); border-radius: 5px; overflow: hidden; position: relative;">
+                <div id="encyclopediaProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-light), var(--primary-color)); border-radius: 5px; transition: width 0.5s ease;"></div>
               </div>
             </div>
-            <div class="filter-group">
-              <span class="filter-label">인원</span>
-              <div class="filter-buttons" id="playerFilter">
-                <button class="filter-btn active" data-players="all">전체</button>
-                <button class="filter-btn" data-players="solo">1인</button>
-                <button class="filter-btn" data-players="2p">2인</button>
-                <button class="filter-btn" data-players="3-4">3~4인</button>
-                <button class="filter-btn" data-players="5+">5인 이상</button>
+            <div class="encyclopedia-filters">
+              <div class="filter-group">
+                <span class="filter-label">난이도</span>
+                <div class="filter-buttons" id="diffFilter">
+                  <button class="filter-btn active" data-diff="all">전체</button>
+                  <button class="filter-btn" data-diff="easy">쉬움</button>
+                  <button class="filter-btn" data-diff="medium">보통</button>
+                  <button class="filter-btn" data-diff="heavy">어려움</button>
+                </div>
+              </div>
+              <div class="filter-group">
+                <span class="filter-label">인원</span>
+                <div class="filter-buttons" id="playerFilter">
+                  <button class="filter-btn active" data-players="all">전체</button>
+                  <button class="filter-btn" data-players="solo">1인</button>
+                  <button class="filter-btn" data-players="2p">2인</button>
+                  <button class="filter-btn" data-players="3-4">3~4인</button>
+                  <button class="filter-btn" data-players="5+">5인 이상</button>
+                </div>
               </div>
             </div>
           </div>
@@ -338,9 +339,8 @@
               <div class="form-group">
                 <label style="font-size: 0.75rem;">결과 종류</label>
                 <select id="ladderPreset" style="padding: 0.6rem; font-size: 0.9rem; border-radius: 8px;">
-                  <option value="default">1명 당첨 (당첨, 꽝, 꽝...)</option>
-                  <option value="penalty">1명 벌칙 (벌칙, 통과, 통과...)</option>
-                  <option value="custom">직접 텍스트 입력하기</option>
+                  <option value="auto">당첨 1명 (자동 배정)</option>
+                  <option value="manual">직접 텍스트 입력하기</option>
                 </select>
               </div>
             </div>

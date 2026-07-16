@@ -764,16 +764,36 @@ body {
 }
 
 /* PC에서 도감 필터 세로 배치 */
+.encyclopedia-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
 @media (min-width: 901px) {
-  .encyclopedia-filters {
-    flex-direction: column;
-    gap: 0.75rem;
+  .encyclopedia-header {
+    flex-direction: row;
+    align-items: stretch;
+    gap: 1.5rem;
   }
-  .encyclopedia-filters .filter-group {
-    width: 100%;
+  .encyclopedia-header .encyclopedia-progress-card {
+    flex: 0 0 260px;
+    margin-bottom: 0;
+    padding: 0.8rem 1rem;
+    gap: 6px;
   }
-  .encyclopedia-filters .filter-buttons {
+  .encyclopedia-header .encyclopedia-progress-card .progress-bar-container {
+    height: 6px;
+  }
+  .encyclopedia-header .encyclopedia-filters {
+    flex: 1;
+    margin-bottom: 0;
     flex-wrap: wrap;
+    align-content: center;
+  }
+  .game-info-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 

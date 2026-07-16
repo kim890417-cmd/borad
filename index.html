@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>보드빌리지 - 나만의 보드게임 탑 쌓기</title>
+  <meta name="description" content="플레이한 보드게임을 기록하고 보드게임 상자 탑을 쌓아 올리는 감성적인 보드게임 다이어리">
+  <link rel="stylesheet" href="style.css">
+  <!-- Google Fonts 구글 본고딕 & Outfit 폰트 가져오기 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <!-- Lucide Icons 아이콘 폰트 적용 -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- HTML2Canvas: CORS 보안 문제 우회가 가능한 최신 html2canvas 라이브러리로 교체 -->
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+  <div class="app-container">
+    
+    <!-- 왼쪽 사이드바: 보드게임 상자가 차곡차곡 쌓이는 영역 -->
+    <aside class="visual-panel">
+      <header class="panel-header">
+        <h1 class="brand-title">
+          보드빌리지 <i data-lucide="dices" class="brand-icon"></i>
+        </h1>
+        <p class="subtitle">플레이한 게임이 차곡차곡 쌓여요</p>
+      </header>
+
+      <!-- 실제 상자들이 쌓여서 렌더링될 영역 -->
+      <div class="stack-container" id="stackContainer">
+        <!-- 데코레이션 미플들이 위치할 절대좌표 레이어 -->
+        <div class="deco-layer" id="decoLayer"></div>
+
+        <!-- JS에서 동적으로 보드게임 상자 박스 엘리먼트를 여기에 쌓아 올림 -->
+        <div class="empty-stack-placeholder" id="emptyPlaceholder">
+          <i data-lucide="package-open" class="placeholder-icon"></i>
+          <p>아직 기록이 없습니다.<br>첫 보드게임을 기록하고 탑을 쌓아보세요!</p>
+        </div>
+      </div>
+
+      <!-- 누적 높이 표시기 및 데코 모드 가이드 / 캡처 단추 -->
+      <div class="height-counter-wrapper" id="stackControlWrapper">
+        <div class="height-counter">
+          <span class="label">누적 높이</span>
+          <span class="value" id="totalHeight">0cm</span>
+        </div>
+        <button class="btn btn-capture" id="captureBtn">
+          <i data-lucide="camera"></i> 탑 이미지 저장 (경량)
+        </button>
+        <div class="deco-guide">
+          <span>💡 해금된 미플을 더블클릭/드래그하여 탑을 꾸며보세요!</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- 오른쪽 콘텐츠 영역: 대시보드 + 기록 피드 + 통계 -->
+    <main class="content-panel">
+      
+      <!-- 상단 네비게이션 및 대시보드 요약 -->
+      <section class="dashboard-section">
+        <div class="dashboard-header">
+          <h2>내 보드게임 아카이브</h2>
+          <div class="header-action-group">
+            <button class="btn btn-primary" id="openAddModalBtn">
+              <i data-lucide="plus"></i> 새 게임 기록하기
+            </button>
+          </div>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon icon-plays"><i data-lucide="dices"></i></div>
+            <div class="stat-info">
+              <span class="stat-label">총 플레이</span>
+              <span class="stat-value" id="statPlays">0회</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon icon-time"><i data-lucide="clock"></i></div>
+            <div class="stat-info">
+              <span class="stat-label">누적 플레이 시간</span>
+              <span class="stat-value" id="statTime">0분</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon icon-rank"><i data-lucide="award"></i></div>
+            <div class="stat-info">
+              <span class="stat-label">내 보드게이머 등급</span>
+              <span class="stat-value" id="statGrade">비기너 미플</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 고급 분석 카드 (승률 및 최고의 동반자) -->
+        <div class="analysis-grid">
+          <div class="analysis-card">
+            <div class="analysis-title"><i data-lucide="trending-up"></i> 승률 분석</div>
+            <div class="winrate-visual">
+              <div class="winrate-circle">
+                <span class="winrate-value" id="winRateVal">0%</span>
+              </div>
+              <div class="winrate-details">
+                <div>승리 <strong id="winCount">0회</strong></div>
+                <div>패배/기타 <strong id="loseCount">0회</strong></div>
+              </div>
+            </div>
+          </div>
+          <div class="analysis-card">
+            <div class="analysis-title"><i data-lucide="users"></i> 최고의 게임 메이트</div>
+            <div class="mate-visual" id="bestMateArea">
+              <div class="mate-empty">아직 기록이 부족합니다.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 미플 캐릭터 도감 영역 (북적북적의 귀여운 캐릭터 해금 모티브) -->
+      <section class="characters-section">
+        <div class="section-header-row" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+          <h3 style="margin-bottom: 0;">해금된 보드게임 프렌즈</h3>
+          <button class="btn btn-secondary btn-sm" id="openCharacterBookBtn" style="padding: 0.4rem 0.8rem; font-size: 0.8rem; display: flex; align-items: center; gap: 4px; border-radius: 8px;">
+            <i data-lucide="book-open" style="width: 14px; height: 14px;"></i> 🔍 캐릭터 스토리 도감
+          </button>
+        </div>
+        <p class="section-desc">캐릭터를 더블클릭하면 왼쪽 상자 탑에 생성됩니다!</p>
+        <div class="character-list" id="characterList">
+          <!-- JS에서 해금 상태에 따라 렌더링 -->
+        </div>
+      </section>
+
+      <!-- 플레이 피드 목록 영역 (탭 시스템 적용) -->
+      <section class="history-section">
+        <div class="tab-header-row">
+          <div class="tab-buttons">
+            <button class="tab-btn active" data-tab="logs"><i data-lucide="scroll"></i> 플레이 로그</button>
+            <button class="tab-btn" data-tab="info"><i data-lucide="trophy"></i> 보드게임 도감 🏆</button>
+            <button class="tab-btn" data-tab="rank"><i data-lucide="bar-chart-3"></i> 랭킹/통계 📊</button>
+            <button class="tab-btn" data-tab="bingo"><i data-lucide="grid"></i> 월간 빙고 미션 🎲</button>
+          </div>
+          <div class="filter-controls" id="feedFilterControls">
+            <select id="sortBy" class="select-input">
+              <option value="recent">최근 순</option>
+              <option value="oldest">오래된 순</option>
+              <option value="rating">평점 높은 순</option>
+            </select>
+          </div>
+        </div>
+        
+        <!-- 탭 패널 1: 플레이 로그 피드 -->
+        <div class="tab-panel active" id="logsPanel">
+          <div class="log-feed" id="logFeed">
+            <!-- JS로 기록 리스트를 그려냄 -->
+          </div>
+        </div>
+
+        <!-- 탭 패널 2: 보드게임 도감 서재 -->
+        <div class="tab-panel" id="infoPanel">
+          <!-- 도감 수집 진행률 카드 -->
+          <div class="encyclopedia-progress-card" style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 1.2rem; border-radius: 16px; margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 8px; box-shadow: var(--shadow-sm);">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-weight: 700; font-size: 0.95rem; color: var(--text-main); display: flex; align-items: center; gap: 6px;">
+                <i data-lucide="book-marked" style="color: var(--primary-color); width: 18px; height: 18px;"></i> 도감 수집 달성률
+              </span>
+              <span id="encyclopediaProgressText" style="font-weight: 800; font-size: 0.95rem; color: var(--primary-color);">0 / 0개 플레이 (0%)</span>
+            </div>
+            <div class="progress-bar-container" style="width: 100%; height: 10px; background: rgba(0,0,0,0.05); border-radius: 5px; overflow: hidden; position: relative;">
+              <div id="encyclopediaProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-light), var(--primary-color)); border-radius: 5px; transition: width 0.5s ease;"></div>
+            </div>
+          </div>
+          <div class="encyclopedia-filters">
+            <div class="filter-group">
+              <span class="filter-label">난이도</span>
+              <div class="filter-buttons" id="diffFilter">
+                <button class="filter-btn active" data-diff="all">전체</button>
+                <button class="filter-btn" data-diff="easy">쉬움</button>
+                <button class="filter-btn" data-diff="medium">보통</button>
+                <button class="filter-btn" data-diff="heavy">어려움</button>
+              </div>
+            </div>
+            <div class="filter-group">
+              <span class="filter-label">인원</span>
+              <div class="filter-buttons" id="playerFilter">
+                <button class="filter-btn active" data-players="all">전체</button>
+                <button class="filter-btn" data-players="solo">1인</button>
+                <button class="filter-btn" data-players="2p">2인</button>
+                <button class="filter-btn" data-players="3-4">3~4인</button>
+                <button class="filter-btn" data-players="5+">5인 이상</button>
+              </div>
+            </div>
+          </div>
+          <div class="game-info-grid" id="gameInfoGrid">
+            <!-- JS로 전체 도감 카드 (잠금/해금) 그려냄 -->
+          </div>
+        </div>
+
+        <!-- 탭 패널 3: 랭킹/통계 -->
+        <div class="tab-panel" id="rankPanel">
+          <div class="rank-grid" id="rankGrid">
+            <!-- JS로 랭킹을 그려냄 -->
+          </div>
+          
+          <!-- 업적 및 배지 수집 섹션 -->
+          <div class="achievements-section" style="background: var(--card-bg); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color); margin-top: 20px; box-shadow: var(--shadow-sm); width: 100%; box-sizing: border-box;">
+            <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; color: var(--text-main);">
+              <i data-lucide="award" style="color: var(--primary-color);"></i> 보드빌리지 해금 업적 &amp; 칭호
+            </h3>
+            <div class="achievements-grid" id="achievementsGrid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+              <!-- JS에서 실시간 판정 후 업적 배지 카드를 렌더링 -->
+            </div>
+          </div>
+        </div>
+
+        <!-- 탭 패널 4: 월간 빙고 미션 -->
+        <div class="tab-panel" id="bingoPanel">
+          <div class="bingo-container" id="bingoContainer">
+            <div class="bingo-board-wrapper" id="bingoBoardWrapper" style="width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
+              <div class="bingo-board-header">
+                <h2 class="bingo-board-title" id="bingoTitle">7월 보드게임 빙고!</h2>
+                <p class="bingo-board-subtitle">미션을 완료하고 보상을 받으세요</p>
+              </div>
+              <!-- 4x4 빙고 그리드 -->
+              <div class="bingo-grid" id="bingoGrid">
+                <!-- JS에서 동적으로 빙고 셀을 생성 -->
+              </div>
+            </div>
+          </div>
+
+          <!-- 빙고 진행도 및 보상/캡처 단추 -->
+          <div class="bingo-status-wrapper" id="bingoControlWrapper" style="max-width: 620px; margin: 1.5rem auto 0 auto; background: var(--bg-card);">
+            <div class="bingo-counter-row">
+              <div class="bingo-counter">
+                <span class="label">완성 빙고</span>
+                <span class="value" id="bingoCompletedLines">0줄</span>
+              </div>
+              <div class="bingo-progress">
+                <span class="label">달성률</span>
+                <span class="value" id="bingoProgressPercent">0%</span>
+              </div>
+            </div>
+            <div class="bingo-btn-row">
+              <button class="btn btn-reward" id="claimRewardBtn" disabled style="flex: 1; background: linear-gradient(135deg, #a29bfe 0%, #6c5ce7 100%); color: white; display: flex; align-items: center; justify-content: center; gap: 8px; font-weight: bold; border: none; padding: 0.8rem; border-radius: 12px; cursor: not-allowed; opacity: 0.6; transition: all 0.3s ease;">
+                <i data-lucide="gift"></i> 미션 완료 보상 받기
+              </button>
+              <button class="btn btn-secondary" id="shuffleBingoBtn" style="flex: 1; justify-content: center; font-size: 0.8rem;">
+                <i data-lucide="shuffle"></i> 빙고 랜덤 생성
+              </button>
+              <button class="btn btn-capture" id="captureBingoBtn" style="flex: 1;">
+                <i data-lucide="camera"></i> 빙고 이미지 저장
+              </button>
+            </div>
+            <div class="deco-guide" style="text-align: center; margin-top: 0.8rem; color: var(--text-muted);">
+              <span>💡 칸을 선택하여 게임을 교체하거나 광고로 채울 수 있습니다.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 탭 패널 5: 플레이 툴 (도구) -->
+        <div class="tab-panel" id="toolsPanel" style="display: none; flex-direction: column; gap: 20px; max-width: 620px; margin: 0 auto;">
+          
+          <!-- 툴 선택 서브 버튼: 3x2 격자형 탭 레이아웃 -->
+          <div class="tools-sub-tabs" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px;">
+            <button class="btn btn-secondary active" id="subTabRoulette" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">선 뽑기 🎡</button>
+            <button class="btn btn-secondary" id="subTabDice" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">주사위 🎲</button>
+            <button class="btn btn-secondary" id="subTabLadder" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">사다리 🪜</button>
+            <button class="btn btn-secondary" id="subTabRecommend" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">추천기 🎯</button>
+            <button class="btn btn-secondary" id="subTabTimer" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">타이머 ⏱️</button>
+            <button class="btn btn-secondary" id="subTabScoreboard" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">점수판 📝</button>
+          </div>
+
+          <!-- 1. 선 뽑기 (룰렛) 콘텐츠 -->
+          <div class="tool-content-section" id="toolSectionRoulette" style="display: flex; flex-direction: column; gap: 15px; background: var(--card-bg); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color); text-align: center;">
+            <h3 style="font-size: 1.2rem; font-weight: 700;">🎡 선 플레이어 뽑기 룰렛</h3>
+            <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 5px;">참여 인원수를 선택해 주세요.</p>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 10px; background: var(--bg-color); padding: 0.6rem 1.2rem; border-radius: 12px; border: 1px solid var(--border-color); width: fit-content; margin: 0 auto;">
+              <button type="button" class="btn btn-secondary" id="btnDecPlayers" style="padding: 0.4rem 0.8rem; border-radius: 8px; font-weight: bold; border: none; font-size: 1.1rem; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">-</button>
+              <span id="roulettePlayerCountDisplay" style="font-size: 1.2rem; font-weight: 800; min-width: 48px; color: var(--text-main);">4 명</span>
+              <button type="button" class="btn btn-secondary" id="btnIncPlayers" style="padding: 0.4rem 0.8rem; border-radius: 8px; font-weight: bold; border: none; font-size: 1.1rem; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;">+</button>
+            </div>
+            
+            <!-- 룰렛 시각화 박스 -->
+            <div class="roulette-container" style="position: relative; width: 220px; height: 220px; margin: 20px auto; border-radius: 50%; border: 6px solid var(--border-color); box-shadow: var(--shadow-md); overflow: hidden; display: flex; align-items: center; justify-content: center; background: #fff;">
+              <!-- 룰렛 내부 화살표 지시자 -->
+              <div class="roulette-pointer" style="position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 0; height: 0; border-left: 12px solid transparent; border-right: 12px solid transparent; border-top: 20px solid #ef4444; z-index: 10; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));"></div>
+              <!-- 회전할 원판 -->
+              <div class="roulette-wheel" id="rouletteWheel" style="width: 100%; height: 100%; border-radius: 50%; transition: transform 4s cubic-bezier(0.1, 0.8, 0.1, 1); background: conic-gradient(#ff7675 0deg 90deg, #fdcb6e 90deg 180deg, #00cec9 180deg 270deg, #6c5ce7 270deg 360deg);"></div>
+              <!-- 중앙 로고 고정 핀 -->
+              <div style="position: absolute; width: 30px; height: 30px; background: #fff; border-radius: 50%; box-shadow: 0 2px 6px rgba(0,0,0,0.2); z-index: 5; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 0.75rem; color: var(--text-main);">선</div>
+            </div>
+
+            <!-- 결과 표시 및 작동 버튼 -->
+            <div id="rouletteResult" style="font-size: 1.2rem; font-weight: 800; color: var(--primary-color); min-height: 30px;">결과 대기 중...</div>
+            <button class="btn btn-primary" id="spinRouletteBtn" style="width: 100%; justify-content: center; font-weight: bold; padding: 1rem;"><i data-lucide="play"></i> 룰렛 돌리기!</button>
+          </div>
+
+          <!-- 2. 주사위 굴리기 콘텐츠 -->
+          <div class="tool-content-section" id="toolSectionDice" style="display: none; flex-direction: column; gap: 15px; background: var(--card-bg); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color); text-align: center;">
+            <h3 style="font-size: 1.2rem; font-weight: 700;">🎲 주사위 굴리기</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">원하는 주사위를 고르고 굴려보세요.</p>
+            
+            <!-- 주사위 면체 선택 그룹 -->
+            <div class="dice-buttons-grid" style="display: flex; gap: 6px; justify-content: center; overflow-x: auto; padding-bottom: 4px;">
+              <button class="btn btn-secondary btn-sm active" data-dice-type="6" style="padding: 0.5rem 0.8rem; font-size: 0.8rem; border-radius: 6px;">D6 (6면)</button>
+              <button class="btn btn-secondary btn-sm" data-dice-type="4" style="padding: 0.5rem 0.8rem; font-size: 0.8rem; border-radius: 6px;">D4 (4면)</button>
+              <button class="btn btn-secondary btn-sm" data-dice-type="8" style="padding: 0.5rem 0.8rem; font-size: 0.8rem; border-radius: 6px;">D8 (8면)</button>
+              <button class="btn btn-secondary btn-sm" data-dice-type="10" style="padding: 0.5rem 0.8rem; font-size: 0.8rem; border-radius: 6px;">D10 (10면)</button>
+              <button class="btn btn-secondary btn-sm" data-dice-type="12" style="padding: 0.5rem 0.8rem; font-size: 0.8rem; border-radius: 6px;">D12 (12면)</button>
+              <button class="btn btn-secondary btn-sm" data-dice-type="20" style="padding: 0.5rem 0.8rem; font-size: 0.8rem; border-radius: 6px;">D20 (20면)</button>
+            </div>
+
+            <!-- 주사위 굴림 시각화 영역 -->
+            <div class="dice-box-area" style="height: 180px; display: flex; align-items: center; justify-content: center; margin: 10px 0;">
+              <div class="dice-object" id="diceObject" style="width: 100px; height: 100px; background: #fff; border: 3px solid var(--primary-color); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 800; color: var(--primary-color); box-shadow: var(--shadow-md); transition: transform 0.1s;">6</div>
+            </div>
+
+            <!-- 결과 표시 및 롤 버튼 -->
+            <div id="diceResultText" style="font-size: 1.1rem; font-weight: 800; color: var(--text-main); min-height: 25px;">주사위를 터치하거나 아래 버튼을 누르세요.</div>
+            <button class="btn btn-primary" id="rollDiceBtn" style="width: 100%; justify-content: center; font-weight: bold; padding: 1rem;"><i data-lucide="dices"></i> 주사위 굴리기!</button>
+          </div>
+
+          <!-- 3. 사다리 타기 콘텐츠 -->
+          <div class="tool-content-section" id="toolSectionLadder" style="display: none; flex-direction: column; gap: 15px; background: var(--card-bg); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color); text-align: center;">
+            <h3 style="font-size: 1.2rem; font-weight: 700;">🪜 사다리 타기</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;">참여 인원과 플레이어 이름, 내기 결과를 입력해 주세요.</p>
+            
+            <div class="form-row" style="grid-template-columns: 1fr 2fr; gap: 8px; margin-bottom: 5px;">
+              <div class="form-group">
+                <label style="font-size: 0.75rem;">인원수</label>
+                <select id="ladderNum" style="padding: 0.6rem; font-size: 0.9rem; border-radius: 8px;">
+                  <option value="2">2명</option>
+                  <option value="3" selected>3명</option>
+                  <option value="4">4명</option>
+                  <option value="5">5명</option>
+                  <option value="6">6명</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label style="font-size: 0.75rem;">결과 종류</label>
+                <select id="ladderPreset" style="padding: 0.6rem; font-size: 0.9rem; border-radius: 8px;">
+                  <option value="default">1명 당첨 (당첨, 꽝, 꽝...)</option>
+                  <option value="penalty">1명 벌칙 (벌칙, 통과, 통과...)</option>
+                  <option value="custom">직접 텍스트 입력하기</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- 참여자 정보 및 내기 내용 입력 그리드 -->
+            <div id="ladderInputsArea" style="display: flex; flex-direction: column; gap: 8px; max-height: 160px; overflow-y: auto; background: var(--bg-color); padding: 10px; border-radius: 12px; border: 1px solid var(--border-color);">
+              <!-- JS에서 인원수에 맞게 입력 폼 동적 렌더링 -->
+            </div>
+
+            <!-- 사다리 시각화 캔버스 영역 -->
+            <div class="ladder-canvas-container" style="position: relative; width: 100%; height: 260px; background: #faf6f0; border: 2.5px solid #8b5a2b; border-radius: 12px; overflow: hidden; margin: 10px 0; box-shadow: inset 0 0 10px rgba(0,0,0,0.05);">
+              <canvas id="ladderCanvas" style="width: 100%; height: 100%; display: block;"></canvas>
+            </div>
+
+            <!-- 결과 안내 및 액션 버튼 -->
+            <div id="ladderResultText" style="font-size: 0.95rem; font-weight: 700; color: var(--text-muted); min-height: 25px; line-height: 1.4; word-break: keep-all;">이름을 클릭하여 결과를 하나씩 확인해 보세요!</div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-primary" id="generateLadderBtn" style="flex: 1; justify-content: center; font-weight: bold; font-size: 0.9rem;"><i data-lucide="grid-3x3"></i> 사다리 만들기</button>
+              <button class="btn btn-primary" id="viewLadderResultBtn" style="flex: 1; justify-content: center; font-weight: bold; font-size: 0.9rem;"><i data-lucide="eye"></i> 결과보기</button>
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="btn btn-secondary" id="resetLadderBtn" style="flex: 1; justify-content: center; font-size: 0.85rem;"><i data-lucide="rotate-ccw"></i> 다시 그리기</button>
+            </div>
+          </div>
+
+          <!-- 4. 오늘의 추천기 콘텐츠 -->
+          <div class="tool-content-section" id="toolSectionRecommend" style="display: none; flex-direction: column; gap: 15px; background: var(--card-bg); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color); text-align: center;">
+            <h3 style="font-size: 1.2rem; font-weight: 700;">🎯 오늘의 보드게임 추천</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;">플레이할 인원수와 난이도를 선택해 보세요.</p>
+            
+            <div style="display: flex; flex-direction: column; gap: 10px; text-align: left;">
+              <div class="form-group">
+                <label style="font-size: 0.8rem; font-weight: 700; margin-bottom: 4px;">참여 인원수</label>
+                <select id="recommendPlayers" style="padding: 0.5rem; font-size: 0.85rem; border-radius: 8px; width: 100%;">
+                  <option value="1">1명 (1인 플레이)</option>
+                  <option value="2" selected>2명</option>
+                  <option value="3">3명</option>
+                  <option value="4">4명</option>
+                  <option value="5">5명 이상</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label style="font-size: 0.8rem; font-weight: 700; margin-bottom: 4px;">가용한 최대 시간</label>
+                <select id="recommendTime" style="padding: 0.5rem; font-size: 0.85rem; border-radius: 8px; width: 100%;">
+                  <option value="all" selected>상관없음</option>
+                  <option value="30">30분 이하</option>
+                  <option value="60">1시간 이하</option>
+                  <option value="120">2시간 이하</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label style="font-size: 0.8rem; font-weight: 700; margin-bottom: 4px;">난이도</label>
+                <select id="recommendDiff" style="padding: 0.5rem; font-size: 0.85rem; border-radius: 8px; width: 100%;">
+                  <option value="all" selected>상관없음</option>
+                  <option value="easy">가벼움</option>
+                  <option value="medium">보통</option>
+                  <option value="heavy">묵직함</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="btnGetRecommend" style="width: 100%; justify-content: center; font-weight: bold; padding: 0.8rem; border-radius: 12px; margin-top: 5px;">
+              <i data-lucide="sparkles"></i> 오늘의 게임 추천받기
+            </button>
+
+            <!-- 추천 결과 영역 -->
+            <div id="recommendResultCard" style="display: none; background: rgba(0,0,0,0.03); border: 1.5px dashed var(--border-color); border-radius: 16px; padding: 1.2rem; margin-top: 10px; flex-direction: column; align-items: center; gap: 10px; animation: fadeIn 0.3s ease;">
+              <img id="recommendGameImg" src="" style="width: 70px; height: 70px; border-radius: 12px; object-fit: cover; border: 1px solid var(--border-color);" alt="game img">
+              <div>
+                <h4 id="recommendGameTitle" style="font-weight: 800; font-size: 1.1rem; color: var(--primary-color);">루미큐브</h4>
+                <p id="recommendGameDesc" style="font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; margin-top: 4px;">설명이 로드됩니다.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. 제한시간 타이머 콘텐츠 -->
+          <div class="tool-content-section" id="toolSectionTimer" style="display: none; flex-direction: column; gap: 15px; background: var(--card-bg); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color); text-align: center;">
+            <h3 style="font-size: 1.2rem; font-weight: 700;">⏱️ 턴 제한 타이머</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;">제한시간을 고르고 타이머를 가동해 보세요.</p>
+            
+            <!-- 타이머 시각화 영역 -->
+            <div style="position: relative; width: 140px; height: 140px; margin: 10px auto; display: flex; align-items: center; justify-content: center;">
+              <!-- 백그라운드 원형 게이지 -->
+              <svg width="100%" height="100%" viewBox="0 0 100 100" style="transform: rotate(-90deg);">
+                <circle cx="50" cy="50" r="42" stroke="rgba(0,0,0,0.05)" stroke-width="8" fill="transparent"></circle>
+                <circle id="timerProgressRing" cx="50" cy="50" r="42" stroke="var(--primary-color)" stroke-width="8" fill="transparent" stroke-dasharray="263.89" stroke-dashoffset="0" style="transition: stroke-dashoffset 0.1s linear; stroke-linecap: round;"></circle>
+              </svg>
+              <!-- 텍스트 시간 표시 -->
+              <div id="timerDisplay" style="position: absolute; font-size: 2.2rem; font-weight: 800; color: var(--text-main); font-family: monospace;">01:00</div>
+            </div>
+
+            <!-- 프리셋 시간 버튼 -->
+            <div style="display: flex; gap: 5px; justify-content: center; width: 100%;">
+              <button class="btn btn-secondary btn-sm" data-time-preset="30" style="flex: 1; padding: 0.4rem; font-size: 0.75rem; border-radius: 6px;">30초</button>
+              <button class="btn btn-secondary btn-sm active" data-time-preset="60" style="flex: 1; padding: 0.4rem; font-size: 0.75rem; border-radius: 6px;">1분</button>
+              <button class="btn btn-secondary btn-sm" data-time-preset="180" style="flex: 1; padding: 0.4rem; font-size: 0.75rem; border-radius: 6px;">3분</button>
+              <button class="btn btn-secondary btn-sm" data-time-preset="300" style="flex: 1; padding: 0.4rem; font-size: 0.75rem; border-radius: 6px;">5분</button>
+            </div>
+
+            <!-- 제어 버튼들 -->
+            <div style="display: flex; gap: 8px; margin-top: 5px;">
+              <button class="btn btn-secondary" id="btnResetTimer" style="flex: 1; justify-content: center; font-size: 0.85rem;"><i data-lucide="rotate-ccw"></i> 리셋</button>
+              <button class="btn btn-primary" id="btnStartPauseTimer" style="flex: 2; justify-content: center; font-weight: bold; font-size: 0.9rem;"><i data-lucide="play" id="timerPlayIcon"></i> 시작</button>
+            </div>
+          </div>
+
+          <!-- 6. 디지털 점수 계산판 콘텐츠 -->
+          <div class="tool-content-section" id="toolSectionScoreboard" style="display: none; flex-direction: column; gap: 15px; background: var(--card-bg); padding: 1.5rem; border-radius: 20px; border: 1px solid var(--border-color); text-align: center;">
+            <h3 style="font-size: 1.2rem; font-weight: 700;">📝 디지털 점수판</h3>
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 5px;">플레이어를 추가하고 점수를 계산해 보세요.</p>
+            
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px;">
+              <button type="button" class="btn btn-secondary btn-sm" id="btnScoreAddPlayer" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 4px;"><i data-lucide="user-plus" style="width: 14px; height: 14px;"></i> 인원 추가</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnScoreAddRound" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; border-radius: 6px; display: flex; align-items: center; gap: 4px;"><i data-lucide="plus-circle" style="width: 14px; height: 14px;"></i> 라운드 추가</button>
+            </div>
+
+            <!-- 점수 테이블 래퍼 -->
+            <div style="width: 100%; overflow-x: auto; border: 1px solid var(--border-color); border-radius: 10px; background: var(--bg-color);">
+              <table id="scoreTable" style="width: 100%; border-collapse: collapse; text-align: center; font-size: 0.8rem;">
+                <thead>
+                  <tr style="border-bottom: 1.5px solid var(--border-color); background: rgba(0,0,0,0.02);">
+                    <th style="padding: 6px 4px; font-weight: 700;">이름</th>
+                    <th style="padding: 6px 4px; font-weight: 700; width: 60px;">R1</th>
+                    <th style="padding: 6px 4px; font-weight: 700; width: 60px; color: var(--primary-color);">합계</th>
+                    <th style="padding: 6px 4px; font-weight: 700; width: 30px;">삭제</th>
+                  </tr>
+                </thead>
+                <tbody id="scoreTableBody">
+                  <!-- JS에서 행 동적 추가 -->
+                </tbody>
+              </table>
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-top: 5px;">
+              <button type="button" class="btn btn-secondary" id="btnScoreReset" style="flex: 1; justify-content: center; font-size: 0.85rem;"><i data-lucide="rotate-ccw"></i> 리셋</button>
+              <button type="button" class="btn btn-primary" id="btnScoreSaveLog" style="flex: 2; justify-content: center; font-weight: bold; font-size: 0.9rem;"><i data-lucide="save"></i> 플레이 로그 연동 기록</button>
+            </div>
+          </div>
+
+          <!-- 환경 설정 및 안내 카드 -->
+          <!-- 환경 설정 카드 -->
+          <div style="background: var(--card-bg); border: 1px solid var(--border-color); padding: 0.8rem 1rem; border-radius: 16px; display: flex; justify-content: flex-start; align-items: center; box-shadow: var(--shadow-sm); margin-top: 10px; gap: 8px;">
+            <button class="btn btn-secondary" id="toolsThemeBtn" style="padding: 0.5rem 1.2rem; font-size: 0.8rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; gap: 4px;">
+              <i data-lucide="palette"></i> 테마
+            </button>
+          </div>
+
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 모달: 새 플레이 기록하기 작성창 -->
+  <div class="modal-backdrop" id="addModal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalTitle">🎲 새 보드게임 플레이 기록</h3>
+        <button class="close-btn" id="closeAddModalBtn"><i data-lucide="x"></i></button>
+      </div>
+      <form id="recordForm" class="modal-body">
+        <input type="hidden" id="editingLogId" value="">
+        
+        <!-- 게임 검색 및 자동완성 -->
+        <div class="form-group search-container">
+          <label for="gameTitle">게임 이름</label>
+          <div class="search-input-wrapper">
+            <input type="text" id="gameTitle" placeholder="영문 또는 한글로 검색하세요 (예: Splendor, 루미큐브)" required autocomplete="off">
+            <button type="button" class="btn-search" id="bggSearchBtn"><i data-lucide="search"></i></button>
+          </div>
+          <div class="search-results-dropdown" id="searchResultsDropdown"></div>
+        </div>
+
+        <!-- 선택된 게임 메타 정보 카드 -->
+        <div class="selected-game-preview" id="selectedGamePreview" style="display: none; flex-direction: column; align-items: center; gap: 0.6rem; padding: 0.8rem; background: var(--bg-color); border-radius: 12px; border: 1px solid var(--border-color);">
+          <img src="" alt="Thumbnail" class="preview-thumbnail" id="previewImg" style="width: 80px; height: 80px; object-fit: cover; border-radius: 10px; flex-shrink: 0;">
+          <div class="preview-info" style="width: 100%; text-align: center;">
+            <h4 id="previewTitle" style="font-size: 0.95rem; margin-bottom: 4px;">선택된 게임 제목</h4>
+            <p class="preview-desc" id="previewDesc" style="font-size: 0.78rem; color: var(--text-muted); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">게임 설명이 들어갑니다.</p>
+          </div>
+          <input type="hidden" id="gameThumbnail" value="">
+          <input type="hidden" id="gameDescription" value="">
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label for="playDate">플레이 날짜</label>
+            <input type="date" id="playDate" required>
+          </div>
+          <div class="form-group">
+            <label for="playTime">플레이 시간 (분)</label>
+            <input type="number" id="playTime" min="1" placeholder="예: 45" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="playerCount">인원수 (명)</label>
+            <input type="number" id="playerCount" min="1" placeholder="예: 3" required>
+          </div>
+          <div class="form-group">
+            <label for="gameResult">결과</label>
+            <select id="gameResult">
+              <option value="win">승리! 🎉</option>
+              <option value="lose">패배.. 😢</option>
+              <option value="draw">무승부 / 협력성공 🤝</option>
+              <option value="none">단순 기록 📝</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="companions">함께 플레이한 사람들</label>
+          <input type="text" id="companions" placeholder="쉼표(,)로 구분해 입력하세요 (예: 홍길동, 김철수)">
+        </div>
+
+        <div class="form-group">
+          <label>상자 두께 (난이도 선택)</label>
+          <div class="difficulty-options">
+            <label class="diff-option">
+              <input type="radio" name="boxThickness" value="easy" checked>
+              <span class="diff-badge badge-easy">가벼움 (카드/파티)</span>
+            </label>
+            <label class="diff-option">
+              <input type="radio" name="boxThickness" value="medium">
+              <span class="diff-badge badge-medium">보통 (일반패밀리)</span>
+            </label>
+            <label class="diff-option">
+              <input type="radio" name="boxThickness" value="heavy">
+              <span class="diff-badge badge-heavy">묵직함 (하드유로)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>상자 테마 색상</label>
+          <div class="color-picker-grid" id="colorPickerGrid">
+            <!-- JS에서 동적으로 컬러 칩 생성 -->
+          </div>
+          <input type="hidden" id="selectedColor" value="#ff7675">
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="gameRating">평점</label>
+            <div class="star-rating" id="starRatingContainer">
+              <i data-lucide="star" class="star-icon" data-value="1"></i>
+              <i data-lucide="star" class="star-icon" data-value="2"></i>
+              <i data-lucide="star" class="star-icon" data-value="3"></i>
+              <i data-lucide="star" class="star-icon" data-value="4"></i>
+              <i data-lucide="star" class="star-icon" data-value="5"></i>
+            </div>
+            <input type="hidden" id="gameRating" value="5">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="gameReview">한 줄 평 / 메모</label>
+          <textarea id="gameReview" rows="3" placeholder="플레이하면서 있었던 에피소드를 적어보세요!"></textarea>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" id="cancelBtn">취소</button>
+          <button type="submit" class="btn btn-primary" id="submitBtn">상자 탑에 올리기</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 카드 드로우 / 개봉 전용 오버레이 화면 -->
+  <div class="card-draw-overlay" id="cardDrawOverlay">
+    <div class="glow-effect"></div>
+    <div class="card-pack-wrapper">
+      
+      <!-- 3D 뒤집기 카드 콘텐트 -->
+      <div class="flip-card-container" id="flipCard">
+        <div class="flip-card-inner">
+          
+          <!-- 카드 뒷면 (미확인 팩) -->
+          <div class="flip-card-back">
+            <div class="card-pack-art">
+              <div class="logo-circle">🎲</div>
+              <h3>보드빌리지</h3>
+              <p>보드게임 팩</p>
+              <div class="pulse-indicator">클릭하여 개봉하기</div>
+            </div>
+          </div>
+          
+          <!-- 카드 앞면 (공개된 카드) -->
+          <div class="flip-card-front" id="cardFrontView">
+            <!-- 동적으로 렌더링 예정 -->
+          </div>
+          
+        </div>
+      </div>
+
+      <!-- 닫기 버튼 -->
+      <button class="btn btn-primary close-card-btn" id="closeCardBtn" style="display:none;">서재에 보관하기</button>
+    </div>
+  </div>
+
+  <!-- 빙고 슬롯 설정 모달 -->
+  <div class="modal-backdrop" id="bingoSlotModal" style="display: none;">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3>🎲 빙고 슬롯 설정</h3>
+        <button class="close-btn" id="closeBingoSlotModalBtn"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body">
+        <input type="hidden" id="targetSlotIndex" value="">
+        <div class="form-group" style="margin-bottom: 1.5rem;">
+          <label for="bingoGameSelect">보드게임 선택</label>
+          <select id="bingoGameSelect" class="select-input" style="width: 100%; padding: 0.8rem; border-radius: 8px; background: var(--bg-card); color: var(--text-main); border: 1px solid var(--border-color);">
+            <!-- JS에서 동적 삽입 -->
+          </select>
+        </div>
+        <div class="bingo-action-buttons" style="display: flex; gap: 10px; margin-top: 1rem;">
+          <button type="button" class="btn btn-primary" id="saveBingoSlotBtn" style="flex: 1; border: none;">
+            슬롯 게임 변경
+          </button>
+          <button type="button" class="btn btn-reward" id="watchAdForSlotBtn" style="flex: 1; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border: none; color: white; display: flex; align-items: center; justify-content: center; gap: 6px; font-weight: bold; cursor: pointer; border-radius: 8px;">
+            <i data-lucide="play"></i> 광고로 칸 채우기
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 광고 시뮬레이터 모달 -->
+  <div class="modal-backdrop" id="adModal" style="display: none;">
+    <div class="ad-card" style="background: #1e1b4b; border: 2px solid #f59e0b; border-radius: 16px; padding: 2rem; width: 90%; max-width: 400px; text-align: center; color: white; box-shadow: 0 10px 25px rgba(0,0,0,0.5); position: relative;">
+      <div class="ad-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <span class="ad-badge" style="background: #f59e0b; color: #1e1b4b; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.8rem; font-weight: bold;">AD 광고</span>
+        <h4 style="margin: 0; font-size: 1.1rem; color: #fff;">재미있는 보드게임 광고</h4>
+      </div>
+      <div class="ad-video-simulation" style="background: rgba(255,255,255,0.05); padding: 2rem; border-radius: 12px; margin-bottom: 1.5rem;">
+        <div class="ad-logo" style="font-size: 3rem; margin-bottom: 1rem; animation: bounce 1s infinite alternate;">🎲</div>
+        <p class="ad-slogan" style="font-size: 0.95rem; font-weight: bold; margin-bottom: 1.5rem; line-height: 1.4;">"보드게임을 사랑한다면?<br>보드빌리지와 함께 즐기세요!"</p>
+        <div class="ad-progress-bar-wrapper" style="width: 100%; height: 6px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden;">
+          <div class="ad-progress-bar" id="adProgressBar" style="width: 0%; height: 100%; background: #f59e0b; transition: width 0.1s linear;"></div>
+        </div>
+      </div>
+      <div class="ad-footer">
+        <span class="ad-timer" id="adTimer" style="font-size: 0.9rem; color: #94a3b8;">5초 후 광고 시청이 완료됩니다...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 캐릭터 스토리 도감 모달 -->
+  <div class="modal-backdrop" id="characterBookModal" style="display: none;">
+    <div class="modal-card" style="max-width: 720px; width: 95%;">
+      <div class="modal-header">
+        <h3 style="display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="book-marked" class="text-primary"></i> 보드게임 프렌즈 스토리 도감
+        </h3>
+        <button class="close-btn" id="closeCharacterBookModalBtn"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body" style="max-height: 75vh;">
+        <div class="char-book-summary" style="background: var(--bg-color); padding: 1rem; border-radius: 12px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <span style="font-weight: 600; font-size: 0.95rem;">나의 탐험 진행도: <span id="unlockedCharsCount" style="color: var(--primary-color); font-weight: 800;">0</span> / 30</span>
+          <div class="progress-bar-container" style="flex: 0.6; height: 10px; background: rgba(0,0,0,0.05); border-radius: 5px; overflow: hidden;">
+            <div id="unlockedCharsProgressBar" style="width: 0%; height: 100%; background: var(--primary-color); transition: width 0.5s ease;"></div>
+          </div>
+        </div>
+        <div class="char-book-grid" id="charBookGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 12px;">
+          <!-- JS에서 30종의 카드를 동적으로 바인딩 -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 캐릭터 상세 스토리 전용 팝업 모달 -->
+  <!-- 앱 사용 도우미 가이드 모달 -->
+  <div class="modal-backdrop" id="helpModal" style="display: none; z-index: 120;">
+    <div class="modal-card" style="max-width: 500px; width: 90%;">
+      <div class="modal-header">
+        <h3 style="display: flex; align-items: center; gap: 8px;">
+          <i data-lucide="help-circle" class="text-primary"></i> 보드빌리지 사용 가이드
+        </h3>
+        <button class="close-btn" id="closeHelpModalBtn"><i data-lucide="x"></i></button>
+      </div>
+      <div class="modal-body" style="max-height: 70vh; overflow-y: auto; gap: 1rem;">
+        
+        <!-- 가이드 내부 탭 버튼 -->
+        <div class="help-tabs" style="display: flex; gap: 6px; overflow-x: auto; padding-bottom: 6px; border-bottom: 1px solid var(--border-color); -webkit-overflow-scrolling: touch;">
+          <button class="help-tab-btn active" data-help-tab="h1" style="flex-shrink: 0; background: none; border: none; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); padding: 6px 12px; cursor: pointer; border-radius: 20px; transition: all 0.2s;">🧱 상자 쌓기</button>
+          <button class="help-tab-btn" data-help-tab="h2" style="flex-shrink: 0; background: none; border: none; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); padding: 6px 12px; cursor: pointer; border-radius: 20px; transition: all 0.2s;">🎨 탑 꾸미기</button>
+          <button class="help-tab-btn" data-help-tab="h3" style="flex-shrink: 0; background: none; border: none; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); padding: 6px 12px; cursor: pointer; border-radius: 20px; transition: all 0.2s;">🎲 월간 빙고</button>
+          <button class="help-tab-btn" data-help-tab="h4" style="flex-shrink: 0; background: none; border: none; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); padding: 6px 12px; cursor: pointer; border-radius: 20px; transition: all 0.2s;">🛠️ 플레이 툴</button>
+        </div>
+
+        <!-- 가이드 패널 1: 상자 쌓기 -->
+        <div class="help-panel active" id="help-h1" style="display: flex; flex-direction: column; gap: 10px; font-size: 0.9rem; line-height: 1.5; color: var(--text-main);">
+          <div style="font-size: 2.5rem; text-align: center; margin: 10px 0;">📦</div>
+          <h4 style="font-weight: 700; color: var(--primary-color);">보드게임 박스 상자 탑 쌓기</h4>
+          <p>보드게임을 플레이한 후 <strong>[새 게임 기록하기]</strong> 버튼을 통해 기록을 남기세요. 게임을 검색하면 커버 이미지와 난이도가 자동으로 연동됩니다.</p>
+          <p>기록이 완료되면 해당 보드게임 상자의 실제 부피와 난이도(두께)에 맞춰 왼쪽 영역에 <strong>상자가 차곡차곡 위로 쌓여 탑</strong>이 올라갑니다! 누적 높이를 통해 내 성장을 확인하세요.</p>
+        </div>
+
+        <!-- 가이드 패널 2: 탑 꾸미기 -->
+        <div class="help-panel" id="help-h2" style="display: none; flex-direction: column; gap: 10px; font-size: 0.9rem; line-height: 1.5; color: var(--text-main);">
+          <div style="font-size: 2.5rem; text-align: center; margin: 10px 0;">🧸</div>
+          <h4 style="font-weight: 700; color: var(--primary-color);">나만의 미플 프렌즈로 탑 꾸미기</h4>
+          <p>상자 탑의 높이(cm)가 높아질 때마다 개성 가득한 30가지의 **보드게임 프렌즈 캐릭터**가 순차적으로 해금됩니다.</p>
+          <p>해금된 캐릭터를 <strong>더블클릭</strong>하거나 <strong>상세 스토리 도감에서 소환 버튼</strong>을 누르면 왼쪽 상자 탑 근처에 캐릭터 미플이 소환됩니다! 미플을 마우스나 터치로 드래그하여 나만의 탑을 예쁘게 디자인해 보세요.</p>
+        </div>
+
+        <!-- 가이드 패널 3: 월간 빙고 -->
+        <div class="help-panel" id="help-h3" style="display: none; flex-direction: column; gap: 10px; font-size: 0.9rem; line-height: 1.5; color: var(--text-main);">
+          <div style="font-size: 2.5rem; text-align: center; margin: 10px 0;">🎯</div>
+          <h4 style="font-weight: 700; color: var(--primary-color);">월간 빙고 미션 달성</h4>
+          <p>매월 새롭게 갱신되는 <strong>4x4 빙고판</strong>이 열립니다. 빙고판에 적힌 게임을 플레이하여 기록하면 해당 미션 칸이 완료 도장으로 채워집니다.</p>
+          <p>빙고 미션을 달성하고 하단의 <strong>[보상 받기]</strong> 버튼을 누르면 전설적인 <strong>'골든 메카 미플 🤖'</strong> 캐릭터가 스페셜 보상으로 해금됩니다!</p>
+        </div>
+
+        <!-- 가이드 패널 4: 플레이 툴 -->
+        <div class="help-panel" id="help-h4" style="display: none; flex-direction: column; gap: 10px; font-size: 0.9rem; line-height: 1.5; color: var(--text-main);">
+          <div style="font-size: 2.5rem; text-align: center; margin: 10px 0;">🎲</div>
+          <h4 style="font-weight: 700; color: var(--primary-color);">실전용 보드게임 플레이 도구</h4>
+          <p>보드게임을 시작하거나 플레이할 때 하단의 <strong>[도구]</strong> 탭을 활용해 보세요.</p>
+          <ul>
+            <li><strong>선 뽑기</strong>: 이름을 적어 돌리면 선 플레이어를 골라줍니다.</li>
+            <li><strong>주사위 굴리기</strong>: 4면체~20면체 주사위를 무작위로 굴립니다.</li>
+            <li><strong>사다리 타기</strong>: 간편하게 사다리를 만들어 술래/벌칙을 지목합니다.</li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" id="confirmHelpBtn" style="width: 100%; justify-content: center;">보드빌리지 탐험 시작하기!</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-backdrop" id="charStoryModal" style="display: none; z-index: 110;">
+    <div class="modal-card" style="max-width: 400px; width: 90%; text-align: center; border: 2px solid var(--primary-color); overflow: visible;">
+      <div class="char-story-avatar-glow" id="charStoryAvatar" style="font-size: 4.5rem; margin-top: -40px; margin-bottom: 10px; animation: float 3s ease-in-out infinite; display: inline-block;">🧸</div>
+      <div class="modal-body" style="padding: 1.5rem 2rem; align-items: center; gap: 10px;">
+        <h3 id="charStoryName" style="font-size: 1.4rem; font-weight: 800; color: var(--text-main); margin-bottom: 4px;">베이비 미플</h3>
+        <span class="badge-win" id="charStoryCond" style="font-size: 0.75rem; padding: 4px 10px; border-radius: 20px; font-weight: 600;">누적 1cm 달성</span>
+        <p id="charStoryDesc" style="font-size: 0.9rem; line-height: 1.5; color: var(--text-muted); margin-top: 10px; word-break: keep-all;">
+          아직은 보드판 위를 뒹굴뒹굴 구르는 것을 좋아하는 아기 미플입니다.
+        </p>
+        <div style="display: flex; gap: 8px; width: 100%; margin-top: 15px;">
+          <button class="btn btn-primary" id="summonMeepleBtn" style="flex: 1; padding: 0.7rem; font-size: 0.9rem; font-weight: 600;">상자 탑에 소환 🧱</button>
+          <button class="btn btn-secondary" id="closeCharStoryBtn" style="flex: 1; padding: 0.7rem; font-size: 0.9rem; font-weight: 600;">도감으로 가기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 모바일 하단 네비게이션 바 -->
+  <nav class="mobile-nav-bar" style="display: none;">
+    <button class="nav-item active" data-mobile-tab="home">
+      <i data-lucide="home"></i>
+      <span>홈</span>
+    </button>
+    <button class="nav-item" data-mobile-tab="logs">
+      <i data-lucide="scroll"></i>
+      <span>로그</span>
+    </button>
+    <button class="nav-item" data-mobile-tab="info">
+      <i data-lucide="book-open"></i>
+      <span>도감</span>
+    </button>
+    <button class="nav-item" data-mobile-tab="rank">
+      <i data-lucide="bar-chart-3"></i>
+      <span>랭킹</span>
+    </button>
+    <button class="nav-item" data-mobile-tab="bingo">
+      <i data-lucide="grid"></i>
+      <span>빙고</span>
+    </button>
+    <button class="nav-item" data-mobile-tab="tools">
+      <i data-lucide="gamepad-2"></i>
+      <span>도구</span>
+    </button>
+  </nav>
+
+  <script src="app.js"></script>
+  <script>
+    lucide.createIcons();
+  </script>
+</body>
+</html>

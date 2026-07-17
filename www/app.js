@@ -20,7 +20,7 @@ const defaultBingoGames = [
   { name: '아발론', difficulty: 4, genre: '파티/심리', img: 'images/아발론_seo.webp', completed: false },
   { name: '딕싯', difficulty: 2, genre: '파티/심리', img: 'images/딕싯_seo.webp', completed: false },
   { name: '스컬', difficulty: 2, genre: '파티/심리', img: 'images/스컬_seo.webp', completed: false },
-  { name: '아그리콜라', difficulty: 4, genre: '전략', img: 'images/아그리콜라.webp', completed: false },
+  { name: '아그리콜라', difficulty: 4, genre: '전략', img: 'images/아그리콜라_seo.webp', completed: false },
   { name: '러브레터', difficulty: 2, genre: '가벼움', img: 'images/러브레터_seo.webp', completed: false },
   { name: '뱅', difficulty: 3, genre: '파티/심리', img: 'images/뱅_seo.webp', completed: false },
   { name: '우노', difficulty: 1, genre: '가벼움', img: 'images/우노_seo.webp', completed: false },

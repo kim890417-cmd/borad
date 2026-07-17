@@ -2899,7 +2899,7 @@ select:focus {
   width: 100%;
   height: 100%;
   max-width: 500px;
-  background-image: url('images/스타트.jpg');
+  background-image: url('images/start.jpg');
   background-size: cover;
   background-position: center;
   box-shadow: 0 10px 40px rgba(0,0,0,0.5);

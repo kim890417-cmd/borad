@@ -78,392 +78,2405 @@ const CHARACTERS = [
 
 // --- 20종 이상의 풍부한 기본 보드게임 도감 백과사전 DB (로컬 저장된 초경량 고화질 한글판 패키지 이미지로 매핑) ---
 const ENCYCLOPEDIA_DB = {
-  '스플렌더': { 
-    bggId: '148228', 
-    name: '스플렌더 (Splendor)', 
-    desc: '보석 칩을 모아 광산을 개발하고 카드 점수를 모아 귀족들의 방문을 유도하는 최고의 셋컬렉션 입문 게임', 
-    img: 'images/스플렌더_seo.webp',
-    players: '2-4',
-    color: '#6c5ce7', 
-    difficulty: 'medium' 
+  "스플렌더": {
+    "bggId": "148228",
+    "name": "스플렌더 (Splendor)",
+    "desc": "보석 칩을 모아 광산을 개발하고 카드 점수를 모아 귀족들의 방문을 유도하는 최고의 셋컬렉션 입문 게임",
+    "img": "images/스플렌더_seo.webp",
+    "players": "2-4",
+    "color": "#6c5ce7",
+    "difficulty": "medium",
+    "genre": "strategy"
   },
-  '루미큐브': { 
-    bggId: '811', 
-    name: '루미큐브 (Rummikub)', 
-    desc: '숫자 타일들을 연속된 수 또는 같은 숫자의 다른 색 조합으로 맞춰 자신의 타일을 가장 먼저 터는 두뇌 보드게임', 
-    img: 'images/루미큐브_seo.webp',
-    players: '2-4',
-    color: '#0984e3', 
-    difficulty: 'easy' 
+  "루미큐브": {
+    "bggId": "811",
+    "name": "루미큐브 (Rummikub)",
+    "desc": "숫자 타일들을 연속된 수 또는 같은 숫자의 다른 색 조합으로 맞춰 자신의 타일을 가장 먼저 터는 두뇌 보드게임",
+    "img": "images/루미큐브_seo.webp",
+    "players": "2-4",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '카르카손': { 
-    bggId: '822', 
-    name: '카르카손 (Carcassonne)', 
-    desc: '타일을 한 장씩 뽑아 성, 길, 초원을 건설하고 내 미플을 놓아 영토를 넓히는 최고의 영향력 타일 배치 게임', 
-    img: 'images/카르카손_seo.webp',
-    players: '2-5',
-    color: '#2ecc71', 
-    difficulty: 'easy' 
+  "카르카손": {
+    "bggId": "822",
+    "name": "카르카손 (Carcassonne)",
+    "desc": "타일을 한 장씩 뽑아 성, 길, 초원을 건설하고 내 미플을 놓아 영토를 넓히는 최고의 영향력 타일 배치 게임",
+    "img": "images/카르카손_seo.webp",
+    "players": "2-5",
+    "color": "#2ecc71",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '카탄': { 
-    bggId: '13', 
-    name: '카탄의 개척자 (Catan)', 
-    desc: '자원을 생산하고 다른 개척자들과의 활발한 거래 및 도로, 마을 확장을 통해 10점을 먼저 획득하는 협상 전략 게임', 
-    img: 'images/카탄_seo.webp',
-    players: '3-4',
-    color: '#ff7675', 
-    difficulty: 'medium' 
+  "카탄": {
+    "bggId": "13",
+    "name": "카탄의 개척자 (Catan)",
+    "desc": "자원을 생산하고 다른 개척자들과의 활발한 거래 및 도로, 마을 확장을 통해 10점을 먼저 획득하는 협상 전략 게임",
+    "img": "images/카탄_seo.webp",
+    "players": "3-4",
+    "color": "#ff7675",
+    "difficulty": "medium",
+    "genre": "strategy"
   },
-  '할리갈리': { 
-    bggId: '598', 
-    name: '할리갈리 (Halli Galli)', 
-    desc: '과일의 합이 정확히 5개가 되는 순간 누구보다 빠르게 종을 쳐서 카드를 쓸어 담는 순발력 과일 게임', 
-    img: 'images/할리갈리_seo.webp',
-    players: '2-6',
-    color: '#e74c3c', 
-    difficulty: 'easy' 
+  "할리갈리": {
+    "bggId": "598",
+    "name": "할리갈리 (Halli Galli)",
+    "desc": "과일의 합이 정확히 5개가 되는 순간 누구보다 빠르게 종을 쳐서 카드를 쓸어 담는 순발력 과일 게임",
+    "img": "images/할리갈리_seo.webp",
+    "players": "2-6",
+    "color": "#e74c3c",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '다빈치코드': { 
-    bggId: '8946', 
-    name: '다빈치코드 (Da Vinci Code)', 
-    desc: '상대방의 흑백 타일 번호를 하나씩 밝혀내고 나의 비밀 숫자 조합은 끝까지 감추는 숫자 추리 게임', 
-    img: 'images/다빈치코드_seo.webp',
-    players: '2-4',
-    color: '#34495e', 
-    difficulty: 'easy' 
+  "다빈치코드": {
+    "bggId": "8946",
+    "name": "다빈치코드 (Da Vinci Code)",
+    "desc": "상대방의 흑백 타일 번호를 하나씩 밝혀내고 나의 비밀 숫자 조합은 끝까지 감추는 숫자 추리 게임",
+    "img": "images/다빈치코드_seo.webp",
+    "players": "2-4",
+    "color": "#34495e",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '젝스님트': { 
-    bggId: '118', 
-    name: '젝스님트 (6 Nimmst!)', 
-    desc: '카드를 비공개로 내고 오름차순으로 배치하다가, 6번째 카드를 놓는 불운의 플레이어가 벌점 카드를 먹는 파티 눈치 카드게임', 
-    img: 'images/젝스님트_seo.webp',
-    players: '2-10',
-    color: '#e84393', 
-    difficulty: 'easy' 
+  "젝스님트": {
+    "bggId": "118",
+    "name": "젝스님트 (6 Nimmst!)",
+    "desc": "카드를 비공개로 내고 오름차순으로 배치하다가, 6번째 카드를 놓는 불운의 플레이어가 벌점 카드를 먹는 파티 눈치 카드게임",
+    "img": "images/젝스님트_seo.webp",
+    "players": "2-10",
+    "color": "#e84393",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '아발론': { 
-    bggId: '128839', 
-    name: '레지스탕스 아발론 (Avalon)', 
-    desc: '선과 악의 진영으로 나뉘어 서로의 정체를 속이고 미션을 성공시키거나 저지하는 최고의 마피아 블러핑 게임', 
-    img: 'images/아발론_seo.webp',
-    players: '5-10',
-    color: '#16a085', 
-    difficulty: 'heavy' 
+  "아발론": {
+    "bggId": "128839",
+    "name": "레지스탕스 아발론 (Avalon)",
+    "desc": "선과 악의 진영으로 나뉘어 서로의 정체를 속이고 미션을 성공시키거나 저지하는 최고의 마피아 블러핑 게임",
+    "img": "images/아발론_seo.webp",
+    "players": "5-10",
+    "color": "#16a085",
+    "difficulty": "heavy",
+    "genre": "party"
   },
-  '딕싯': { 
-    bggId: '39856', 
-    name: '딕싯 (Dixit)', 
-    desc: '추상적인 일러스트 카드를 보고 다채로운 힌트를 제시하여 출제자의 카드를 맞추는 감성 스토리텔링 게임', 
-    img: 'images/딕싯_seo.webp',
-    players: '3-6',
-    color: '#8e44ad', 
-    difficulty: 'easy' 
+  "딕싯": {
+    "bggId": "39856",
+    "name": "딕싯 (Dixit)",
+    "desc": "추상적인 일러스트 카드를 보고 다채로운 힌트를 제시하여 출제자의 카드를 맞추는 감성 스토리텔링 게임",
+    "img": "images/딕싯_seo.webp",
+    "players": "3-6",
+    "color": "#8e44ad",
+    "difficulty": "easy",
+    "genre": "party"
   },
-  '스컬': { 
-    bggId: '131057', 
-    name: '스컬 (Skull)', 
-    desc: '꽃과 해골이 그려진 디스크를 내고, 해골을 밟지 않으면서 자기가 선언한 장수만큼 뒤집는 고도의 심리 블러핑 포커 게임', 
-    img: 'images/스컬_seo.webp',
-    players: '3-6',
-    color: '#fdcb6e', 
-    difficulty: 'easy' 
+  "스컬": {
+    "bggId": "131057",
+    "name": "스컬 (Skull)",
+    "desc": "꽃과 해골이 그려진 디스크를 내고, 해골을 밟지 않으면서 자기가 선언한 장수만큼 뒤집는 고도의 심리 블러핑 포커 게임",
+    "img": "images/스컬_seo.webp",
+    "players": "3-6",
+    "color": "#fdcb6e",
+    "difficulty": "easy",
+    "genre": "party"
   },
-  '아그리콜라': { 
-    bggId: '31260', 
-    name: '아그리콜라 (Agricola)', 
-    desc: '17세기 농부가 되어 밭을 일구고 가축을 키우며 내 가족들을 굶기지 않고 농장을 건설하는 명작 일꾼배치 게임', 
-    img: 'images/아그리콜라.webp',
-    players: '1-4',
-    color: '#d35400', 
-    difficulty: 'heavy' 
+  "아그리콜라": {
+    "bggId": "",
+    "name": "아그리콜라",
+    "desc": "아그리콜라 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/아그리콜라_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "strategy"
   },
-  '러브레터': { 
-    bggId: '129622', 
-    name: '러브레터 (Love Letter)', 
-    desc: '단 16장의 카드만을 사용하여 공주에게 비밀 편지를 무사히 배달하고 다른 라이벌을 탈락시키는 전략 카드게임', 
-    img: 'images/러브레터_seo.webp',
-    players: '2-4',
-    color: '#d63031', 
-    difficulty: 'easy' 
+  "러브레터": {
+    "bggId": "129622",
+    "name": "러브레터 (Love Letter)",
+    "desc": "단 16장의 카드만을 사용하여 공주에게 비밀 편지를 무사히 배달하고 다른 라이벌을 탈락시키는 전략 카드게임",
+    "img": "images/러브레터_seo.webp",
+    "players": "2-4",
+    "color": "#d63031",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '뱅': { 
-    bggId: '3955', 
-    name: '뱅! (Bang!)', 
-    desc: '보안관, 부관, 무법자, 배신자라는 각자의 비밀 역할을 맡아 서부 총잡이가 되어 쏘고 피하는 정통 서부극 카드게임', 
-    img: 'images/뱅_seo.webp',
-    players: '4-7',
-    color: '#e67e22', 
-    difficulty: 'medium' 
+  "뱅": {
+    "bggId": "3955",
+    "name": "뱅! (Bang!)",
+    "desc": "보안관, 부관, 무법자, 배신자라는 각자의 비밀 역할을 맡아 서부 총잡이가 되어 쏘고 피하는 정통 서부극 카드게임",
+    "img": "images/뱅_seo.webp",
+    "players": "4-7",
+    "color": "#e67e22",
+    "difficulty": "medium",
+    "genre": "party"
   },
-  '우노': { 
-    bggId: '2223', 
-    name: '우노 (UNO)', 
-    desc: '손에 든 카드와 같은 색상이나 숫자를 내어 패를 털어내고, 마지막 1장이 남았을 때 우노를 외치는 고전 카드게임', 
-    img: 'images/우노_seo.webp',
-    players: '2-10',
-    color: '#27ae60', 
-    difficulty: 'easy' 
+  "우노": {
+    "bggId": "2223",
+    "name": "우노 (UNO)",
+    "desc": "손에 든 카드와 같은 색상이나 숫자를 내어 패를 털어내고, 마지막 1장이 남았을 때 우노를 외치는 고전 카드게임",
+    "img": "images/우노_seo.webp",
+    "players": "2-10",
+    "color": "#27ae60",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '아키올로지': { 
-    bggId: '131301', 
-    name: '아키올로지 (Archeology)', 
-    desc: '사막 유적지를 발굴하여 보물 세트를 모아 상인에게 비싸게 팔아넘기며 모래폭풍과 도둑을 피하는 카드 컬렉션 게임', 
-    img: 'images/아키올로지_seo.jpg',
-    players: '2-4',
-    color: '#f39c12', 
-    difficulty: 'easy' 
+  "아키올로지": {
+    "bggId": "131301",
+    "name": "아키올로지 (Archeology)",
+    "desc": "사막 유적지를 발굴하여 보물 세트를 모아 상인에게 비싸게 팔아넘기며 모래폭풍과 도둑을 피하는 카드 컬렉션 게임",
+    "img": "images/아키올로지_seo.jpg",
+    "players": "2-4",
+    "color": "#f39c12",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '꼬치의달인': {
-    bggId: '317985',
-    name: '꼬치의달인 (Kebab Chef)',
-    desc: '재료를 골라 꼬치를 완성하고 손님에게 서빙하는 최고의 요리사가 되어보는 순발력 카드게임',
-    img: 'images/꼬치의달인_seo.webp',
-    players: '2-5',
-    color: '#ff7675',
-    difficulty: 'easy'
+  "꼬치의달인": {
+    "bggId": "317985",
+    "name": "꼬치의달인 (Kebab Chef)",
+    "desc": "재료를 골라 꼬치를 완성하고 손님에게 서빙하는 최고의 요리사가 되어보는 순발력 카드게임",
+    "img": "images/꼬치의달인_seo.webp",
+    "players": "2-5",
+    "color": "#ff7675",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '달무티': {
-    bggId: '',
-    name: '달무티 (Dalmunti)',
-    desc: '토끼와 거북이 캐릭터가 달을 향해 경주하는 귀여운 테마의 전략 보드게임',
-    img: 'images/달무티_seo.webp',
-    players: '2-4',
-    color: '#0984e3',
-    difficulty: 'easy'
+  "달무티": {
+    "bggId": "",
+    "name": "달무티 (Dalmunti)",
+    "desc": "귀여운 테마의 카드 게임으로, 계급 변동에 따른 치열한 눈치 싸움을 즐겨보세요!",
+    "img": "images/달무티_seo.webp",
+    "players": "4-8",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '노터치크라켄': {
-    bggId: '',
-    name: '노터치크라켄 (No Touch Kraken)',
-    desc: '크라켄을 건드리지 않고 해저 보물을 회수하는 파티용 손놀림 게임',
-    img: 'images/노터치크라켄_seo.webp',
-    players: '2-6',
-    color: '#00cec9',
-    difficulty: 'easy'
+  "노터치크라켄": {
+    "bggId": "",
+    "name": "노터치크라켄 (No Touch Kraken)",
+    "desc": "크라켄을 건드리지 않고 해저 보물을 회수하는 파티용 정체 은닉 게임",
+    "img": "images/노터치크라켄_seo.webp",
+    "players": "4-6",
+    "color": "#00cec9",
+    "difficulty": "easy",
+    "genre": "party"
   },
-  '스위스사는스미스씨': {
-    bggId: '',
-    name: '스위스사는스미스씨 (Mr. Smith in Switzerland)',
-    desc: '스위스에 사는 스미스 씨가 되어 다양한 에피소드를 해결하는 스토리텔링 카드게임',
-    img: 'images/스위스사는스미스씨_seo.webp',
-    players: '3-8',
-    color: '#2ecc71',
-    difficulty: 'easy'
+  "스위스사는스미스씨": {
+    "bggId": "",
+    "name": "스위스사는스미스씨 (Mr. Smith in Switzerland)",
+    "desc": "스위스에 사는 스미스 씨가 되어 다양한 에피소드를 해결하는 스토리텔링 카드게임",
+    "img": "images/스위스사는스미스씨_seo.webp",
+    "players": "3-8",
+    "color": "#2ecc71",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '핸즈업': {
-    bggId: '',
-    name: '핸즈업 (Hands Up)',
-    desc: '손을 빠르게 움직여 주어진 동작을 가장 먼저 완성하는 순발력 파티게임',
-    img: 'images/핸즈업_seo.webp',
-    players: '2-8',
-    color: '#e74c3c',
-    difficulty: 'easy'
+  "핸즈업": {
+    "bggId": "",
+    "name": "핸즈업 (Hands Up)",
+    "desc": "손을 빠르게 움직여 주어진 동작을 가장 먼저 완성하는 순발력 파티게임",
+    "img": "images/핸즈업_seo.webp",
+    "players": "2-8",
+    "color": "#e74c3c",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '한밤의늑대인간': {
-    bggId: '',
-    name: '한밤의늑대인간 (Werewolf at Midnight)',
-    desc: '밤이 되면 늑대인간으로 변하는 마을 사람들 사이에서 정체를 숨기고 살아남는 심리 추리 게임',
-    img: 'images/한밤의늑대인간_seo.webp',
-    players: '4-10',
-    color: '#34495e',
-    difficulty: 'easy'
+  "한밤의늑대인간": {
+    "bggId": "",
+    "name": "한밤의늑대인간 (Werewolf at Midnight)",
+    "desc": "밤이 되면 늑대인간으로 변하는 마을 사람들 사이에서 정체를 숨기고 살아남는 심리 추리 게임",
+    "img": "images/한밤의늑대인간_seo.webp",
+    "players": "3-10",
+    "color": "#34495e",
+    "difficulty": "easy",
+    "genre": "party"
   },
-  '프레즌트': {
-    bggId: '',
-    name: '프레즌트 (Present)',
-    desc: '선물 상자를 서로 돌리며 누가 가장 멋진 선물을 받을지 내기하는 파티 게임',
-    img: 'images/프레즌트_seo.webp',
-    players: '2-6',
-    color: '#e84393',
-    difficulty: 'easy'
+  "프레즌트": {
+    "bggId": "",
+    "name": "프레즌트 (Present)",
+    "desc": "선물 상자를 서로 돌리며 누가 가장 멋진 선물을 받을지 내기하는 파티 게임",
+    "img": "images/프레즌트_seo.webp",
+    "players": "2-6",
+    "color": "#e84393",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '포실리스': {
-    bggId: '',
-    name: '포실리스 (Fossilis)',
-    desc: '고고학자가 되어 화석을 발굴하고 박물관에 전시하는 테마의 카드 게임',
-    img: 'images/포실리스_seo.webp',
-    players: '2-5',
-    color: '#d35400',
-    difficulty: 'medium'
+  "포실리스": {
+    "bggId": "",
+    "name": "포실리스 (Fossilis)",
+    "desc": "고고학자가 되어 화석을 발굴하고 박물관에 전시하는 테마의 카드 게임",
+    "img": "images/포실리스_seo.webp",
+    "players": "2-5",
+    "color": "#d35400",
+    "difficulty": "medium",
+    "genre": "strategy"
   },
-  '펭귄파티': {
-    bggId: '',
-    name: '펭귄파티 (Penguin Party)',
-    desc: '귀여운 펭귄들이 펼치는 얼음 위 파티! 가장 많은 물고기를 모으는 가족 보드게임',
-    img: 'images/펭귄파티_seo.webp',
-    players: '2-4',
-    color: '#16a085',
-    difficulty: 'easy'
+  "펭귄파티": {
+    "bggId": "",
+    "name": "펭귄파티 (Penguin Party)",
+    "desc": "귀여운 펭귄들이 펼치는 얼음 위 파티! 가장 많은 물고기를 모으는 가족 보드게임",
+    "img": "images/펭귄파티_seo.webp",
+    "players": "2-4",
+    "color": "#16a085",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '페이퍼사파리': {
-    bggId: '',
-    name: '페이퍼사파리 (Paper Safari)',
-    desc: '접힌 종이를 펼쳐 동물을 완성하고 다양한 동물을 수집하는 어린이 보드게임',
-    img: 'images/페이퍼사파리_seo.webp',
-    players: '2-4',
-    color: '#27ae60',
-    difficulty: 'easy'
+  "페이퍼사파리": {
+    "bggId": "",
+    "name": "페이퍼사파리 (Paper Safari)",
+    "desc": "접힌 종이를 펼쳐 동물을 완성하고 다양한 동물을 수집하는 어린이 보드게임",
+    "img": "images/페이퍼사파리_seo.webp",
+    "players": "2-4",
+    "color": "#27ae60",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '타코캣고트치즈피자': {
-    bggId: '372332',
-    name: '타코캣고트치즈피자 (Taco Cat Goat Cheese Pizza)',
-    desc: '카드를 돌며 외치다가 같은 그림이 나오면 손으로 팍! 쳐야 하는 초고속 순발력 파티게임',
-    img: 'images/타코캣고트치즈피자_seo.webp',
-    players: '2-8',
-    color: '#ff7675',
-    difficulty: 'easy'
+  "타코캣고트치즈피자": {
+    "bggId": "372332",
+    "name": "타코캣고트치즈피자 (Taco Cat Goat Cheese Pizza)",
+    "desc": "카드를 돌며 외치다가 같은 그림이 나오면 손으로 팍! 쳐야 하는 초고속 순발력 파티게임",
+    "img": "images/타코캣고트치즈피자_seo.webp",
+    "players": "2-8",
+    "color": "#ff7675",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '쿼리도': {
-    bggId: '6249',
-    name: '쿼리도 (Quoridor)',
-    desc: '내 말을 먼저 반대편 끝까지 보내는 전략 미로 게임. 벽을 세워 상대를 막고 길을 개척하라',
-    img: 'images/쿼리도_seo.webp',
-    players: '2-4',
-    color: '#6c5ce7',
-    difficulty: 'medium'
+  "쿼리도": {
+    "bggId": "6249",
+    "name": "쿼리도 (Quoridor)",
+    "desc": "내 말을 먼저 반대편 끝까지 보내는 전략 미로 게임. 벽을 세워 상대를 막고 길을 개척하라",
+    "img": "images/쿼리도_seo.webp",
+    "players": "2-4",
+    "color": "#6c5ce7",
+    "difficulty": "medium",
+    "genre": "strategy"
   },
-  '캘리코': {
-    bggId: '355433',
-    name: '캘리코 (Calico)',
-    desc: '패치워크 퀼트를 디자인하여 귀여운 고양이들을 유치하는 퍼즐 전략 게임',
-    img: 'images/캘리코_seo.webp',
-    players: '1-4',
-    color: '#fdcb6e',
-    difficulty: 'medium'
+  "캘리코": {
+    "bggId": "355433",
+    "name": "캘리코 (Calico)",
+    "desc": "패치워크 퀼트를 디자인하여 귀여운 고양이들을 유치하는 퍼즐 전략 게임",
+    "img": "images/캘리코_seo.webp",
+    "players": "1-4",
+    "color": "#fdcb6e",
+    "difficulty": "medium",
+    "genre": "strategy"
   },
-  '캔트스탑': {
-    bggId: '41',
-    name: "캔트스탑 (Can't Stop)",
-    desc: '주사위를 굴려 숫자를 완성하는데 그만둘지 계속할지 선택의 연속! 짜릿한 푸시유어럭 게임',
-    img: 'images/캔트스탑_seo.webp',
-    players: '2-4',
-    color: '#0984e3',
-    difficulty: 'easy'
+  "캔트스탑": {
+    "bggId": "41",
+    "name": "캔트스탑 (Can't Stop)",
+    "desc": "주사위를 굴려 숫자를 완성하는데 그만둘지 계속할지 선택의 연속! 짜릿한 푸시유어럭 게임",
+    "img": "images/캔트스탑_seo.webp",
+    "players": "2-4",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '카리바': {
-    bggId: '',
-    name: '카리바 (Kariba)',
-    desc: '아프리카 사바나에서 동물 카드를 내며 더 강한 동물로 약한 동물을 덮는 간단한 카드게임',
-    img: 'images/카리바_seo.webp',
-    players: '2-4',
-    color: '#e67e22',
-    difficulty: 'easy'
+  "카리바": {
+    "bggId": "",
+    "name": "카리바 (Kariba)",
+    "desc": "아프리카 사바나에서 동물 카드를 내며 더 강한 동물로 약한 동물을 덮는 간단한 카드게임",
+    "img": "images/카리바_seo.webp",
+    "players": "2-4",
+    "color": "#e67e22",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '치킨차차': {
-    bggId: '',
-    name: '치킨차차 (Chicken Cha Cha)',
-    desc: '치킨이 되어 알을 낳고 병아리를 키우는 유쾌한 기억력 게임',
-    img: 'images/치킨차차_seo.webp',
-    players: '2-4',
-    color: '#f39c12',
-    difficulty: 'easy'
+  "치킨차차": {
+    "bggId": "",
+    "name": "치킨차차 (Chicken Cha Cha)",
+    "desc": "치킨이 되어 알을 낳고 병아리를 키우는 유쾌한 기억력 게임",
+    "img": "images/치킨차차_seo.webp",
+    "players": "2-4",
+    "color": "#f39c12",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '익스플로딩키튼': {
-    bggId: '172291',
-    name: '익스플로딩키튼 (Exploding Kittens)',
-    desc: '폭발하는 고양이를 피하고 다양한 액션 카드로 상대를 공격하는 최후의 1인이 되는 러시안룰렛 카드게임',
-    img: 'images/익스플로딩키튼_seo.webp',
-    players: '2-5',
-    color: '#e84393',
-    difficulty: 'easy'
+  "익스플로딩키튼": {
+    "bggId": "172291",
+    "name": "익스플로딩키튼 (Exploding Kittens)",
+    "desc": "폭발하는 고양이를 피하고 다양한 액션 카드로 상대를 공격하는 최후의 1인이 되는 러시안룰렛 카드게임",
+    "img": "images/익스플로딩키튼_seo.webp",
+    "players": "2-5",
+    "color": "#e84393",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '우봉고': {
-    bggId: '29246',
-    name: '우봉고 (Ubongo)',
-    desc: '퍼즐 조각을 제한 시간 안에 맞춰 보석을 획득하는 두뇌 퍼즐 게임',
-    img: 'images/우봉고_seo.webp',
-    players: '1-4',
-    color: '#00cec9',
-    difficulty: 'medium'
+  "우봉고": {
+    "bggId": "29246",
+    "name": "우봉고 (Ubongo)",
+    "desc": "퍼즐 조각을 제한 시간 안에 맞춰 보석을 획득하는 두뇌 퍼즐 게임",
+    "img": "images/우봉고_seo.webp",
+    "players": "1-4",
+    "color": "#00cec9",
+    "difficulty": "medium",
+    "genre": "casual"
   },
-  '시타델': {
-    bggId: '478',
-    name: '시타델 (Citadels)',
-    desc: '왕국을 건설하며 다양한 캐릭터를 선택해 상대보다 먼저 8개 구역을 완성하는 전략 카드게임',
-    img: 'images/시타델_seo.webp',
-    players: '2-7',
-    color: '#8e44ad',
-    difficulty: 'medium'
+  "시타델": {
+    "bggId": "478",
+    "name": "시타델 (Citadels)",
+    "desc": "왕국을 건설하며 다양한 캐릭터를 선택해 상대보다 먼저 8개 구역을 완성하는 전략 카드게임",
+    "img": "images/시타델_seo.webp",
+    "players": "2-7",
+    "color": "#8e44ad",
+    "difficulty": "medium",
+    "genre": "strategy"
   },
-  '슬리핑퀸즈': {
-    bggId: '153999',
-    name: '슬리핑퀸즈 (Sleeping Queens)',
-    desc: '잠자는 여왕들을 깨워 왕국을 재건하는 동화 같은 테마의 어린이 카드게임',
-    img: 'images/슬리핑퀸즈_seo.webp',
-    players: '2-5',
-    color: '#6c5ce7',
-    difficulty: 'easy'
+  "슬리핑퀸즈": {
+    "bggId": "153999",
+    "name": "슬리핑퀸즈 (Sleeping Queens)",
+    "desc": "잠자는 여왕들을 깨워 왕국을 재건하는 동화 같은 테마의 어린이 카드게임",
+    "img": "images/슬리핑퀸즈_seo.webp",
+    "players": "2-5",
+    "color": "#6c5ce7",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '스파이폴': {
-    bggId: '131922',
-    name: '스파이폴 (Spyfall)',
-    desc: '스파이를 찾아내거나 스파이로써 정체를 숨기는 심리 블러핑 질문 게임',
-    img: 'images/스파이폴_seo.webp',
-    players: '3-8',
-    color: '#2ecc71',
-    difficulty: 'easy'
+  "스파이폴": {
+    "bggId": "131922",
+    "name": "스파이폴 (Spyfall)",
+    "desc": "스파이를 찾아내거나 스파이로써 정체를 숨기는 심리 블러핑 질문 게임",
+    "img": "images/스파이폴_seo.webp",
+    "players": "3-8",
+    "color": "#2ecc71",
+    "difficulty": "easy",
+    "genre": "party"
   },
-  '스틱스택': {
-    bggId: '',
-    name: '스틱스택 (Stick Stack)',
-    desc: '막대기를 하나씩 빼서 쌓으며 균형을 유지하는 손기술 소근육 발달 게임',
-    img: 'images/스틱스택_seo.webp',
-    players: '2-4',
-    color: '#ff7675',
-    difficulty: 'easy'
+  "스틱스택": {
+    "bggId": "",
+    "name": "스틱스택 (Stick Stack)",
+    "desc": "막대기를 하나씩 빼서 쌓으며 균형을 유지하는 손기술 소근육 발달 게임",
+    "img": "images/스틱스택_seo.webp",
+    "players": "2-4",
+    "color": "#ff7675",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '스컬킹': {
-    bggId: '',
-    name: '스컬킹 (Skull King)',
-    desc: '트릭을 예측하고 해적왕 스컬킹을 조심하며 승부를 거는 해적 테마 트릭테이킹 게임',
-    img: 'images/스컬킹_seo.webp',
-    players: '2-8',
-    color: '#e74c3c',
-    difficulty: 'medium'
+  "스컬킹": {
+    "bggId": "",
+    "name": "스컬킹 (Skull King)",
+    "desc": "트릭을 예측하고 해적왕 스컬킹을 조심하며 승부를 거는 해적 테마 트릭테이킹 게임",
+    "img": "images/스컬킹_seo.webp",
+    "players": "2-8",
+    "color": "#e74c3c",
+    "difficulty": "medium",
+    "genre": "casual"
   },
-  '로보77': {
-    bggId: '',
-    name: '로보77 (Robo 77)',
-    desc: '숫자 카드를 전략적으로 사용해 합이 정확히 77이 되지 않도록 조절하는 숫자 카드게임',
-    img: 'images/로보77_seo.webp',
-    players: '2-5',
-    color: '#34495e',
-    difficulty: 'easy'
+  "로보77": {
+    "bggId": "",
+    "name": "로보77 (Robo 77)",
+    "desc": "숫자 카드를 전략적으로 사용해 합이 정확히 77이 되지 않도록 조절하는 숫자 카드게임",
+    "img": "images/로보77_seo.webp",
+    "players": "2-5",
+    "color": "#34495e",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '도블': {
-    bggId: '391163',
-    name: '도블 (Dobble)',
-    desc: '두 카드 사이에 항상 하나의 같은 그림을 가장 먼저 찾아내는 초스피드 관찰력 게임',
-    img: 'images/도블_seo.webp',
-    players: '2-8',
-    color: '#27ae60',
-    difficulty: 'easy'
+  "도블": {
+    "bggId": "391163",
+    "name": "도블 (Dobble)",
+    "desc": "두 카드 사이에 항상 하나의 같은 그림을 가장 먼저 찾아내는 초스피드 관찰력 게임",
+    "img": "images/도블_seo.webp",
+    "players": "2-8",
+    "color": "#27ae60",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '마네': {
-    bggId: '',
-    name: '마네 (Manee)',
-    desc: '경매와 교환을 통해 원하는 동물 카드를 모으는 한국형 보드게임',
-    img: 'images/마네_seo.webp',
-    players: '2-5',
-    color: '#16a085',
-    difficulty: 'easy'
+  "마네": {
+    "bggId": "",
+    "name": "마네 (Manee)",
+    "desc": "경매와 교환을 통해 원하는 동물 카드를 모으는 한국형 보드게임",
+    "img": "images/마네_seo.webp",
+    "players": "2-5",
+    "color": "#16a085",
+    "difficulty": "easy",
+    "genre": "casual"
   },
-  '보난자': {
-    bggId: '425',
-    name: '보난자 (Bohnanza)',
-    desc: '콩 농장을 운영하며 콩을 심고 수확해 가장 많은 수익을 올리는 트레이딩 카드게임의 명작',
-    img: 'images/보난자_seo.webp',
-    players: '2-7',
-    color: '#d35400',
-    difficulty: 'medium'
+  "보난자": {
+    "bggId": "425",
+    "name": "보난자 (Bohnanza)",
+    "desc": "콩 농장을 운영하며 콩을 심고 수확해 가장 많은 수익을 올리는 트레이딩 카드게임의 명작",
+    "img": "images/보난자_seo.webp",
+    "players": "2-7",
+    "color": "#d35400",
+    "difficulty": "medium",
+    "genre": "casual"
   },
-  '더마인드': {
-    bggId: '244992',
-    name: '더마인드 (The Mind)',
-    desc: '대화 없이 오직 타이밍만으로 카드를 오름차순으로 내는 신개념 협력 카드게임',
-    img: 'images/더마인드_seo.webp',
-    players: '2-4',
-    color: '#fdcb6e',
-    difficulty: 'easy'
+  "더마인드": {
+    "bggId": "244992",
+    "name": "더마인드 (The Mind)",
+    "desc": "대화 없이 오직 타이밍만으로 카드를 오름차순으로 내는 신개념 협력 카드게임",
+    "img": "images/더마인드_seo.webp",
+    "players": "2-4",
+    "color": "#fdcb6e",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "5초 준다": {
+    "bggId": "",
+    "name": "5초 준다",
+    "desc": "5초 준다 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/5초 준다_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "AI 스페이스 퍼즐": {
+    "bggId": "",
+    "name": "AI 스페이스 퍼즐",
+    "desc": "AI 스페이스 퍼즐 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/AI 스페이스 퍼즐_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "CONTACT 콘택트": {
+    "bggId": "",
+    "name": "CONTACT 콘택트",
+    "desc": "CONTACT 콘택트 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/CONTACT 콘택트_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "DUO mini 듀오 미니": {
+    "bggId": "",
+    "name": "DUO mini 듀오 미니",
+    "desc": "DUO mini 듀오 미니 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/DUO mini 듀오 미니_seo.webp",
+    "players": "2-4",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "EUROPE 10일간의유럽여행": {
+    "bggId": "",
+    "name": "EUROPE 10일간의유럽여행",
+    "desc": "EUROPE 10일간의유럽여행 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/EUROPE 10일간의유럽여행_seo.webp",
+    "players": "2-4",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "kamisado 달빛아래에서 수를": {
+    "bggId": "",
+    "name": "kamisado 달빛아래에서 수를",
+    "desc": "kamisado 달빛아래에서 수를 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/kamisado 달빛아래에서 수를_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "USA 10일간의미국여행": {
+    "bggId": "",
+    "name": "USA 10일간의미국여행",
+    "desc": "USA 10일간의미국여행 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/USA 10일간의미국여행_seo.webp",
+    "players": "2-4",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "간장공장 공장장": {
+    "bggId": "",
+    "name": "간장공장 공장장",
+    "desc": "간장공장 공장장 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/간장공장 공장장_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "간큐브 GAN16 마그레브 맥스 UV": {
+    "bggId": "",
+    "name": "간큐브 GAN16 마그레브 맥스 UV",
+    "desc": "간큐브 GAN16 마그레브 맥스 UV 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/간큐브 GAN16 마그레브 맥스 UV_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "간큐브 GAN56_M": {
+    "bggId": "",
+    "name": "간큐브 GAN56_M",
+    "desc": "간큐브 GAN56_M 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/간큐브 GAN56_M_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "개정판 블랙스토리즈": {
+    "bggId": "",
+    "name": "개정판 블랙스토리즈",
+    "desc": "개정판 블랙스토리즈 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/개정판 블랙스토리즈_seo.webp",
+    "players": "5-10",
+    "color": "#0984e3",
+    "difficulty": "medium",
+    "genre": "party"
+  },
+  "구룡투": {
+    "bggId": "",
+    "name": "구룡투",
+    "desc": "구룡투 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/구룡투_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "궁신": {
+    "bggId": "",
+    "name": "궁신",
+    "desc": "궁신 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/궁신_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "그라울최후의밤": {
+    "bggId": "",
+    "name": "그라울최후의밤",
+    "desc": "그라울최후의밤 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/그라울최후의밤_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "party"
+  },
+  "그래비트랙스 코어 스타터": {
+    "bggId": "",
+    "name": "그래비트랙스 코어 스타터",
+    "desc": "그래비트랙스 코어 스타터 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/그래비트랙스 코어 스타터_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "글룸헤이븐 사자의 턱": {
+    "bggId": "",
+    "name": "글룸헤이븐 사자의 턱",
+    "desc": "글룸헤이븐 사자의 턱 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/글룸헤이븐 사자의 턱_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "strategy"
+  },
+  "기묘한 이야기": {
+    "bggId": "",
+    "name": "기묘한 이야기",
+    "desc": "기묘한 이야기 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/기묘한 이야기_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "기차섬": {
+    "bggId": "",
+    "name": "기차섬",
+    "desc": "기차섬 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/기차섬_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "medium",
+    "genre": "strategy"
+  },
+  "나르 바이킹 시대": {
+    "bggId": "",
+    "name": "나르 바이킹 시대",
+    "desc": "나르 바이킹 시대 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/나르 바이킹 시대_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "날아라 고블린": {
+    "bggId": "",
+    "name": "날아라 고블린",
+    "desc": "날아라 고블린 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/날아라 고블린_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "너 좀 빠른데": {
+    "bggId": "",
+    "name": "너 좀 빠른데",
+    "desc": "너 좀 빠른데 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/너 좀 빠른데_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "너도나도파티": {
+    "bggId": "",
+    "name": "너도나도파티",
+    "desc": "너도나도파티 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/너도나도파티_seo.webp",
+    "players": "5-10",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "party"
+  },
+  "노 땡스 딜럭스": {
+    "bggId": "",
+    "name": "노 땡스 딜럭스",
+    "desc": "노 땡스 딜럭스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/노 땡스 딜럭스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "노머시": {
+    "bggId": "",
+    "name": "노머시",
+    "desc": "노머시 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/노머시_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "놉놉 테이블": {
+    "bggId": "",
+    "name": "놉놉 테이블",
+    "desc": "놉놉 테이블 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/놉놉 테이블_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "누가 치즈를 훔쳤을까": {
+    "bggId": "",
+    "name": "누가 치즈를 훔쳤을까",
+    "desc": "누가 치즈를 훔쳤을까 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/누가 치즈를 훔쳤을까_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "다 죽었DAY": {
+    "bggId": "",
+    "name": "다 죽었DAY",
+    "desc": "다 죽었DAY 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/다 죽었DAY_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "다크호스": {
+    "bggId": "",
+    "name": "다크호스",
+    "desc": "다크호스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/다크호스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "당나귀 다리": {
+    "bggId": "",
+    "name": "당나귀 다리",
+    "desc": "당나귀 다리 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/당나귀 다리_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "더게임 퀵앤이지": {
+    "bggId": "",
+    "name": "더게임 퀵앤이지",
+    "desc": "더게임 퀵앤이지 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/더게임 퀵앤이지_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "더게임": {
+    "bggId": "",
+    "name": "더게임",
+    "desc": "더게임 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/더게임_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "도미니언": {
+    "bggId": "",
+    "name": "도미니언",
+    "desc": "도미니언 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/도미니언_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "도토리산": {
+    "bggId": "",
+    "name": "도토리산",
+    "desc": "도토리산 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/도토리산_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "독수리눈치싸움": {
+    "bggId": "",
+    "name": "독수리눈치싸움",
+    "desc": "독수리눈치싸움 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/독수리눈치싸움_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "듄 임페리움 확장_ 불멸": {
+    "bggId": "",
+    "name": "듄 임페리움 확장_ 불멸",
+    "desc": "듄 임페리움 확장_ 불멸 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/듄 임페리움 확장_ 불멸_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "듄 임페리움 확장_ 익스의 부상": {
+    "bggId": "",
+    "name": "듄 임페리움 확장_ 익스의 부상",
+    "desc": "듄 임페리움 확장_ 익스의 부상 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/듄 임페리움 확장_ 익스의 부상_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "드래곤우드": {
+    "bggId": "",
+    "name": "드래곤우드",
+    "desc": "드래곤우드 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/드래곤우드_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "드렉사우 딜럭스": {
+    "bggId": "",
+    "name": "드렉사우 딜럭스",
+    "desc": "드렉사우 딜럭스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/드렉사우 딜럭스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "디셉션": {
+    "bggId": "",
+    "name": "디셉션",
+    "desc": "디셉션 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/디셉션_seo.webp",
+    "players": "5-10",
+    "color": "#0984e3",
+    "difficulty": "medium",
+    "genre": "party"
+  },
+  "디지트": {
+    "bggId": "",
+    "name": "디지트",
+    "desc": "디지트 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/디지트_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "라마랜드": {
+    "bggId": "",
+    "name": "라마랜드",
+    "desc": "라마랜드 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/라마랜드_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "럭키넘버스 본판": {
+    "bggId": "",
+    "name": "럭키넘버스 본판",
+    "desc": "럭키넘버스 본판 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/럭키넘버스 본판_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "레벨10 카드로 즐기는 RPG": {
+    "bggId": "",
+    "name": "레벨10 카드로 즐기는 RPG",
+    "desc": "레벨10 카드로 즐기는 RPG 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/레벨10 카드로 즐기는 RPG_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "렉시오 오리지널": {
+    "bggId": "",
+    "name": "렉시오 오리지널",
+    "desc": "렉시오 오리지널 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/렉시오 오리지널_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "롤카메라": {
+    "bggId": "",
+    "name": "롤카메라",
+    "desc": "롤카메라 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/롤카메라_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "롱샷 본판": {
+    "bggId": "",
+    "name": "롱샷 본판",
+    "desc": "롱샷 본판 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/롱샷 본판_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "루티어 딜럭스": {
+    "bggId": "",
+    "name": "루티어 딜럭스",
+    "desc": "루티어 딜럭스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/루티어 딜럭스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "리빙포레스트 본판": {
+    "bggId": "",
+    "name": "리빙포레스트 본판",
+    "desc": "리빙포레스트 본판 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/리빙포레스트 본판_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "마법사와 움직이는 탑": {
+    "bggId": "",
+    "name": "마법사와 움직이는 탑",
+    "desc": "마법사와 움직이는 탑 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/마법사와 움직이는 탑_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "마작 딜럭스": {
+    "bggId": "",
+    "name": "마작 딜럭스",
+    "desc": "마작 딜럭스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/마작 딜럭스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "매직만달라": {
+    "bggId": "",
+    "name": "매직만달라",
+    "desc": "매직만달라 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/매직만달라_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "머핀타임": {
+    "bggId": "",
+    "name": "머핀타임",
+    "desc": "머핀타임 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/머핀타임_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "멍야옹비스킷 미니": {
+    "bggId": "",
+    "name": "멍야옹비스킷 미니",
+    "desc": "멍야옹비스킷 미니 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/멍야옹비스킷 미니_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "메르카두 드 리스보아": {
+    "bggId": "",
+    "name": "메르카두 드 리스보아",
+    "desc": "메르카두 드 리스보아 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/메르카두 드 리스보아 _seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "메모아르": {
+    "bggId": "",
+    "name": "메모아르",
+    "desc": "메모아르 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/메모아르_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "메이플밸리 본판": {
+    "bggId": "",
+    "name": "메이플밸리 본판",
+    "desc": "메이플밸리 본판 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/메이플밸리 본판_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "명탐정 멍멍홈즈": {
+    "bggId": "",
+    "name": "명탐정 멍멍홈즈",
+    "desc": "명탐정 멍멍홈즈 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/명탐정 멍멍홈즈_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "모두의 마블": {
+    "bggId": "",
+    "name": "모두의 마블",
+    "desc": "모두의 마블 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/모두의 마블_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "모자익스": {
+    "bggId": "",
+    "name": "모자익스",
+    "desc": "모자익스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/모자익스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "몽키블록": {
+    "bggId": "",
+    "name": "몽키블록",
+    "desc": "몽키블록 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/몽키블록_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "미니빌": {
+    "bggId": "",
+    "name": "미니빌",
+    "desc": "미니빌 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/미니빌_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "반디도": {
+    "bggId": "",
+    "name": "반디도",
+    "desc": "반디도 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/반디도_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "반지의 제왕_ 가운데땅에서의 대결": {
+    "bggId": "",
+    "name": "반지의 제왕_ 가운데땅에서의 대결",
+    "desc": "반지의 제왕_ 가운데땅에서의 대결 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/반지의 제왕_ 가운데땅에서의 대결_seo.webp",
+    "players": "2-4",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "방방 날아라 돼지": {
+    "bggId": "",
+    "name": "방방 날아라 돼지",
+    "desc": "방방 날아라 돼지 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/방방 날아라 돼지_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "방방곡곡 세계유랑": {
+    "bggId": "",
+    "name": "방방곡곡 세계유랑",
+    "desc": "방방곡곡 세계유랑 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/방방곡곡 세계유랑_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "배드 컴퍼니": {
+    "bggId": "",
+    "name": "배드 컴퍼니",
+    "desc": "배드 컴퍼니 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/배드 컴퍼니_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "뱀파이어 퀸": {
+    "bggId": "",
+    "name": "뱀파이어 퀸",
+    "desc": "뱀파이어 퀸 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/뱀파이어 퀸_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "버거와썹": {
+    "bggId": "",
+    "name": "버거와썹",
+    "desc": "버거와썹 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/버거와썹_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "버건디의 성": {
+    "bggId": "",
+    "name": "버건디의 성",
+    "desc": "버건디의 성 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/버건디의 성_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "strategy"
+  },
+  "버펄로체스 엘보드": {
+    "bggId": "",
+    "name": "버펄로체스 엘보드",
+    "desc": "버펄로체스 엘보드 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/버펄로체스 엘보드_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "베티보터 보우트 썸 버터": {
+    "bggId": "",
+    "name": "베티보터 보우트 썸 버터",
+    "desc": "베티보터 보우트 썸 버터 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/베티보터 보우트 썸 버터_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "봇 팩토리": {
+    "bggId": "",
+    "name": "봇 팩토리",
+    "desc": "봇 팩토리 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/봇 팩토리_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "strategy"
+  },
+  "부루마블": {
+    "bggId": "",
+    "name": "부루마블",
+    "desc": "부루마블 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/부루마블_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "부메랑호주": {
+    "bggId": "",
+    "name": "부메랑호주",
+    "desc": "부메랑호주 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/부메랑호주_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "medium",
+    "genre": "strategy"
+  },
+  "북쪽숲을 위하여": {
+    "bggId": "",
+    "name": "북쪽숲을 위하여",
+    "desc": "북쪽숲을 위하여 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/북쪽숲을 위하여_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "붐 버스터즈": {
+    "bggId": "",
+    "name": "붐 버스터즈",
+    "desc": "붐 버스터즈 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/붐 버스터즈_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "블로커스": {
+    "bggId": "",
+    "name": "블로커스",
+    "desc": "블로커스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/블로커스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "블루 샌드 씨사이드": {
+    "bggId": "",
+    "name": "블루 샌드 씨사이드",
+    "desc": "블루 샌드 씨사이드 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/블루 샌드 씨사이드_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "빨리빨리": {
+    "bggId": "",
+    "name": "빨리빨리",
+    "desc": "빨리빨리 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/빨리빨리_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "사가니": {
+    "bggId": "",
+    "name": "사가니",
+    "desc": "사가니 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/사가니_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "색감과 직감": {
+    "bggId": "",
+    "name": "색감과 직감",
+    "desc": "색감과 직감 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/색감과 직감_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "섀도우레이더스": {
+    "bggId": "",
+    "name": "섀도우레이더스",
+    "desc": "섀도우레이더스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/섀도우레이더스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "서스펙트 게임_ 클로즈드 서클 미스터리": {
+    "bggId": "",
+    "name": "서스펙트 게임_ 클로즈드 서클 미스터리",
+    "desc": "서스펙트 게임_ 클로즈드 서클 미스터리 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/서스펙트 게임_ 클로즈드 서클 미스터리_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "strategy"
+  },
+  "서킷 메이즈": {
+    "bggId": "",
+    "name": "서킷 메이즈",
+    "desc": "서킷 메이즈 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/서킷 메이즈_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "family"
+  },
+  "셀레스티아 빅박스": {
+    "bggId": "",
+    "name": "셀레스티아 빅박스",
+    "desc": "셀레스티아 빅박스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/셀레스티아 빅박스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "손님이 오기전에": {
+    "bggId": "",
+    "name": "손님이 오기전에",
+    "desc": "손님이 오기전에 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/손님이 오기전에_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "손바닥 던전": {
+    "bggId": "",
+    "name": "손바닥 던전",
+    "desc": "손바닥 던전 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/손바닥 던전_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "쉐이크쉐이크 타워": {
+    "bggId": "",
+    "name": "쉐이크쉐이크 타워",
+    "desc": "쉐이크쉐이크 타워 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/쉐이크쉐이크 타워_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "스카우트": {
+    "bggId": "",
+    "name": "스카우트",
+    "desc": "스카우트 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/스카우트_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "스쿱스": {
+    "bggId": "",
+    "name": "스쿱스",
+    "desc": "스쿱스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/스쿱스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "스탁파일": {
+    "bggId": "",
+    "name": "스탁파일",
+    "desc": "스탁파일 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/스탁파일_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "스트라테고": {
+    "bggId": "",
+    "name": "스트라테고",
+    "desc": "스트라테고 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/스트라테고_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "스티키 카멜레온": {
+    "bggId": "",
+    "name": "스티키 카멜레온",
+    "desc": "스티키 카멜레온 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/스티키 카멜레온_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "스파이시": {
+    "bggId": "",
+    "name": "스파이시",
+    "desc": "스파이시 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/스파이시_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "슬레이 더 스파이어": {
+    "bggId": "",
+    "name": "슬레이 더 스파이어",
+    "desc": "슬레이 더 스파이어 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/슬레이 더 스파이어_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "strategy"
+  },
+  "시바견하우스": {
+    "bggId": "",
+    "name": "시바견하우스",
+    "desc": "시바견하우스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/시바견하우스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "시티 체이스_ 경찰 vs 도둑": {
+    "bggId": "",
+    "name": "시티 체이스_ 경찰 vs 도둑",
+    "desc": "시티 체이스_ 경찰 vs 도둑 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/시티 체이스_ 경찰 vs 도둑_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "실리카우": {
+    "bggId": "",
+    "name": "실리카우",
+    "desc": "실리카우 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/실리카우_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "아그리콜라 확장_ 동네 라이벌 덱": {
+    "bggId": "",
+    "name": "아그리콜라 확장_ 동네 라이벌 덱",
+    "desc": "아그리콜라 확장_ 동네 라이벌 덱 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/아그리콜라 확장_ 동네 라이벌 덱_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "strategy"
+  },
+  "아니오리다": {
+    "bggId": "",
+    "name": "아니오리다",
+    "desc": "아니오리다 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/아니오리다_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "아크노바": {
+    "bggId": "",
+    "name": "아크노바",
+    "desc": "아크노바 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/아크노바_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "strategy"
+  },
+  "아티초크": {
+    "bggId": "",
+    "name": "아티초크",
+    "desc": "아티초크 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/아티초크_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "알았다오": {
+    "bggId": "",
+    "name": "알았다오",
+    "desc": "알았다오 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/알았다오_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "야단법석 달리기": {
+    "bggId": "",
+    "name": "야단법석 달리기",
+    "desc": "야단법석 달리기 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/야단법석 달리기_seo.webp",
+    "players": "5-10",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "어콰이어": {
+    "bggId": "",
+    "name": "어콰이어",
+    "desc": "어콰이어 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/어콰이어_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "family"
+  },
+  "업앤다운": {
+    "bggId": "",
+    "name": "업앤다운",
+    "desc": "업앤다운 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/업앤다운_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "오 미우바우": {
+    "bggId": "",
+    "name": "오 미우바우",
+    "desc": "오 미우바우 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오 미우바우_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "오리지널마피아": {
+    "bggId": "",
+    "name": "오리지널마피아",
+    "desc": "오리지널마피아 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오리지널마피아_seo.webp",
+    "players": "5-10",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "party"
+  },
+  "오션스": {
+    "bggId": "",
+    "name": "오션스",
+    "desc": "오션스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오션스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "medium",
+    "genre": "strategy"
+  },
+  "오잉크 가짜예술가 뉴욕에 가다": {
+    "bggId": "",
+    "name": "오잉크 가짜예술가 뉴욕에 가다",
+    "desc": "오잉크 가짜예술가 뉴욕에 가다 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오잉크 가짜예술가 뉴욕에 가다_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "party"
+  },
+  "오잉크 나인타일패닉": {
+    "bggId": "",
+    "name": "오잉크 나인타일패닉",
+    "desc": "오잉크 나인타일패닉 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오잉크 나인타일패닉_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "오잉크 덤불속": {
+    "bggId": "",
+    "name": "오잉크 덤불속",
+    "desc": "오잉크 덤불속 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오잉크 덤불속_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "오잉크 도코종": {
+    "bggId": "",
+    "name": "오잉크 도코종",
+    "desc": "오잉크 도코종 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오잉크 도코종_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "오잉크 두리안": {
+    "bggId": "",
+    "name": "오잉크 두리안",
+    "desc": "오잉크 두리안 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오잉크 두리안_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "오잉크 마스크맨": {
+    "bggId": "",
+    "name": "오잉크 마스크맨",
+    "desc": "오잉크 마스크맨 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오잉크 마스크맨_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "strategy"
+  },
+  "오잉크 범고래 고래": {
+    "bggId": "",
+    "name": "오잉크 범고래 고래",
+    "desc": "오잉크 범고래 고래 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오잉크 범고래 고래_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "오잉크 스카우트": {
+    "bggId": "",
+    "name": "오잉크 스카우트",
+    "desc": "오잉크 스카우트 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오잉크 스카우트_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "오잉크 인사이더 블랙": {
+    "bggId": "",
+    "name": "오잉크 인사이더 블랙",
+    "desc": "오잉크 인사이더 블랙 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오잉크 인사이더 블랙_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "오잉크 주문이 너무 많아 카페": {
+    "bggId": "",
+    "name": "오잉크 주문이 너무 많아 카페",
+    "desc": "오잉크 주문이 너무 많아 카페 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오잉크 주문이 너무 많아 카페_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "오잉크 해저탐험 DEEP SEA": {
+    "bggId": "",
+    "name": "오잉크 해저탐험 DEEP SEA",
+    "desc": "오잉크 해저탐험 DEEP SEA 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/오잉크 해저탐험 DEEP SEA_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "요기": {
+    "bggId": "",
+    "name": "요기",
+    "desc": "요기 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/요기_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "용의 동굴": {
+    "bggId": "",
+    "name": "용의 동굴",
+    "desc": "용의 동굴 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/용의 동굴_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "우리 중에 범인이_!": {
+    "bggId": "",
+    "name": "우리 중에 범인이_!",
+    "desc": "우리 중에 범인이_! 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/우리 중에 범인이_!_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "우리집 돼지저금통을 훔쳤다": {
+    "bggId": "",
+    "name": "우리집 돼지저금통을 훔쳤다",
+    "desc": "우리집 돼지저금통을 훔쳤다 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/우리집 돼지저금통을 훔쳤다_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "울프 스트리트": {
+    "bggId": "",
+    "name": "울프 스트리트",
+    "desc": "울프 스트리트 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/울프 스트리트_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "월드 오브 워크래프트_ 리치왕의 분노": {
+    "bggId": "",
+    "name": "월드 오브 워크래프트_ 리치왕의 분노",
+    "desc": "월드 오브 워크래프트_ 리치왕의 분노 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/월드 오브 워크래프트_ 리치왕의 분노_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "월링 위치크래프트": {
+    "bggId": "",
+    "name": "월링 위치크래프트",
+    "desc": "월링 위치크래프트 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/월링 위치크래프트_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "윌유메리미": {
+    "bggId": "",
+    "name": "윌유메리미",
+    "desc": "윌유메리미 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/윌유메리미_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "윙스팬": {
+    "bggId": "",
+    "name": "윙스팬",
+    "desc": "윙스팬 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/윙스팬_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "육식동물짓이야": {
+    "bggId": "",
+    "name": "육식동물짓이야",
+    "desc": "육식동물짓이야 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/육식동물짓이야_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "자니펭귄": {
+    "bggId": "",
+    "name": "자니펭귄",
+    "desc": "자니펭귄 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/자니펭귄_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "자메이카 본판": {
+    "bggId": "",
+    "name": "자메이카 본판",
+    "desc": "자메이카 본판 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/자메이카 본판_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "medium",
+    "genre": "strategy"
+  },
+  "재치와눈치": {
+    "bggId": "",
+    "name": "재치와눈치",
+    "desc": "재치와눈치 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/재치와눈치_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "좀비 파에야": {
+    "bggId": "",
+    "name": "좀비 파에야",
+    "desc": "좀비 파에야 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/좀비 파에야_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "좀비키튼": {
+    "bggId": "",
+    "name": "좀비키튼",
+    "desc": "좀비키튼 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/좀비키튼_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "주플": {
+    "bggId": "",
+    "name": "주플",
+    "desc": "주플 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/주플_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "차가운 그녀가 눈을 뜨기 전에 _ 차그녀": {
+    "bggId": "",
+    "name": "차가운 그녀가 눈을 뜨기 전에 _ 차그녀",
+    "desc": "차가운 그녀가 눈을 뜨기 전에 _ 차그녀 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/차가운 그녀가 눈을 뜨기 전에 _ 차그녀_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "찹찹다이스": {
+    "bggId": "",
+    "name": "찹찹다이스",
+    "desc": "찹찹다이스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/찹찹다이스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "첸토": {
+    "bggId": "",
+    "name": "첸토",
+    "desc": "첸토 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/첸토_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "치킨치킨": {
+    "bggId": "",
+    "name": "치킨치킨",
+    "desc": "치킨치킨 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/치킨치킨_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "카멜레온 라이어게임": {
+    "bggId": "",
+    "name": "카멜레온 라이어게임",
+    "desc": "카멜레온 라이어게임 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/카멜레온 라이어게임_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "party"
+  },
+  "카멜업 판": {
+    "bggId": "",
+    "name": "카멜업 판",
+    "desc": "카멜업 판 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/카멜업 판_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "카타미노": {
+    "bggId": "",
+    "name": "카타미노",
+    "desc": "카타미노 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/카타미노_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "카훗": {
+    "bggId": "",
+    "name": "카훗",
+    "desc": "카훗 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/카훗_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "캐스캐디아": {
+    "bggId": "",
+    "name": "캐스캐디아",
+    "desc": "캐스캐디아 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/캐스캐디아_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "캔디매치": {
+    "bggId": "",
+    "name": "캔디매치",
+    "desc": "캔디매치 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/캔디매치_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "커피 러시 겨울": {
+    "bggId": "",
+    "name": "커피 러시 겨울",
+    "desc": "커피 러시 겨울 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/커피 러시 겨울_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "커피 러시": {
+    "bggId": "",
+    "name": "커피 러시",
+    "desc": "커피 러시 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/커피 러시_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "코끼리 균형잡기": {
+    "bggId": "",
+    "name": "코끼리 균형잡기",
+    "desc": "코끼리 균형잡기 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/코끼리 균형잡기_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "코덱스": {
+    "bggId": "",
+    "name": "코덱스",
+    "desc": "코덱스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/코덱스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "strategy"
+  },
+  "쿵쿵쿵 코끼리 해적단": {
+    "bggId": "",
+    "name": "쿵쿵쿵 코끼리 해적단",
+    "desc": "쿵쿵쿵 코끼리 해적단 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/쿵쿵쿵 코끼리 해적단_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "큐윅스": {
+    "bggId": "",
+    "name": "큐윅스",
+    "desc": "큐윅스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/큐윅스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "크라클오라클": {
+    "bggId": "",
+    "name": "크라클오라클",
+    "desc": "크라클오라클 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/크라클오라클_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "크로키놀": {
+    "bggId": "",
+    "name": "크로키놀",
+    "desc": "크로키놀 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/크로키놀_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "타임즈업 파티": {
+    "bggId": "",
+    "name": "타임즈업 파티",
+    "desc": "타임즈업 파티 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/타임즈업 파티_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "타코 피카츄 파이리 꼬부기 이상해씨": {
+    "bggId": "",
+    "name": "타코 피카츄 파이리 꼬부기 이상해씨",
+    "desc": "타코 피카츄 파이리 꼬부기 이상해씨 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/타코 피카츄 파이리 꼬부기 이상해씨_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "타코백": {
+    "bggId": "",
+    "name": "타코백",
+    "desc": "타코백 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/타코백_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "탑텐TV": {
+    "bggId": "",
+    "name": "탑텐TV",
+    "desc": "탑텐TV 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/탑텐TV_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "테라포밍 마스 확장_ 헬라스 엘리시움": {
+    "bggId": "",
+    "name": "테라포밍 마스 확장_ 헬라스 엘리시움",
+    "desc": "테라포밍 마스 확장_ 헬라스 엘리시움 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/테라포밍 마스 확장_ 헬라스 엘리시움_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "strategy"
+  },
+  "테라포밍마스": {
+    "bggId": "",
+    "name": "테라포밍마스",
+    "desc": "테라포밍마스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/테라포밍마스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "heavy",
+    "genre": "strategy"
+  },
+  "텐텐텐": {
+    "bggId": "",
+    "name": "텐텐텐",
+    "desc": "텐텐텐 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/텐텐텐_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "텔레스트레이션": {
+    "bggId": "",
+    "name": "텔레스트레이션",
+    "desc": "텔레스트레이션 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/텔레스트레이션_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "party"
+  },
+  "투칸": {
+    "bggId": "",
+    "name": "투칸",
+    "desc": "투칸 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/투칸_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "티츄": {
+    "bggId": "",
+    "name": "티츄",
+    "desc": "티츄 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/티츄_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "티켓 투 라이드": {
+    "bggId": "",
+    "name": "티켓 투 라이드",
+    "desc": "티켓 투 라이드 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/티켓 투 라이드_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "패럿다임": {
+    "bggId": "",
+    "name": "패럿다임",
+    "desc": "패럿다임 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/패럿다임_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "패치워크": {
+    "bggId": "",
+    "name": "패치워크",
+    "desc": "패치워크 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/패치워크_seo.webp",
+    "players": "2-4",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "팬데믹 레거시 시즌0": {
+    "bggId": "",
+    "name": "팬데믹 레거시 시즌0",
+    "desc": "팬데믹 레거시 시즌0 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/팬데믹 레거시 시즌0_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "팬데믹": {
+    "bggId": "",
+    "name": "팬데믹",
+    "desc": "팬데믹 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/팬데믹_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "팬텀잉크": {
+    "bggId": "",
+    "name": "팬텀잉크",
+    "desc": "팬텀잉크 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/팬텀잉크_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "펜스테르담": {
+    "bggId": "",
+    "name": "펜스테르담",
+    "desc": "펜스테르담 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/펜스테르담_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "펠리시티 자루 속 고양이": {
+    "bggId": "",
+    "name": "펠리시티 자루 속 고양이",
+    "desc": "펠리시티 자루 속 고양이 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/펠리시티 자루 속 고양이_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "펭귄팡팡": {
+    "bggId": "",
+    "name": "펭귄팡팡",
+    "desc": "펭귄팡팡 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/펭귄팡팡_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "포인트샐러드": {
+    "bggId": "",
+    "name": "포인트샐러드",
+    "desc": "포인트샐러드 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/포인트샐러드_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "포켓디텍티브 1탄": {
+    "bggId": "",
+    "name": "포켓디텍티브 1탄",
+    "desc": "포켓디텍티브 1탄 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/포켓디텍티브 1탄_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "party"
+  },
+  "포켓디텍티브 2탄": {
+    "bggId": "",
+    "name": "포켓디텍티브 2탄",
+    "desc": "포켓디텍티브 2탄 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/포켓디텍티브 2탄_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "party"
+  },
+  "포켓디텍티브 3탄": {
+    "bggId": "",
+    "name": "포켓디텍티브 3탄",
+    "desc": "포켓디텍티브 3탄 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/포켓디텍티브 3탄_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "party"
+  },
+  "포켓팜": {
+    "bggId": "",
+    "name": "포켓팜",
+    "desc": "포켓팜 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/포켓팜_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "푸시피시": {
+    "bggId": "",
+    "name": "푸시피시",
+    "desc": "푸시피시 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/푸시피시_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "푸에르토리코 1897": {
+    "bggId": "",
+    "name": "푸에르토리코 1897",
+    "desc": "푸에르토리코 1897 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/푸에르토리코 1897_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "푸에블로": {
+    "bggId": "",
+    "name": "푸에블로",
+    "desc": "푸에블로 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/푸에블로_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "푼토 점에 살고 점에 웃는 점을 위한 게임": {
+    "bggId": "",
+    "name": "푼토 점에 살고 점에 웃는 점을 위한 게임",
+    "desc": "푼토 점에 살고 점에 웃는 점을 위한 게임 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/푼토 점에 살고 점에 웃는 점을 위한 게임_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "풍기": {
+    "bggId": "",
+    "name": "풍기",
+    "desc": "풍기 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/풍기_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "프린세스의 반란 디럭스": {
+    "bggId": "",
+    "name": "프린세스의 반란 디럭스",
+    "desc": "프린세스의 반란 디럭스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/프린세스의 반란 디럭스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "피드더크라켄 디럭스": {
+    "bggId": "",
+    "name": "피드더크라켄 디럭스",
+    "desc": "피드더크라켄 디럭스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/피드더크라켄 디럭스 _seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "피에스타": {
+    "bggId": "",
+    "name": "피에스타",
+    "desc": "피에스타 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/피에스타_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "하모니즈": {
+    "bggId": "",
+    "name": "하모니즈",
+    "desc": "하모니즈 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/하모니즈_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "medium",
+    "genre": "strategy"
+  },
+  "한밤의 뱀파이어": {
+    "bggId": "",
+    "name": "한밤의 뱀파이어",
+    "desc": "한밤의 뱀파이어 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/한밤의 뱀파이어_seo.webp",
+    "players": "5-10",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "한밤의수수께끼": {
+    "bggId": "",
+    "name": "한밤의수수께끼",
+    "desc": "한밤의수수께끼 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/한밤의수수께끼_seo.webp",
+    "players": "5-10",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "핫스트릭": {
+    "bggId": "",
+    "name": "핫스트릭",
+    "desc": "핫스트릭 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/핫스트릭_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "행성 X를 찾아서": {
+    "bggId": "",
+    "name": "행성 X를 찾아서",
+    "desc": "행성 X를 찾아서 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/행성 X를 찾아서_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "허니버즈 디럭스": {
+    "bggId": "",
+    "name": "허니버즈 디럭스",
+    "desc": "허니버즈 디럭스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/허니버즈 디럭스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "헥서스 디럭스": {
+    "bggId": "",
+    "name": "헥서스 디럭스",
+    "desc": "헥서스 디럭스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/헥서스 디럭스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "family"
+  },
+  "헥스피드": {
+    "bggId": "",
+    "name": "헥스피드",
+    "desc": "헥스피드 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/헥스피드_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "후지플러시": {
+    "bggId": "",
+    "name": "후지플러시",
+    "desc": "후지플러시 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/후지플러시_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
+  },
+  "히든리더스": {
+    "bggId": "",
+    "name": "히든리더스",
+    "desc": "히든리더스 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/히든리더스_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "medium",
+    "genre": "strategy"
+  },
+  "힛스터 K-POP": {
+    "bggId": "",
+    "name": "힛스터 K-POP",
+    "desc": "힛스터 K-POP 보드게임입니다. 함께 모여 즐겨보세요!",
+    "img": "images/힛스터 K-POP_seo.webp",
+    "players": "2-5",
+    "color": "#0984e3",
+    "difficulty": "easy",
+    "genre": "casual"
   }
 };
 
@@ -735,10 +2748,12 @@ const captureBtn = document.getElementById('captureBtn');
 
 const diffFilterEl = document.getElementById('diffFilter');
 const playerFilterEl = document.getElementById('playerFilter');
+const genreFilterEl = document.getElementById('genreFilter');
 const rankGrid = document.getElementById('rankGrid');
 
 let activeDiffFilter = 'all';
 let activePlayerFilter = 'all';
+let activeGenreFilter = 'all';
 
 // --- Initialization ---
 document.addEventListener('DOMContentLoaded', () => {
@@ -1174,6 +3189,7 @@ function renderGameInfoTab() {
 
   let filtered = Object.entries(ENCYCLOPEDIA_DB).filter(([key, info]) => {
     if (activeDiffFilter !== 'all' && info.difficulty !== activeDiffFilter) return false;
+    if (activeGenreFilter !== 'all' && info.genre !== activeGenreFilter) return false;
     if (activePlayerFilter !== 'all') {
       const parts = info.players.split('-');
       const minP = parseInt(parts[0]);
@@ -1656,19 +3672,20 @@ async function searchBoardGame(query) {
   searchResultsDropdown.innerHTML = '<div style="padding:10px; font-size:0.85rem; color:var(--text-muted);">검색 중...</div>';
   searchResultsDropdown.classList.add('active');
 
-  const offlineMatchKey = Object.keys(ENCYCLOPEDIA_DB).find(key => query.includes(key) || key.includes(query));
-  
   let results = [];
-  if (offlineMatchKey) {
-    const dbItem = ENCYCLOPEDIA_DB[offlineMatchKey];
-    results.push({
-      id: 'offline_' + offlineMatchKey,
-      name: dbItem.name,
-      description: dbItem.desc,
-      thumbnail: dbItem.img,
-      color: dbItem.color
-    });
-  }
+  const queryLower = query.toLowerCase();
+  Object.keys(ENCYCLOPEDIA_DB).forEach(key => {
+    const dbItem = ENCYCLOPEDIA_DB[key];
+    if (key.toLowerCase().includes(queryLower) || dbItem.name.toLowerCase().includes(queryLower)) {
+      results.push({
+        id: 'offline_' + key,
+        name: dbItem.name,
+        description: dbItem.desc,
+        thumbnail: dbItem.img,
+        color: dbItem.color
+      });
+    }
+  });
 
   try {
     const response = await fetch(`https://boardgamegeek.com/xmlapi2/search?type=boardgame&query=${encodeURIComponent(query)}`);
@@ -2152,6 +4169,15 @@ function setupEventListeners() {
     playerFilterEl.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     activePlayerFilter = btn.dataset.players;
+    renderGameInfoTab();
+  });
+
+  genreFilterEl.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    genreFilterEl.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeGenreFilter = btn.dataset.genre;
     renderGameInfoTab();
   });
 

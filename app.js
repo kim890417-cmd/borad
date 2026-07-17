@@ -86,7 +86,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-4",
     "color": "#6c5ce7",
     "difficulty": "medium",
-    "genre": "strategy"
+    "genre": "family"
   },
   "루미큐브": {
     "bggId": "811",
@@ -105,8 +105,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/카르카손_seo.webp",
     "players": "2-5",
     "color": "#2ecc71",
-    "difficulty": "easy",
-    "genre": "casual"
+    "difficulty": "medium",
+    "genre": "family"
   },
   "카탄": {
     "bggId": "13",
@@ -116,7 +116,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "3-4",
     "color": "#ff7675",
     "difficulty": "medium",
-    "genre": "strategy"
+    "genre": "family"
   },
   "할리갈리": {
     "bggId": "598",
@@ -126,7 +126,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-6",
     "color": "#e74c3c",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "다빈치코드": {
     "bggId": "8946",
@@ -146,7 +146,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-10",
     "color": "#e84393",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "아발론": {
     "bggId": "128839",
@@ -155,7 +155,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/아발론_seo.webp",
     "players": "5-10",
     "color": "#16a085",
-    "difficulty": "heavy",
+    "difficulty": "easy",
     "genre": "party"
   },
   "딕싯": {
@@ -205,7 +205,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/뱅_seo.webp",
     "players": "4-7",
     "color": "#e67e22",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "genre": "party"
   },
   "우노": {
@@ -236,7 +236,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#ff7675",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "달무티": {
     "bggId": "",
@@ -305,7 +305,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/포실리스_seo.webp",
     "players": "2-5",
     "color": "#d35400",
-    "difficulty": "medium",
+    "difficulty": "heavy",
     "genre": "strategy"
   },
   "펭귄파티": {
@@ -336,7 +336,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-8",
     "color": "#ff7675",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "쿼리도": {
     "bggId": "6249",
@@ -345,7 +345,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/쿼리도_seo.webp",
     "players": "2-4",
     "color": "#6c5ce7",
-    "difficulty": "medium",
+    "difficulty": "heavy",
     "genre": "strategy"
   },
   "캘리코": {
@@ -355,7 +355,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/캘리코_seo.webp",
     "players": "1-4",
     "color": "#fdcb6e",
-    "difficulty": "medium",
+    "difficulty": "heavy",
     "genre": "strategy"
   },
   "캔트스탑": {
@@ -405,8 +405,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/우봉고_seo.webp",
     "players": "1-4",
     "color": "#00cec9",
-    "difficulty": "medium",
-    "genre": "casual"
+    "difficulty": "heavy",
+    "genre": "strategy"
   },
   "시타델": {
     "bggId": "478",
@@ -415,7 +415,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/시타델_seo.webp",
     "players": "2-7",
     "color": "#8e44ad",
-    "difficulty": "medium",
+    "difficulty": "heavy",
     "genre": "strategy"
   },
   "슬리핑퀸즈": {
@@ -455,8 +455,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/스컬킹_seo.webp",
     "players": "2-8",
     "color": "#e74c3c",
-    "difficulty": "medium",
-    "genre": "casual"
+    "difficulty": "easy",
+    "genre": "party"
   },
   "로보77": {
     "bggId": "",
@@ -476,7 +476,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-8",
     "color": "#27ae60",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "마네": {
     "bggId": "",
@@ -495,7 +495,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/보난자_seo.webp",
     "players": "2-7",
     "color": "#d35400",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "genre": "casual"
   },
   "더마인드": {
@@ -506,7 +506,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-4",
     "color": "#fdcb6e",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "5초 준다": {
     "bggId": "",
@@ -516,7 +516,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "AI 스페이스 퍼즐": {
     "bggId": "",
@@ -526,7 +526,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "CONTACT 콘택트": {
     "bggId": "",
@@ -536,7 +536,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "DUO mini 듀오 미니": {
     "bggId": "",
@@ -546,7 +546,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-4",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "EUROPE 10일간의유럽여행": {
     "bggId": "",
@@ -556,7 +556,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-4",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "kamisado 달빛아래에서 수를": {
     "bggId": "",
@@ -566,7 +566,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "USA 10일간의미국여행": {
     "bggId": "",
@@ -576,7 +576,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-4",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "간장공장 공장장": {
     "bggId": "",
@@ -586,7 +586,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "간큐브 GAN16 마그레브 맥스 UV": {
     "bggId": "",
@@ -596,7 +596,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "간큐브 GAN56_M": {
     "bggId": "",
@@ -606,7 +606,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "개정판 블랙스토리즈": {
     "bggId": "",
@@ -615,8 +615,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/개정판 블랙스토리즈_seo.webp",
     "players": "5-10",
     "color": "#0984e3",
-    "difficulty": "medium",
-    "genre": "party"
+    "difficulty": "easy",
+    "genre": "casual"
   },
   "구룡투": {
     "bggId": "",
@@ -626,7 +626,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "궁신": {
     "bggId": "",
@@ -636,7 +636,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "그라울최후의밤": {
     "bggId": "",
@@ -646,7 +646,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "party"
+    "genre": "casual"
   },
   "그래비트랙스 코어 스타터": {
     "bggId": "",
@@ -656,7 +656,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "글룸헤이븐 사자의 턱": {
     "bggId": "",
@@ -665,8 +665,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/글룸헤이븐 사자의 턱_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "heavy",
-    "genre": "strategy"
+    "difficulty": "easy",
+    "genre": "casual"
   },
   "기묘한 이야기": {
     "bggId": "",
@@ -676,7 +676,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "기차섬": {
     "bggId": "",
@@ -685,8 +685,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/기차섬_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "medium",
-    "genre": "strategy"
+    "difficulty": "easy",
+    "genre": "casual"
   },
   "나르 바이킹 시대": {
     "bggId": "",
@@ -696,7 +696,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "날아라 고블린": {
     "bggId": "",
@@ -706,7 +706,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "너 좀 빠른데": {
     "bggId": "",
@@ -736,7 +736,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "노머시": {
     "bggId": "",
@@ -746,7 +746,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "놉놉 테이블": {
     "bggId": "",
@@ -786,7 +786,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "당나귀 다리": {
     "bggId": "",
@@ -826,7 +826,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "도토리산": {
     "bggId": "",
@@ -846,7 +846,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "듄 임페리움 확장_ 불멸": {
     "bggId": "",
@@ -856,7 +856,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "듄 임페리움 확장_ 익스의 부상": {
     "bggId": "",
@@ -866,7 +866,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "드래곤우드": {
     "bggId": "",
@@ -895,7 +895,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/디셉션_seo.webp",
     "players": "5-10",
     "color": "#0984e3",
-    "difficulty": "medium",
+    "difficulty": "easy",
     "genre": "party"
   },
   "디지트": {
@@ -915,7 +915,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/라마랜드_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "럭키넘버스 본판": {
@@ -925,7 +925,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/럭키넘버스 본판_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "레벨10 카드로 즐기는 RPG": {
@@ -936,7 +936,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "렉시오 오리지널": {
     "bggId": "",
@@ -965,8 +965,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/롱샷 본판_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "casual"
+    "difficulty": "medium",
+    "genre": "family"
   },
   "루티어 딜럭스": {
     "bggId": "",
@@ -975,7 +975,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/루티어 딜럭스_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "리빙포레스트 본판": {
@@ -985,7 +985,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/리빙포레스트 본판_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "마법사와 움직이는 탑": {
@@ -995,7 +995,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/마법사와 움직이는 탑_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "마작 딜럭스": {
@@ -1006,7 +1006,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "매직만달라": {
     "bggId": "",
@@ -1026,7 +1026,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "멍야옹비스킷 미니": {
     "bggId": "",
@@ -1046,7 +1046,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "메모아르": {
     "bggId": "",
@@ -1065,7 +1065,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/메이플밸리 본판_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "명탐정 멍멍홈즈": {
@@ -1085,7 +1085,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/모두의 마블_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "모자익스": {
@@ -1095,7 +1095,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/모자익스_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "몽키블록": {
@@ -1106,7 +1106,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "미니빌": {
     "bggId": "",
@@ -1115,8 +1115,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/미니빌_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "casual"
+    "difficulty": "medium",
+    "genre": "family"
   },
   "반디도": {
     "bggId": "",
@@ -1135,7 +1135,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/반지의 제왕_ 가운데땅에서의 대결_seo.webp",
     "players": "2-4",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "방방 날아라 돼지": {
@@ -1145,8 +1145,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/방방 날아라 돼지_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "casual"
+    "difficulty": "medium",
+    "genre": "family"
   },
   "방방곡곡 세계유랑": {
     "bggId": "",
@@ -1165,8 +1165,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/배드 컴퍼니_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "casual"
+    "difficulty": "medium",
+    "genre": "family"
   },
   "뱀파이어 퀸": {
     "bggId": "",
@@ -1185,8 +1185,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/버거와썹_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "casual"
+    "difficulty": "medium",
+    "genre": "family"
   },
   "버건디의 성": {
     "bggId": "",
@@ -1206,7 +1206,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "베티보터 보우트 썸 버터": {
     "bggId": "",
@@ -1216,7 +1216,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "봇 팩토리": {
     "bggId": "",
@@ -1245,8 +1245,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/부메랑호주_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "medium",
-    "genre": "strategy"
+    "difficulty": "easy",
+    "genre": "casual"
   },
   "북쪽숲을 위하여": {
     "bggId": "",
@@ -1256,7 +1256,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "붐 버스터즈": {
     "bggId": "",
@@ -1286,7 +1286,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "빨리빨리": {
     "bggId": "",
@@ -1306,7 +1306,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "색감과 직감": {
     "bggId": "",
@@ -1326,7 +1326,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "서스펙트 게임_ 클로즈드 서클 미스터리": {
     "bggId": "",
@@ -1335,8 +1335,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/서스펙트 게임_ 클로즈드 서클 미스터리_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "heavy",
-    "genre": "strategy"
+    "difficulty": "easy",
+    "genre": "casual"
   },
   "서킷 메이즈": {
     "bggId": "",
@@ -1345,8 +1345,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/서킷 메이즈_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "heavy",
-    "genre": "family"
+    "difficulty": "easy",
+    "genre": "casual"
   },
   "셀레스티아 빅박스": {
     "bggId": "",
@@ -1356,7 +1356,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "손님이 오기전에": {
     "bggId": "",
@@ -1416,7 +1416,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "스트라테고": {
     "bggId": "",
@@ -1426,7 +1426,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "스티키 카멜레온": {
     "bggId": "",
@@ -1436,7 +1436,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "스파이시": {
     "bggId": "",
@@ -1446,7 +1446,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "슬레이 더 스파이어": {
     "bggId": "",
@@ -1465,8 +1465,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/시바견하우스_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "casual"
+    "difficulty": "medium",
+    "genre": "family"
   },
   "시티 체이스_ 경찰 vs 도둑": {
     "bggId": "",
@@ -1476,7 +1476,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "실리카우": {
     "bggId": "",
@@ -1485,8 +1485,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/실리카우_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "casual"
+    "difficulty": "medium",
+    "genre": "family"
   },
   "아그리콜라 확장_ 동네 라이벌 덱": {
     "bggId": "",
@@ -1526,7 +1526,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "알았다오": {
     "bggId": "",
@@ -1555,8 +1555,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/어콰이어_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "heavy",
-    "genre": "family"
+    "difficulty": "easy",
+    "genre": "casual"
   },
   "업앤다운": {
     "bggId": "",
@@ -1586,7 +1586,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "5-10",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "party"
+    "genre": "casual"
   },
   "오션스": {
     "bggId": "",
@@ -1595,8 +1595,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/오션스_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "medium",
-    "genre": "strategy"
+    "difficulty": "easy",
+    "genre": "casual"
   },
   "오잉크 가짜예술가 뉴욕에 가다": {
     "bggId": "",
@@ -1606,7 +1606,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "party"
+    "genre": "casual"
   },
   "오잉크 나인타일패닉": {
     "bggId": "",
@@ -1655,8 +1655,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/오잉크 마스크맨_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "heavy",
-    "genre": "strategy"
+    "difficulty": "easy",
+    "genre": "casual"
   },
   "오잉크 범고래 고래": {
     "bggId": "",
@@ -1715,8 +1715,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/요기_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "casual"
+    "difficulty": "medium",
+    "genre": "family"
   },
   "용의 동굴": {
     "bggId": "",
@@ -1725,8 +1725,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/용의 동굴_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "casual"
+    "difficulty": "medium",
+    "genre": "family"
   },
   "우리 중에 범인이_!": {
     "bggId": "",
@@ -1736,7 +1736,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "우리집 돼지저금통을 훔쳤다": {
     "bggId": "",
@@ -1766,7 +1766,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "월링 위치크래프트": {
     "bggId": "",
@@ -1786,7 +1786,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "윙스팬": {
     "bggId": "",
@@ -1796,7 +1796,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "육식동물짓이야": {
     "bggId": "",
@@ -1825,8 +1825,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/자메이카 본판_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "medium",
-    "genre": "strategy"
+    "difficulty": "easy",
+    "genre": "casual"
   },
   "재치와눈치": {
     "bggId": "",
@@ -1836,7 +1836,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "좀비 파에야": {
     "bggId": "",
@@ -1926,7 +1926,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "카타미노": {
     "bggId": "",
@@ -1936,7 +1936,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "카훗": {
     "bggId": "",
@@ -1955,7 +1955,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/캐스캐디아_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "캔디매치": {
@@ -1975,7 +1975,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/커피 러시 겨울_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "커피 러시": {
@@ -1985,7 +1985,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/커피 러시_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "코끼리 균형잡기": {
@@ -1996,7 +1996,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "코덱스": {
     "bggId": "",
@@ -2005,8 +2005,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/코덱스_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "heavy",
-    "genre": "strategy"
+    "difficulty": "easy",
+    "genre": "casual"
   },
   "쿵쿵쿵 코끼리 해적단": {
     "bggId": "",
@@ -2025,8 +2025,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/큐윅스_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "casual"
+    "difficulty": "medium",
+    "genre": "family"
   },
   "크라클오라클": {
     "bggId": "",
@@ -2046,7 +2046,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "타임즈업 파티": {
     "bggId": "",
@@ -2066,7 +2066,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "타코백": {
     "bggId": "",
@@ -2076,7 +2076,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "탑텐TV": {
     "bggId": "",
@@ -2086,7 +2086,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "party"
   },
   "테라포밍 마스 확장_ 헬라스 엘리시움": {
     "bggId": "",
@@ -2145,8 +2145,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/티츄_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "casual"
+    "difficulty": "heavy",
+    "genre": "strategy"
   },
   "티켓 투 라이드": {
     "bggId": "",
@@ -2155,7 +2155,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/티켓 투 라이드_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "패럿다임": {
@@ -2175,7 +2175,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/패치워크_seo.webp",
     "players": "2-4",
     "color": "#0984e3",
-    "difficulty": "easy",
+    "difficulty": "medium",
     "genre": "family"
   },
   "팬데믹 레거시 시즌0": {
@@ -2185,8 +2185,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/팬데믹 레거시 시즌0_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "family"
+    "difficulty": "heavy",
+    "genre": "strategy"
   },
   "팬데믹": {
     "bggId": "",
@@ -2195,8 +2195,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/팬데믹_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "family"
+    "difficulty": "heavy",
+    "genre": "strategy"
   },
   "팬텀잉크": {
     "bggId": "",
@@ -2305,8 +2305,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/푸에르토리코 1897_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "family"
+    "difficulty": "heavy",
+    "genre": "strategy"
   },
   "푸에블로": {
     "bggId": "",
@@ -2316,7 +2316,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "푼토 점에 살고 점에 웃는 점을 위한 게임": {
     "bggId": "",
@@ -2335,8 +2335,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/풍기_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "casual"
+    "difficulty": "medium",
+    "genre": "family"
   },
   "프린세스의 반란 디럭스": {
     "bggId": "",
@@ -2356,7 +2356,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "피에스타": {
     "bggId": "",
@@ -2366,7 +2366,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "하모니즈": {
     "bggId": "",
@@ -2375,7 +2375,7 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/하모니즈_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "medium",
+    "difficulty": "heavy",
     "genre": "strategy"
   },
   "한밤의 뱀파이어": {
@@ -2386,7 +2386,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "5-10",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "한밤의수수께끼": {
     "bggId": "",
@@ -2396,7 +2396,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "5-10",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "casual"
+    "genre": "party"
   },
   "핫스트릭": {
     "bggId": "",
@@ -2415,8 +2415,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/행성 X를 찾아서_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "easy",
-    "genre": "family"
+    "difficulty": "heavy",
+    "genre": "strategy"
   },
   "허니버즈 디럭스": {
     "bggId": "",
@@ -2426,7 +2426,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "헥서스 디럭스": {
     "bggId": "",
@@ -2436,7 +2436,7 @@ const ENCYCLOPEDIA_DB = {
     "players": "2-5",
     "color": "#0984e3",
     "difficulty": "easy",
-    "genre": "family"
+    "genre": "casual"
   },
   "헥스피드": {
     "bggId": "",
@@ -2465,8 +2465,8 @@ const ENCYCLOPEDIA_DB = {
     "img": "images/히든리더스_seo.webp",
     "players": "2-5",
     "color": "#0984e3",
-    "difficulty": "medium",
-    "genre": "strategy"
+    "difficulty": "easy",
+    "genre": "casual"
   },
   "힛스터 K-POP": {
     "bggId": "",

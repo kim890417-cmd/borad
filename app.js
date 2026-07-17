@@ -2767,6 +2767,20 @@ document.addEventListener('DOMContentLoaded', () => {
     appContainer.classList.add('tab-home');
   }
 
+  const splashScreen = document.getElementById('splashScreen');
+  if (splashScreen) {
+    const dismissSplash = () => {
+      splashScreen.classList.add('fade-out');
+      if (soundEnabled) {
+         try { playClickSound(); } catch(err) {}
+      }
+      setTimeout(() => {
+        splashScreen.style.display = 'none';
+      }, 600);
+    };
+    splashScreen.addEventListener('click', dismissSplash);
+  }
+
   initPlayTools();
   render();
 });

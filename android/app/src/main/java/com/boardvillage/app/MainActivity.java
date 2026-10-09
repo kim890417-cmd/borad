@@ -1,4 +1,4 @@
-package com.dadokboard.app;
+package com.boardvillage.app;
 
 import com.getcapacitor.BridgeActivity;
 

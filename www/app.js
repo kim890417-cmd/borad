@@ -2769,16 +2769,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const splashScreen = document.getElementById('splashScreen');
   if (splashScreen) {
-    const dismissSplash = () => {
-      splashScreen.classList.add('fade-out');
-      if (soundEnabled) {
-         try { playClickSound(); } catch(err) {}
-      }
-      setTimeout(() => {
-        splashScreen.style.display = 'none';
-      }, 600);
-    };
-    splashScreen.addEventListener('click', dismissSplash);
+    if (sessionStorage.getItem('boardvillage_splash_seen')) {
+      splashScreen.style.display = 'none';
+    } else {
+      const dismissSplash = () => {
+        sessionStorage.setItem('boardvillage_splash_seen', 'true');
+        splashScreen.classList.add('fade-out');
+        if (soundEnabled) {
+           try { playClickSound(); } catch(err) {}
+        }
+        setTimeout(() => {
+          splashScreen.style.display = 'none';
+        }, 600);
+      };
+      splashScreen.addEventListener('click', dismissSplash);
+    }
   }
 
   initPlayTools();
@@ -3681,6 +3686,31 @@ function updateSoundButtonUI() {
 }
 
 // BGG API Search Logic
+// Helper to fetch XML with CORS proxy fallback for web browsers
+async function fetchXmlWithCorsProxy(url) {
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 3500);
+    const res = await fetch(url, { signal: controller.signal });
+    clearTimeout(timer);
+    if (res.ok) return await res.text();
+  } catch (e) {
+    // Direct fetch failed (e.g. browser CORS restriction)
+  }
+
+  try {
+    const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`;
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 6000);
+    const res = await fetch(proxyUrl, { signal: controller.signal });
+    clearTimeout(timer);
+    if (res.ok) return await res.text();
+  } catch (e) {
+    console.warn("CORS proxy fetch error:", e);
+  }
+  return null;
+}
+
 async function searchBoardGame(query) {
   if (!query) return;
   searchResultsDropdown.innerHTML = '<div style="padding:10px; font-size:0.85rem; color:var(--text-muted);">검색 중...</div>';
@@ -3702,8 +3732,8 @@ async function searchBoardGame(query) {
   });
 
   try {
-    const response = await fetch(`https://boardgamegeek.com/xmlapi2/search?type=boardgame&query=${encodeURIComponent(query)}`);
-    const text = await response.text();
+    const text = await fetchXmlWithCorsProxy(`https://boardgamegeek.com/xmlapi2/search?type=boardgame&query=${encodeURIComponent(query)}`);
+    if (!text) throw new Error("CORS or network error");
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(text, "text/xml");
     const items = xmlDoc.getElementsByTagName("item");
@@ -3751,8 +3781,8 @@ async function searchBoardGame(query) {
 // BGG 검색 시에도 고화질 <image> 노드를 파싱하여 흐릿하지 않은 원본 일러스트 사용
 async function fetchBggDetails(bggId, gameName) {
   try {
-    const res = await fetch(`https://boardgamegeek.com/xmlapi2/thing?id=${bggId}`);
-    const text = await res.text();
+    const text = await fetchXmlWithCorsProxy(`https://boardgamegeek.com/xmlapi2/thing?id=${bggId}`);
+    if (!text) throw new Error("CORS or network error");
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(text, "text/xml");
     
@@ -3925,7 +3955,7 @@ function setupEventListeners() {
 
     html2canvas(stackContainer, {
       useCORS: true,
-      allowTaint: true,
+      allowTaint: false,
       backgroundColor: '#0f172a',
       scale: 1
     })
@@ -4318,7 +4348,7 @@ function setupEventListeners() {
     const currentMonth = new Date().getMonth() + 1;
     html2canvas(document.getElementById('bingoBoardWrapper'), {
       useCORS: true,
-      allowTaint: true,
+      allowTaint: false,
       backgroundColor: '#fdf6e2',
       scale: 1.5
     })

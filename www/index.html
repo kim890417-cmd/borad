@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>보드빌리지 - 나만의 보드게임 탑 쌓기</title>
   <meta name="description" content="플레이한 보드게임을 기록하고 보드게임 상자 탑을 쌓아 올리는 감성적인 보드게임 다이어리">
   <link rel="stylesheet" href="style.css">
@@ -12,7 +12,14 @@
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
   <!-- Lucide Icons 아이콘 폰트 적용 -->
   <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- HTML2Canvas: CORS 보안 문제 우회가 가능한 최신 html2canvas 라이브러리로 교체 -->
+  <!-- Favicon & Open Graph -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎲</text></svg>">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="보드빌리지 - 나만의 보드게임 탑 쌓기">
+  <meta property="og:description" content="플레이한 보드게임을 기록하고 보드게임 상자 탑을 쌓아 올리는 감성적인 보드게임 다이어리">
+  <meta property="og:url" content="https://borad-26j.pages.dev/">
+  <meta property="og:image" content="https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=600&q=80">
+  <!-- HTML2Canvas -->
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 </head>
 <body>
@@ -235,7 +242,7 @@
           <div class="bingo-container" id="bingoContainer">
             <div class="bingo-board-wrapper" id="bingoBoardWrapper" style="width: 100%; max-width: 480px; margin: 0 auto; box-sizing: border-box;">
               <div class="bingo-board-header">
-                <h2 class="bingo-board-title" id="bingoTitle">7월 보드게임 빙고!</h2>
+                <h2 class="bingo-board-title" id="bingoTitle">이달의 보드게임 빙고!</h2>
                 <p class="bingo-board-subtitle">미션을 완료하고 보상을 받으세요</p>
               </div>
               <!-- 4x4 빙고 그리드 -->

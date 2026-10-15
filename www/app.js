@@ -222,7 +222,7 @@ const ENCYCLOPEDIA_DB = {
     "bggId": "131301",
     "name": "아키올로지 (Archeology)",
     "desc": "사막 유적지를 발굴하여 보물 세트를 모아 상인에게 비싸게 팔아넘기며 모래폭풍과 도둑을 피하는 카드 컬렉션 게임",
-    "img": "images/아키올로지_seo.jpg",
+    "img": "images/아키올로지_seo.webp",
     "players": "2-4",
     "color": "#f39c12",
     "difficulty": "easy",
@@ -889,13 +889,13 @@ const ENCYCLOPEDIA_DB = {
     "genre": "casual"
   },
   "디셉션": {
-    "bggId": "",
-    "name": "디셉션",
-    "desc": "디셉션 보드게임입니다. 함께 모여 즐겨보세요!",
+    "bggId": "156129",
+    "name": "디셉션: 홍콩 살인사건 (Deception)",
+    "desc": "법의학자의 제한된 타일 단서를 통해 수사관들이 살인범과 흉기, 결정적 증거를 추리하는 마피아+추리 융합 명작",
     "img": "images/디셉션_seo.webp",
-    "players": "5-10",
-    "color": "#0984e3",
-    "difficulty": "easy",
+    "players": "4-12",
+    "color": "#1e293b",
+    "difficulty": "medium",
     "genre": "party"
   },
   "디지트": {
@@ -1509,13 +1509,13 @@ const ENCYCLOPEDIA_DB = {
     "genre": "casual"
   },
   "아크노바": {
-    "bggId": "",
-    "name": "아크노바",
-    "desc": "아크노바 보드게임입니다. 함께 모여 즐겨보세요!",
+    "bggId": "342942",
+    "name": "아크 노바 (Ark Nova)",
+    "desc": "현대적이고 과학적으로 운영되는 동물원을 기획하고 운영하며 보존 프로젝트를 달성하는 전 세계 랭킹 4위의 최고 명작 유로 게임",
     "img": "images/아크노바_seo.webp",
-    "players": "2-5",
-    "color": "#0984e3",
-    "difficulty": "heavy",
+    "players": "1-4",
+    "color": "#15803d",
+    "difficulty": "hard",
     "genre": "strategy"
   },
   "아티초크": {
@@ -2477,6 +2477,146 @@ const ENCYCLOPEDIA_DB = {
     "color": "#0984e3",
     "difficulty": "easy",
     "genre": "casual"
+  },
+  "브라스버밍엄": {
+    "bggId": "224517",
+    "name": "브라스: 버밍엄 (Brass: Birmingham)",
+    "desc": "전 세계 보드게임긱(BGG) 랭킹 영예의 1위! 18세기 산업혁명기 영국의 운하와 철도망을 잇고 맥주와 철, 면직물을 생산하는 유로 전략 게임의 독보적 마스터피스",
+    "img": "images/브라스버밍엄_seo.webp",
+    "players": "2-4",
+    "color": "#78350f",
+    "difficulty": "hard",
+    "genre": "strategy"
+  },
+  "글룸헤이븐": {
+    "bggId": "174430",
+    "name": "글룸헤이븐 (Gloomhaven)",
+    "desc": "방대한 판타지 세계관에서 용병이 되어 모험을 떠나는 협력 던전 크롤러 RPG의 끝판왕. 정교한 카드 수싸움과 손맛 넘치는 레거시 캠페인",
+    "img": "images/글룸헤이븐_seo.webp",
+    "players": "1-4",
+    "color": "#475569",
+    "difficulty": "hard",
+    "genre": "strategy"
+  },
+  "듄임페리움": {
+    "bggId": "316554",
+    "name": "듄: 임페리움 (Dune: Imperium)",
+    "desc": "SF 대서사시 '듄' 세계관을 무대로 덱빌딩과 일꾼 놓기를 완벽하게 융합한 수작. 아라키스의 스파이스 채굴과 피말리는 군사 분쟁을 지휘하세요",
+    "img": "images/듄임페리움_seo.webp",
+    "players": "1-4",
+    "color": "#d97706",
+    "difficulty": "hard",
+    "genre": "strategy"
+  },
+  "정령섬": {
+    "bggId": "162886",
+    "name": "정령섬 (Spirit Island)",
+    "desc": "섬의 수호 정령이 되어 침략자 제국주의자들을 몰아내는 역발상 비대칭 협력 전략 게임. 깊이 있는 핸드 관리와 강력한 정령 능력의 콤보 쾌감",
+    "img": "images/정령섬_seo.webp",
+    "players": "1-4",
+    "color": "#059669",
+    "difficulty": "hard",
+    "genre": "strategy"
+  },
+  "사이드": {
+    "bggId": "169786",
+    "name": "사이드 (Scythe)",
+    "desc": "1920년대 대체역사 동유럽을 배경으로 디젤펑크 메카와 농업 엔진을 빌딩하는 BGG 탑 티어 명작. 영토 확장과 군사력 경쟁의 묵직한 수싸움",
+    "img": "images/사이드_seo.webp",
+    "players": "1-5",
+    "color": "#b91c1c",
+    "difficulty": "hard",
+    "genre": "strategy"
+  },
+  "루트": {
+    "bggId": "237182",
+    "name": "루트 (Root)",
+    "desc": "평화로운 숲속 뒤에 숨겨진 치열한 권력 쟁탈전! 귀족 고양이, 반란군 새, 숲의 동맹, 방랑자 등 세력마다 규칙과 승리 조건이 완전히 다른 궁극의 비대칭 워게임",
+    "img": "images/루트_seo.webp",
+    "players": "2-4",
+    "color": "#ea580c",
+    "difficulty": "hard",
+    "genre": "strategy"
+  },
+  "그레이트웨스턴트레일": {
+    "bggId": "193738",
+    "name": "그레이트 웨스턴 트레일 (Great Western Trail)",
+    "desc": "19세기 미국 텍사스에서 캔자스시티까지 소떼를 몰고 가는 카우보이 전략 명작. 론델 이동, 덱빌딩, 건물 건설이 환상적으로 맞물리는 유로 게임의 정점",
+    "img": "images/그레이트웨스턴트레일_seo.webp",
+    "players": "1-4",
+    "color": "#854d0e",
+    "difficulty": "hard",
+    "genre": "strategy"
+  },
+  "콩코르디아": {
+    "bggId": "138076",
+    "name": "콩코르디아 (Concordia)",
+    "desc": "로마 제국 번영기에 지중해 무역망을 개척하는 평화롭고 우아한 핸드 빌딩 전략 게임. 군사적 갈등 없이 카드 사용과 생산 타이밍만으로 승부하는 명작",
+    "img": "images/콩코르디아_seo.webp",
+    "players": "2-5",
+    "color": "#0284c7",
+    "difficulty": "medium",
+    "genre": "strategy"
+  },
+  "비티컬처": {
+    "bggId": "183394",
+    "name": "비티컬처 (Viticulture Essential)",
+    "desc": "이탈리아 토스카나의 포도밭을 물려받아 사계절을 보내며 최고의 와인을 양조하고 방문객을 맞이하는 감성 가득한 명작 일꾼 놓기 게임",
+    "img": "images/비티컬처_seo.webp",
+    "players": "1-6",
+    "color": "#7c2d12",
+    "difficulty": "medium",
+    "genre": "strategy"
+  },
+  "클랭크": {
+    "bggId": "201808",
+    "name": "클랭크! (Clank!)",
+    "desc": "잠자는 분노의 드래곤 던전에 숨어들어가 보물을 훔쳐 달아나는 덱빌딩 던전 탐험 게임. '클랭크' 소리를 낼수록 용의 분노가 커지는 스릴 만점의 파티 전략",
+    "img": "images/클랭크_seo.webp",
+    "players": "2-4",
+    "color": "#dc2626",
+    "difficulty": "medium",
+    "genre": "casual"
+  },
+  "코드네임": {
+    "bggId": "178900",
+    "name": "코드네임 (Codenames)",
+    "desc": "스파이마스터의 기발한 한 단어 힌트로 동료 요원들을 찾아내는 전 세계 1위 파티 단어 게임. 연상 작렬과 암살자 폭탄의 짜릿한 긴장감",
+    "img": "images/코드네임_seo.webp",
+    "players": "2-8",
+    "color": "#be123c",
+    "difficulty": "easy",
+    "genre": "party"
+  },
+  "노땡스": {
+    "bggId": "12942",
+    "name": "노 땡스! (No Thanks!)",
+    "desc": "카드를 거절하려면 칩을 내고, 칩이 떨어지면 울며 겨자먹기로 카드를 가져와야 하는 최고의 눈치싸움 카드게임. 단순한 룰 뒤에 숨은 극한의 심리전",
+    "img": "images/노땡스_seo.webp",
+    "players": "3-7",
+    "color": "#4338ca",
+    "difficulty": "easy",
+    "genre": "party"
+  },
+  "라스베가스": {
+    "bggId": "117959",
+    "name": "라스베가스 (Las Vegas)",
+    "desc": "카지노 호텔마다 주사위를 굴려 베팅하는 주사위 보드게임의 불후의 명작! 같은 개수의 주사위는 동반 탈락하는 반전 룰이 주는 끝없는 웃음과 도파민",
+    "img": "images/라스베가스_seo.webp",
+    "players": "2-5",
+    "color": "#e11d48",
+    "difficulty": "easy",
+    "genre": "party"
+  },
+  "버건디의성": {
+    "bggId": "276498",
+    "name": "버건디의 성 (The Castles of Burgundy)",
+    "desc": "스테판 펠트의 최고 걸작! 주사위 눈금을 활용해 영지를 발전시키고 건물, 가축, 지식을 타일로 채워나가는 타일 배치 주사위 유로 전략의 교과서",
+    "img": "images/버건디의성_seo.webp",
+    "players": "1-4",
+    "color": "#065f46",
+    "difficulty": "medium",
+    "genre": "strategy"
   }
 };
 

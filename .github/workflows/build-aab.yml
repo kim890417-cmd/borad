@@ -35,6 +35,6 @@ jobs:
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: boardvillage-release-v1.0.6-aab
+          name: boardvillage-release-v1.0.7-aab
           path: android/app/build/outputs/bundle/release/*.aab
           retention-days: 30

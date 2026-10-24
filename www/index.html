@@ -21,6 +21,8 @@
   <meta property="og:image" content="https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?auto=format&fit=crop&w=600&q=80">
   <!-- HTML2Canvas -->
   <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <script src="i18n.js"></script>
+  <script src="rules_db.js"></script>
 </head>
 <body>
   <!-- Fullscreen Splash Screen -->
@@ -50,10 +52,15 @@
     <!-- 왼쪽 사이드바: 보드게임 상자가 차곡차곡 쌓이는 영역 -->
     <aside class="visual-panel">
       <header class="panel-header">
-        <h1 class="brand-title">
-          보드빌리지 <i data-lucide="dices" class="brand-icon"></i>
-        </h1>
-        <p class="subtitle">플레이한 게임이 차곡차곡 쌓여요</p>
+        <div class="brand-top-row" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+          <h1 class="brand-title" style="margin: 0;">
+            <span data-i18n="brand_title">보드빌리지</span> <i data-lucide="dices" class="brand-icon"></i>
+          </h1>
+          <button type="button" class="lang-btn-pill" onclick="BV_I18N.openModal()" title="Change Language">
+            <span id="currentLangFlag">🇰🇷</span> <span id="currentLangName">한국어</span> <i data-lucide="globe" style="width:13px;height:13px;margin-left:2px;"></i>
+          </button>
+        </div>
+        <p class="subtitle" data-i18n="brand_subtitle">올인원 보드게임 포털 & 플레이 동반자</p>
       </header>
 
       <!-- 실제 상자들이 쌓여서 렌더링될 영역 -->
@@ -89,10 +96,13 @@
       <!-- 상단 네비게이션 및 대시보드 요약 -->
       <section class="dashboard-section">
         <div class="dashboard-header">
-          <h2>내 보드게임 아카이브</h2>
+          <h2 data-i18n="home_stats_title">내 보드게임 아카이브</h2>
           <div class="header-action-group">
+            <button type="button" class="lang-btn-pill lang-btn-main" onclick="BV_I18N.openModal()" style="display: inline-flex; align-items: center; gap: 5px; padding: 0.5rem 0.8rem; background: var(--card-bg); border: 1px solid var(--border-color); border-radius: 20px; font-weight: 700; font-size: 0.82rem; cursor: pointer; color: var(--text-main);">
+              <span id="mainLangFlag">🇰🇷</span> <span id="mainLangName">한국어</span> <i data-lucide="chevron-down" style="width:12px;height:12px;"></i>
+            </button>
             <button class="btn btn-primary" id="openAddModalBtn">
-              <i data-lucide="plus"></i> 새 게임 기록하기
+              <i data-lucide="plus"></i> <span data-i18n="btn_new_record">새 게임 기록하기</span>
             </button>
           </div>
         </div>
@@ -212,6 +222,15 @@
                 <div id="encyclopediaProgressBar" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-light), var(--primary-color)); border-radius: 5px; transition: width 0.5s ease;"></div>
               </div>
             </div>
+
+            <!-- 실시간 도감 및 룰 검색 입력창 -->
+            <div class="encyclopedia-search-wrap" style="margin-top: 10px;">
+              <div style="position: relative; width: 100%;">
+                <input type="text" id="encyclopediaSearchInput" placeholder="도감 및 룰북 검색 (예: 스플렌더, 루미큐브, 카탄)..." style="width: 100%; padding: 0.75rem 1rem 0.75rem 2.4rem; border-radius: 12px; border: 1.5px solid var(--border-color); background: var(--card-bg); font-size: 0.88rem; outline: none; box-sizing: border-box; color: var(--text-main);">
+                <i data-lucide="search" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); width: 16px; height: 16px; color: var(--text-muted);"></i>
+              </div>
+            </div>
+
             <div class="encyclopedia-filters">
               <div class="filter-group">
                 <span class="filter-label">난이도</span>
@@ -313,14 +332,220 @@
         <!-- 탭 패널 5: 플레이 툴 (도구) -->
         <div class="tab-panel" id="toolsPanel" style="display: none; flex-direction: column; gap: 20px; max-width: 620px; margin: 0 auto;">
           
-          <!-- 툴 선택 서브 버튼: 3x2 격자형 탭 레이아웃 -->
-          <div class="tools-sub-tabs" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 10px;">
-            <button class="btn btn-secondary active" id="subTabRoulette" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">선 뽑기 🎡</button>
-            <button class="btn btn-secondary" id="subTabDice" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">주사위 🎲</button>
-            <button class="btn btn-secondary" id="subTabLadder" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;"><i data-lucide="arrow-up-down" style="width:14px;height:14px;display:inline-block;vertical-align:middle;"></i> 사다리</button>
-            <button class="btn btn-secondary" id="subTabRecommend" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">추천기 🎯</button>
-            <button class="btn btn-secondary" id="subTabTimer" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">타이머 ⏱️</button>
-            <button class="btn btn-secondary" id="subTabScoreboard" style="padding: 0.6rem; font-size: 0.8rem; border-radius: 8px;">점수판 📝</button>
+          <!-- 툴 선택 서브 버튼: 4x2 격자형 탭 레이아웃 -->
+          <div class="tools-sub-tabs" style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; margin-bottom: 10px;">
+            <button class="btn btn-secondary active" id="subTabTichu" style="padding: 0.6rem 0.2rem; font-size: 0.75rem; border-radius: 8px;">티츄 2:2 🎴</button>
+            <button class="btn btn-secondary" id="subTabYacht" style="padding: 0.6rem 0.2rem; font-size: 0.75rem; border-radius: 8px;">요트다이스 🎲</button>
+            <button class="btn btn-secondary" id="subTabTimer" style="padding: 0.6rem 0.2rem; font-size: 0.75rem; border-radius: 8px;">체스·타이머 ⏱️</button>
+            <button class="btn btn-secondary" id="subTabRoulette" style="padding: 0.6rem 0.2rem; font-size: 0.75rem; border-radius: 8px;">선 뽑기 🎡</button>
+            <button class="btn btn-secondary" id="subTabDice" style="padding: 0.6rem 0.2rem; font-size: 0.75rem; border-radius: 8px;">주사위 🎲</button>
+            <button class="btn btn-secondary" id="subTabLadder" style="padding: 0.6rem 0.2rem; font-size: 0.75rem; border-radius: 8px;">사다리 ↕️</button>
+            <button class="btn btn-secondary" id="subTabRecommend" style="padding: 0.6rem 0.2rem; font-size: 0.75rem; border-radius: 8px;">맞춤 추천 🎯</button>
+            <button class="btn btn-secondary" id="subTabScoreboard" style="padding: 0.6rem 0.2rem; font-size: 0.75rem; border-radius: 8px;">만능 점수판 📝</button>
+          </div>
+
+          <!-- 0-1. 티츄 2:2 점수 계산기 -->
+          <div class="tool-content-section" id="toolSectionTichu" style="display: flex; flex-direction: column; gap: 15px; background: var(--card-bg); padding: 1.2rem; border-radius: 20px; border: 1px solid var(--border-color); text-align: center;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="font-size: 1.15rem; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 6px;">
+                🎴 티츄 2v2 점수 계산기
+              </h3>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnResetTichu" style="padding: 0.35rem 0.7rem; font-size: 0.75rem;">새 게임 리셋</button>
+            </div>
+            
+            <!-- Team Score Cards -->
+            <div class="tichu-score-board" style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 5px 0;">
+              <div class="tichu-team-card" style="background: linear-gradient(135deg, #6c5ce7 0%, #a29bfe 100%); color: white; padding: 0.9rem; border-radius: 16px; box-shadow: var(--shadow-sm);">
+                <input type="text" id="tichuTeamAName" value="A팀" style="background: transparent; border: none; color: white; font-weight: 800; font-size: 1rem; text-align: center; width: 100%; border-bottom: 1px dashed rgba(255,255,255,0.4); padding-bottom: 2px;">
+                <div class="tichu-score-val" id="tichuTeamAScore" style="font-size: 2.2rem; font-weight: 900; margin: 4px 0;">0</div>
+                <div style="font-size: 0.72rem; opacity: 0.85;">목표: 1,000점</div>
+                <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.3); border-radius: 3px; margin-top: 6px; overflow: hidden;">
+                  <div id="tichuBarA" style="width: 0%; height: 100%; background: #ffeaa7; transition: width 0.4s ease;"></div>
+                </div>
+              </div>
+              <div class="tichu-team-card" style="background: linear-gradient(135deg, #0984e3 0%, #74b9ff 100%); color: white; padding: 0.9rem; border-radius: 16px; box-shadow: var(--shadow-sm);">
+                <input type="text" id="tichuTeamBName" value="B팀" style="background: transparent; border: none; color: white; font-weight: 800; font-size: 1rem; text-align: center; width: 100%; border-bottom: 1px dashed rgba(255,255,255,0.4); padding-bottom: 2px;">
+                <div class="tichu-score-val" id="tichuTeamBScore" style="font-size: 2.2rem; font-weight: 900; margin: 4px 0;">0</div>
+                <div style="font-size: 0.72rem; opacity: 0.85;">목표: 1,000점</div>
+                <div style="width: 100%; height: 6px; background: rgba(255,255,255,0.3); border-radius: 3px; margin-top: 6px; overflow: hidden;">
+                  <div id="tichuBarB" style="width: 0%; height: 100%; background: #ffeaa7; transition: width 0.4s ease;"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Round Input Form -->
+            <div class="tichu-round-box" style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 14px; padding: 0.9rem; text-align: left;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                <span style="font-size: 0.85rem; font-weight: 800; color: var(--text-main);">라운드 결과 입력</span>
+                <span id="tichuCurrentRoundLabel" style="font-size: 0.78rem; font-weight: 700; color: var(--primary-color);">Round 1</span>
+              </div>
+              
+              <div style="margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between; background: var(--card-bg); padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border-color);">
+                <span style="font-size: 0.8rem; font-weight: 700;">🏆 1-2등 독식 (원투 +200)</span>
+                <select id="tichuOneTwoSelect" style="padding: 4px 6px; border-radius: 6px; font-size: 0.78rem; border: 1px solid var(--border-color);">
+                  <option value="none">없음 (일반 카드 점수)</option>
+                  <option value="A">A팀 원투 (+200점, B팀 0점)</option>
+                  <option value="B">B팀 원투 (+200점, A팀 0점)</option>
+                </select>
+              </div>
+
+              <div id="tichuCardPointsRow" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;">
+                <div>
+                  <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 3px;">A팀 획득 점수</label>
+                  <input type="number" id="tichuInputCardA" value="50" min="-25" max="125" step="5" style="width: 100%; padding: 6px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center; font-weight: 800; font-size: 0.95rem;">
+                </div>
+                <div>
+                  <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 3px;">B팀 획득 점수</label>
+                  <input type="number" id="tichuInputCardB" value="50" min="-25" max="125" step="5" style="width: 100%; padding: 6px; border-radius: 8px; border: 1px solid var(--border-color); text-align: center; font-weight: 800; font-size: 0.95rem;">
+                </div>
+              </div>
+
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px;">
+                <div>
+                  <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 3px;">A팀 티츄 선언</label>
+                  <select id="tichuCallA" style="width: 100%; padding: 6px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.78rem;">
+                    <option value="0">선언 없음</option>
+                    <option value="100">스몰 성공 (+100)</option>
+                    <option value="-100">스몰 실패 (-100)</option>
+                    <option value="200">라지 성공 (+200)</option>
+                    <option value="-200">라지 실패 (-200)</option>
+                  </select>
+                </div>
+                <div>
+                  <label style="font-size: 0.75rem; font-weight: 700; display: block; margin-bottom: 3px;">B팀 티츄 선언</label>
+                  <select id="tichuCallB" style="width: 100%; padding: 6px; border-radius: 8px; border: 1px solid var(--border-color); font-size: 0.78rem;">
+                    <option value="0">선언 없음</option>
+                    <option value="100">스몰 성공 (+100)</option>
+                    <option value="-100">스몰 실패 (-100)</option>
+                    <option value="200">라지 성공 (+200)</option>
+                    <option value="-200">라지 실패 (-200)</option>
+                  </select>
+                </div>
+              </div>
+
+              <div style="display: flex; gap: 6px;">
+                <button type="button" class="btn btn-secondary" id="btnTichuUndo" style="flex: 1; justify-content: center; font-size: 0.8rem; padding: 0.6rem;">되돌리기</button>
+                <button type="button" class="btn btn-primary" id="btnTichuAddRound" style="flex: 2; justify-content: center; font-weight: 800; font-size: 0.88rem; padding: 0.6rem;">+ 라운드 점수 반영</button>
+              </div>
+            </div>
+
+            <!-- History Table -->
+            <div style="max-height: 140px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 10px;">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.75rem; text-align: center;">
+                <thead>
+                  <tr style="background: rgba(0,0,0,0.03); border-bottom: 1px solid var(--border-color);">
+                    <th style="padding: 5px;">R</th>
+                    <th style="padding: 5px;">A 획득</th>
+                    <th style="padding: 5px;">A 누적</th>
+                    <th style="padding: 5px;">B 획득</th>
+                    <th style="padding: 5px;">B 누적</th>
+                  </tr>
+                </thead>
+                <tbody id="tichuHistoryTableBody">
+                  <tr><td colspan="5" style="padding: 8px; color: var(--text-muted);">아직 진행된 라운드가 없습니다.</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 0-2. 요트 다이스 점수판 & 롤러 -->
+          <div class="tool-content-section" id="toolSectionYacht" style="display: none; flex-direction: column; gap: 15px; background: var(--card-bg); padding: 1.2rem; border-radius: 20px; border: 1px solid var(--border-color); text-align: center;">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <h3 style="font-size: 1.15rem; font-weight: 800; margin: 0; display: flex; align-items: center; gap: 6px;">
+                🎲 요트 다이스 (Yacht Dice)
+              </h3>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnResetYacht" style="padding: 0.35rem 0.7rem; font-size: 0.75rem;">새 게임</button>
+            </div>
+
+            <!-- Interactive 5 Dice Roller -->
+            <div class="yacht-dice-roller" style="background: var(--bg-color); border: 1px solid var(--border-color); border-radius: 14px; padding: 0.8rem;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+                <span style="font-size: 0.78rem; font-weight: 700; color: var(--text-muted);" id="yachtRollsLeftText">남은 굴림: 3회 / 3회</span>
+                <span style="font-size: 0.72rem; color: var(--primary-color);">💡 주사위 터치하여 킵(고정)</span>
+              </div>
+              
+              <div class="yacht-dice-row" id="yachtDiceRow" style="display: flex; gap: 6px; justify-content: center; margin: 8px 0;">
+                <div class="yacht-die" data-idx="0" style="width: 48px; height: 48px; background: white; border: 2px solid var(--border-color); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; color: var(--text-main); cursor: pointer; box-shadow: var(--shadow-sm);">1</div>
+                <div class="yacht-die" data-idx="1" style="width: 48px; height: 48px; background: white; border: 2px solid var(--border-color); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; color: var(--text-main); cursor: pointer; box-shadow: var(--shadow-sm);">2</div>
+                <div class="yacht-die" data-idx="2" style="width: 48px; height: 48px; background: white; border: 2px solid var(--border-color); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; color: var(--text-main); cursor: pointer; box-shadow: var(--shadow-sm);">3</div>
+                <div class="yacht-die" data-idx="3" style="width: 48px; height: 48px; background: white; border: 2px solid var(--border-color); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; color: var(--text-main); cursor: pointer; box-shadow: var(--shadow-sm);">4</div>
+                <div class="yacht-die" data-idx="4" style="width: 48px; height: 48px; background: white; border: 2px solid var(--border-color); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: 900; color: var(--text-main); cursor: pointer; box-shadow: var(--shadow-sm);">5</div>
+              </div>
+
+              <button type="button" class="btn btn-primary" id="btnYachtRoll" style="width: 100%; justify-content: center; font-weight: 800; font-size: 0.9rem; padding: 0.65rem;">
+                <i data-lucide="dices"></i> 주사위 굴리기 (3회 남음)
+              </button>
+            </div>
+
+            <!-- Scorecard Table -->
+            <div class="yacht-scorecard" style="border: 1px solid var(--border-color); border-radius: 12px; overflow: hidden; background: var(--bg-color);">
+              <table style="width: 100%; border-collapse: collapse; font-size: 0.78rem; text-align: left;">
+                <thead>
+                  <tr style="background: rgba(0,0,0,0.03); border-bottom: 1px solid var(--border-color);">
+                    <th style="padding: 6px 8px;">족보 카테고리</th>
+                    <th style="padding: 6px 8px; text-align: right;">점수 기록</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="yacht-row" data-cat="ones" style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 6px 8px;"><strong>Aces (1s)</strong> <span style="font-size:0.68rem; color:var(--text-muted);">1의 합</span></td>
+                    <td style="padding: 6px 8px; text-align: right;"><button class="yacht-score-cell" id="yacht_ones" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: white; font-weight: 700; cursor: pointer; min-width: 42px;">-</button></td>
+                  </tr>
+                  <tr class="yacht-row" data-cat="twos" style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 6px 8px;"><strong>Deuces (2s)</strong> <span style="font-size:0.68rem; color:var(--text-muted);">2의 합</span></td>
+                    <td style="padding: 6px 8px; text-align: right;"><button class="yacht-score-cell" id="yacht_twos" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: white; font-weight: 700; cursor: pointer; min-width: 42px;">-</button></td>
+                  </tr>
+                  <tr class="yacht-row" data-cat="threes" style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 6px 8px;"><strong>Threes (3s)</strong> <span style="font-size:0.68rem; color:var(--text-muted);">3의 합</span></td>
+                    <td style="padding: 6px 8px; text-align: right;"><button class="yacht-score-cell" id="yacht_threes" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: white; font-weight: 700; cursor: pointer; min-width: 42px;">-</button></td>
+                  </tr>
+                  <tr class="yacht-row" data-cat="fours" style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 6px 8px;"><strong>Fours (4s)</strong> <span style="font-size:0.68rem; color:var(--text-muted);">4의 합</span></td>
+                    <td style="padding: 6px 8px; text-align: right;"><button class="yacht-score-cell" id="yacht_fours" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: white; font-weight: 700; cursor: pointer; min-width: 42px;">-</button></td>
+                  </tr>
+                  <tr class="yacht-row" data-cat="fives" style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 6px 8px;"><strong>Fives (5s)</strong> <span style="font-size:0.68rem; color:var(--text-muted);">5의 합</span></td>
+                    <td style="padding: 6px 8px; text-align: right;"><button class="yacht-score-cell" id="yacht_fives" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: white; font-weight: 700; cursor: pointer; min-width: 42px;">-</button></td>
+                  </tr>
+                  <tr class="yacht-row" data-cat="sixes" style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 6px 8px;"><strong>Sixes (6s)</strong> <span style="font-size:0.68rem; color:var(--text-muted);">6의 합</span></td>
+                    <td style="padding: 6px 8px; text-align: right;"><button class="yacht-score-cell" id="yacht_sixes" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: white; font-weight: 700; cursor: pointer; min-width: 42px;">-</button></td>
+                  </tr>
+                  <tr style="background: rgba(108, 92, 231, 0.08); font-weight: 700; border-bottom: 1.5px solid var(--border-color);">
+                    <td style="padding: 6px 8px;">상단 소계 (63점 이상 시 +35)</td>
+                    <td style="padding: 6px 8px; text-align: right;" id="yachtUpperSubtotal">0 / 63 (+0)</td>
+                  </tr>
+                  <tr class="yacht-row" data-cat="choice" style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 6px 8px;"><strong>Choice</strong> <span style="font-size:0.68rem; color:var(--text-muted);">5개 총합</span></td>
+                    <td style="padding: 6px 8px; text-align: right;"><button class="yacht-score-cell" id="yacht_choice" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: white; font-weight: 700; cursor: pointer; min-width: 42px;">-</button></td>
+                  </tr>
+                  <tr class="yacht-row" data-cat="fourOfAKind" style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 6px 8px;"><strong>4 of a Kind</strong> <span style="font-size:0.68rem; color:var(--text-muted);">동일 4개</span></td>
+                    <td style="padding: 6px 8px; text-align: right;"><button class="yacht-score-cell" id="yacht_fourOfAKind" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: white; font-weight: 700; cursor: pointer; min-width: 42px;">-</button></td>
+                  </tr>
+                  <tr class="yacht-row" data-cat="fullHouse" style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 6px 8px;"><strong>Full House</strong> <span style="font-size:0.68rem; color:var(--text-muted);">3+2 동일</span></td>
+                    <td style="padding: 6px 8px; text-align: right;"><button class="yacht-score-cell" id="yacht_fullHouse" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: white; font-weight: 700; cursor: pointer; min-width: 42px;">-</button></td>
+                  </tr>
+                  <tr class="yacht-row" data-cat="smallStraight" style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 6px 8px;"><strong>S. Straight</strong> <span style="font-size:0.68rem; color:var(--text-muted);">연속 4개 (30점)</span></td>
+                    <td style="padding: 6px 8px; text-align: right;"><button class="yacht-score-cell" id="yacht_smallStraight" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: white; font-weight: 700; cursor: pointer; min-width: 42px;">-</button></td>
+                  </tr>
+                  <tr class="yacht-row" data-cat="largeStraight" style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 6px 8px;"><strong>L. Straight</strong> <span style="font-size:0.68rem; color:var(--text-muted);">연속 5개 (40점)</span></td>
+                    <td style="padding: 6px 8px; text-align: right;"><button class="yacht-score-cell" id="yacht_largeStraight" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: white; font-weight: 700; cursor: pointer; min-width: 42px;">-</button></td>
+                  </tr>
+                  <tr class="yacht-row" data-cat="yacht" style="border-bottom: 1px solid var(--border-color);">
+                    <td style="padding: 6px 8px;"><strong>Yacht 🏆</strong> <span style="font-size:0.68rem; color:var(--text-muted);">동일 5개 (50점)</span></td>
+                    <td style="padding: 6px 8px; text-align: right;"><button class="yacht-score-cell" id="yacht_yacht" style="padding: 4px 8px; border-radius: 6px; border: 1px solid var(--border-color); background: white; font-weight: 700; cursor: pointer; min-width: 42px;">-</button></td>
+                  </tr>
+                  <tr style="background: linear-gradient(135deg, rgba(108,92,231,0.15) 0%, rgba(9,132,227,0.15) 100%); font-weight: 800; font-size: 0.95rem;">
+                    <td style="padding: 8px;">최종 합계 점수</td>
+                    <td style="padding: 8px; text-align: right; color: var(--primary-color);" id="yachtGrandTotal">0점</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
 
           <!-- 1. 선 뽑기 (룰렛) 콘텐츠 -->
@@ -844,39 +1069,141 @@
     </div>
   </div>
 
+
+  <!-- 🌐 다국어 언어 선택 모달 (10개 국어) -->
+  <div class="modal-backdrop" id="langModal" style="display: none; z-index: 9999;">
+    <div class="modal-card" style="max-width: 360px; width: 90%; background: var(--card-bg); border-radius: 20px; padding: 1.2rem; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="font-size: 1.1rem; font-weight: 800; margin: 0; color: var(--text-main);" data-i18n="lang_modal_title">🌐 언어 선택 (Language)</h3>
+        <button type="button" class="close-btn" onclick="BV_I18N.closeModal()" style="background: none; border: none; font-size: 1.2rem; cursor: pointer;"><i data-lucide="x"></i></button>
+      </div>
+      <div class="lang-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <button class="lang-select-btn" onclick="BV_I18N.setLanguage('ko'); BV_I18N.closeModal();" style="display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); cursor: pointer; text-align: left; font-family: inherit;">
+          <span style="font-size: 1.3rem;">🇰🇷</span>
+          <div><strong style="display: block; font-size: 0.82rem; color: var(--text-main);">한국어</strong><span style="font-size: 0.68rem; color: var(--text-muted);">Korean</span></div>
+        </button>
+        <button class="lang-select-btn" onclick="BV_I18N.setLanguage('en'); BV_I18N.closeModal();" style="display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); cursor: pointer; text-align: left; font-family: inherit;">
+          <span style="font-size: 1.3rem;">🇺🇸</span>
+          <div><strong style="display: block; font-size: 0.82rem; color: var(--text-main);">English</strong><span style="font-size: 0.68rem; color: var(--text-muted);">English</span></div>
+        </button>
+        <button class="lang-select-btn" onclick="BV_I18N.setLanguage('ja'); BV_I18N.closeModal();" style="display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); cursor: pointer; text-align: left; font-family: inherit;">
+          <span style="font-size: 1.3rem;">🇯🇵</span>
+          <div><strong style="display: block; font-size: 0.82rem; color: var(--text-main);">日本語</strong><span style="font-size: 0.68rem; color: var(--text-muted);">Japanese</span></div>
+        </button>
+        <button class="lang-select-btn" onclick="BV_I18N.setLanguage('zh'); BV_I18N.closeModal();" style="display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); cursor: pointer; text-align: left; font-family: inherit;">
+          <span style="font-size: 1.3rem;">🇨🇳</span>
+          <div><strong style="display: block; font-size: 0.82rem; color: var(--text-main);">简体中文</strong><span style="font-size: 0.68rem; color: var(--text-muted);">Chinese</span></div>
+        </button>
+        <button class="lang-select-btn" onclick="BV_I18N.setLanguage('es'); BV_I18N.closeModal();" style="display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); cursor: pointer; text-align: left; font-family: inherit;">
+          <span style="font-size: 1.3rem;">🇪🇸</span>
+          <div><strong style="display: block; font-size: 0.82rem; color: var(--text-main);">Español</strong><span style="font-size: 0.68rem; color: var(--text-muted);">Spanish</span></div>
+        </button>
+        <button class="lang-select-btn" onclick="BV_I18N.setLanguage('de'); BV_I18N.closeModal();" style="display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); cursor: pointer; text-align: left; font-family: inherit;">
+          <span style="font-size: 1.3rem;">🇩🇪</span>
+          <div><strong style="display: block; font-size: 0.82rem; color: var(--text-main);">Deutsch</strong><span style="font-size: 0.68rem; color: var(--text-muted);">German</span></div>
+        </button>
+        <button class="lang-select-btn" onclick="BV_I18N.setLanguage('fr'); BV_I18N.closeModal();" style="display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); cursor: pointer; text-align: left; font-family: inherit;">
+          <span style="font-size: 1.3rem;">🇫🇷</span>
+          <div><strong style="display: block; font-size: 0.82rem; color: var(--text-main);">Français</strong><span style="font-size: 0.68rem; color: var(--text-muted);">French</span></div>
+        </button>
+        <button class="lang-select-btn" onclick="BV_I18N.setLanguage('vi'); BV_I18N.closeModal();" style="display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); cursor: pointer; text-align: left; font-family: inherit;">
+          <span style="font-size: 1.3rem;">🇻🇳</span>
+          <div><strong style="display: block; font-size: 0.82rem; color: var(--text-main);">Tiếng Việt</strong><span style="font-size: 0.68rem; color: var(--text-muted);">Vietnamese</span></div>
+        </button>
+        <button class="lang-select-btn" onclick="BV_I18N.setLanguage('th'); BV_I18N.closeModal();" style="display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); cursor: pointer; text-align: left; font-family: inherit;">
+          <span style="font-size: 1.3rem;">🇹🇭</span>
+          <div><strong style="display: block; font-size: 0.82rem; color: var(--text-main);">ไทย</strong><span style="font-size: 0.68rem; color: var(--text-muted);">Thai</span></div>
+        </button>
+        <button class="lang-select-btn" onclick="BV_I18N.setLanguage('id'); BV_I18N.closeModal();" style="display: flex; align-items: center; gap: 8px; padding: 10px; border-radius: 10px; border: 1px solid var(--border-color); background: var(--bg-color); cursor: pointer; text-align: left; font-family: inherit;">
+          <span style="font-size: 1.3rem;">🇮🇩</span>
+          <div><strong style="display: block; font-size: 0.82rem; color: var(--text-main);">Indonesia</strong><span style="font-size: 0.68rem; color: var(--text-muted);">Indonesian</span></div>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 📖 룰북 & 에러플 분쟁 판정단 상세 뷰어 모달 -->
+  <div class="modal-backdrop" id="ruleDetailModal" style="display: none; z-index: 9998;">
+    <div class="modal-card" style="max-width: 520px; width: 92%; max-height: 85vh; background: var(--card-bg); border-radius: 20px; display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-lg); border: 1px solid var(--border-color);">
+      <!-- Header -->
+      <div style="padding: 1.2rem; border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: flex-start; background: var(--bg-color);">
+        <div>
+          <h3 id="ruleModalTitle" style="font-size: 1.25rem; font-weight: 800; color: var(--text-main); margin: 0 0 6px 0;">스플렌더 (Splendor)</h3>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <span class="badge" id="ruleModalPlayers" style="background: rgba(108,92,231,0.1); color: #6c5ce7; padding: 3px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;">2~4인</span>
+            <span class="badge" id="ruleModalTime" style="background: rgba(9,132,227,0.1); color: #0984e3; padding: 3px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;">30분</span>
+            <span class="badge" id="ruleModalDiff" style="background: rgba(46,204,113,0.1); color: #2ecc71; padding: 3px 8px; border-radius: 6px; font-size: 0.72rem; font-weight: 700;">보통</span>
+          </div>
+        </div>
+        <button type="button" class="close-btn" id="closeRuleModalBtn" style="background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-muted);"><i data-lucide="x"></i></button>
+      </div>
+
+      <!-- Sub Tabs -->
+      <div class="rule-tabs-nav" style="display: flex; border-bottom: 1px solid var(--border-color); background: var(--card-bg); overflow-x: auto;">
+        <button class="rule-tab-btn active" data-rule-tab="overview" style="flex: 1; padding: 0.65rem 0.5rem; font-size: 0.78rem; font-weight: 700; border: none; background: none; border-bottom: 2px solid var(--primary-color); color: var(--primary-color); cursor: pointer; white-space: nowrap;">📖 룰 요약</button>
+        <button class="rule-tab-btn" data-rule-tab="setup" style="flex: 1; padding: 0.65rem 0.5rem; font-size: 0.78rem; font-weight: 700; border: none; background: none; border-bottom: 2px solid transparent; color: var(--text-muted); cursor: pointer; white-space: nowrap;">🧩 준비</button>
+        <button class="rule-tab-btn" data-rule-tab="actions" style="flex: 1; padding: 0.65rem 0.5rem; font-size: 0.78rem; font-weight: 700; border: none; background: none; border-bottom: 2px solid transparent; color: var(--text-muted); cursor: pointer; white-space: nowrap;">🎲 턴 진행</button>
+        <button class="rule-tab-btn alert-tab" data-rule-tab="disputes" style="flex: 1.2; padding: 0.65rem 0.5rem; font-size: 0.78rem; font-weight: 800; border: none; background: none; border-bottom: 2px solid transparent; color: #e17055; cursor: pointer; white-space: nowrap;">🚨 에러플 판정단</button>
+        <button class="rule-tab-btn" data-rule-tab="strategy" style="flex: 1; padding: 0.65rem 0.5rem; font-size: 0.78rem; font-weight: 700; border: none; background: none; border-bottom: 2px solid transparent; color: var(--text-muted); cursor: pointer; white-space: nowrap;">💡 전략 팁</button>
+      </div>
+
+      <!-- Scrollable Tab Content -->
+      <div class="rule-modal-body" style="padding: 1.2rem; overflow-y: auto; flex: 1; font-size: 0.85rem; line-height: 1.6; color: var(--text-main);">
+        <div class="rule-tab-pane active" id="ruleTabOverview">
+          <p id="ruleOverviewText" style="margin: 0 0 12px 0; word-break: keep-all;"></p>
+        </div>
+        <div class="rule-tab-pane" id="ruleTabSetup" style="display: none;">
+          <ul id="ruleSetupList" style="margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 8px;"></ul>
+        </div>
+        <div class="rule-tab-pane" id="ruleTabActions" style="display: none;">
+          <ul id="ruleActionsList" style="margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 8px;"></ul>
+        </div>
+        <div class="rule-tab-pane" id="ruleTabDisputes" style="display: none;">
+          <div id="ruleDisputesList" style="display: flex; flex-direction: column; gap: 10px;"></div>
+        </div>
+        <div class="rule-tab-pane" id="ruleTabStrategy" style="display: none;">
+          <ul id="ruleStrategyList" style="margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: 8px;"></ul>
+        </div>
+      </div>
+
+      <!-- Footer Buttons -->
+      <div style="padding: 0.8rem 1.2rem; border-top: 1px solid var(--border-color); background: var(--bg-color); display: flex; gap: 8px;">
+        <button type="button" class="btn btn-secondary" id="ruleWebLinkBtn" style="flex: 1.4; justify-content: center; font-size: 0.8rem;">보드빌리지 웹에서 상세 룰 보기 ↗</button>
+        <button type="button" class="btn btn-primary" id="btnConfirmRuleModal" style="flex: 1; justify-content: center; font-size: 0.85rem; font-weight: 700;">확인 완료</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 모바일 하단 네비게이션 바 -->
   <nav class="mobile-nav-bar" style="display: none;">
     <button class="nav-item active" data-mobile-tab="home">
       <i data-lucide="home"></i>
-      <span>홈</span>
-    </button>
-    <button class="nav-item" data-mobile-tab="logs">
-      <i data-lucide="scroll"></i>
-      <span>로그</span>
+      <span data-i18n="nav_home">홈</span>
     </button>
     <button class="nav-item" data-mobile-tab="info">
       <i data-lucide="book-open"></i>
-      <span>도감</span>
-    </button>
-    <button class="nav-item" data-mobile-tab="rank">
-      <i data-lucide="bar-chart-3"></i>
-      <span>랭킹</span>
-    </button>
-    <button class="nav-item" data-mobile-tab="bingo">
-      <i data-lucide="grid"></i>
-      <span>빙고</span>
+      <span data-i18n="nav_rules">룰·도감</span>
     </button>
     <button class="nav-item" data-mobile-tab="tools">
       <i data-lucide="gamepad-2"></i>
-      <span>도구</span>
+      <span data-i18n="nav_tools">도구</span>
+    </button>
+    <button class="nav-item" data-mobile-tab="logs">
+      <i data-lucide="scroll"></i>
+      <span data-i18n="nav_stack">기록</span>
+    </button>
+    <button class="nav-item" data-mobile-tab="rank">
+      <i data-lucide="bar-chart-3"></i>
+      <span data-i18n="nav_rank">랭킹·빙고</span>
     </button>
     <button class="nav-ext-item" type="button" onclick="window.open('https://boardvilage.com/', '_blank');" style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; border: none; background: none; font-size: 0.72rem; font-weight: 700; cursor: pointer; color: #6c5ce7; padding: 6px 0; font-family: inherit;">
-      <i data-lucide="book-open"></i>
-      <span>룰 설명</span>
+      <i data-lucide="globe"></i>
+      <span data-i18n="nav_web">웹사이트 ↗</span>
     </button>
   </nav>
 
   <script src="app.js"></script>
+  <script src="boardvillage_features.js"></script>
   <script>
     lucide.createIcons();
   </script>

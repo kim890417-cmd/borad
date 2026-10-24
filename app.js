@@ -3538,7 +3538,15 @@ function renderGameInfoTab() {
 
   gameInfoGrid.innerHTML = '';
 
+  const searchInputEl = document.getElementById('encyclopediaSearchInput');
+  const searchQ = searchInputEl ? searchInputEl.value.trim().toLowerCase() : '';
+
   let filtered = Object.entries(ENCYCLOPEDIA_DB).filter(([key, info]) => {
+    if (searchQ) {
+      const kLower = key.toLowerCase();
+      const nLower = (info.name || '').toLowerCase();
+      if (!kLower.includes(searchQ) && !nLower.includes(searchQ)) return false;
+    }
     if (activeDiffFilter !== 'all' && info.difficulty !== activeDiffFilter) return false;
     if (activeGenreFilter !== 'all' && info.genre !== activeGenreFilter) return false;
     if (activePlayerFilter !== 'all') {
@@ -3577,7 +3585,7 @@ function renderGameInfoTab() {
       const recordText = `${stats.total}전 ${stats.wins}승 ${stats.draws}무 ${stats.losses}패`;
 
       card.innerHTML = `
-        <div class="info-card-header">
+        <div class="info-card-header" style="cursor: pointer;">
           ${winRateBadge}
           <img src="${info.img}" class="info-card-blur-bg" alt="blur">
           <img src="${info.img}" class="info-card-img" alt="${info.name}">
@@ -3589,11 +3597,20 @@ function renderGameInfoTab() {
             <span>⚖️ 난이도 <strong>${diffLabel}</strong></span>
           </div>
           <p class="info-card-desc">${info.desc}</p>
+          <div style="margin-top: 8px;">
+            <button type="button" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center; font-size: 0.75rem; border-radius: 8px; padding: 5px; font-weight: 700; background: rgba(108, 92, 231, 0.08); border-color: rgba(108, 92, 231, 0.2); color: #6c5ce7;">
+              📖 룰북 &amp; 에러플 판정단
+            </button>
+          </div>
         </div>
       `;
 
-      card.addEventListener('click', () => {
-        openCardFlipView({ ...matchLog, gameThumbnail: matchLog.gameThumbnail || info.img });
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('.info-card-header')) {
+          openCardFlipView({ ...matchLog, gameThumbnail: matchLog.gameThumbnail || info.img });
+        } else {
+          if (window.openRuleModal) window.openRuleModal(key);
+        }
       });
 
     } else {
@@ -3606,14 +3623,20 @@ function renderGameInfoTab() {
           <h3 class="info-card-title">${info.name}</h3>
           <div class="info-card-stat-row">
             <span>⚖️ 난이도 <strong>${diffLabel}</strong></span>
+            <span>👥 <strong>${info.players}인</strong></span>
           </div>
-          <p class="info-card-desc" style="color:transparent; text-shadow:0 0 8px rgba(0,0,0,0.5);">비공개 설명 블러 처리</p>
-        </div>
-        <div class="info-card-lock-overlay">
-          <i data-lucide="lock"></i>
-          <span>기록 시 도감 해금</span>
+          <p class="info-card-desc">${info.desc}</p>
+          <div style="margin-top: 8px;">
+            <button type="button" class="btn btn-secondary btn-sm" style="width: 100%; justify-content: center; font-size: 0.75rem; border-radius: 8px; padding: 5px; font-weight: 700; background: rgba(108, 92, 231, 0.08); border-color: rgba(108, 92, 231, 0.2); color: #6c5ce7;">
+              📖 룰북 &amp; 에러플 보기
+            </button>
+          </div>
         </div>
       `;
+
+      card.addEventListener('click', () => {
+        if (window.openRuleModal) window.openRuleModal(key);
+      });
     }
 
     gameInfoGrid.appendChild(card);
@@ -6132,6 +6155,18 @@ function viewLadderResults() {
 
 // Hardware Back Button Handler for BoardVillage
 window.handleAndroidBack = function() {
+  // 0-1. 다국어 선택 모달 닫기
+  const langModal = document.getElementById('langModal');
+  if (langModal && langModal.style.display !== 'none') {
+    langModal.style.display = 'none';
+    return true;
+  }
+  // 0-2. 룰북 & 에러플 모달 닫기
+  const ruleDetailModal = document.getElementById('ruleDetailModal');
+  if (ruleDetailModal && ruleDetailModal.style.display !== 'none') {
+    ruleDetailModal.style.display = 'none';
+    return true;
+  }
   // 1. 카드 상세 뒤집기 오버레이 닫기
   if (typeof cardDrawOverlay !== 'undefined' && cardDrawOverlay && cardDrawOverlay.classList.contains('active')) {
     cardDrawOverlay.classList.remove('active');

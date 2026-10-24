@@ -2943,3 +2943,129 @@ select:focus {
 }
 
 
+
+/* ─────────────────────────────────────────────
+   BOARD VILLAGE 2.0 - i18n & NEW TOOLS STYLES
+   ───────────────────────────────────────────── */
+
+/* Language Button Pill */
+.lang-btn-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0.45rem 0.8rem;
+  background: var(--card-bg);
+  border: 1.5px solid var(--border-color);
+  border-radius: 20px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  color: var(--text-main);
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  font-family: inherit;
+}
+.lang-btn-pill:hover {
+  background: var(--bg-color);
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+}
+
+/* Quick Tools Launcher Buttons */
+.quick-tool-btn {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.quick-tool-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--primary-color) !important;
+}
+
+/* Player Count Recommendation Chips */
+.rec-chip-item {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.rec-chip-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Rulebook Modal & Dispute Accordion */
+.rule-tab-btn.active {
+  color: var(--primary-color) !important;
+  border-bottom: 2.5px solid var(--primary-color) !important;
+}
+.rule-tab-btn.alert-tab {
+  color: #e17055;
+}
+.rule-tab-btn.alert-tab.active {
+  color: #d63031 !important;
+  border-bottom: 2.5px solid #d63031 !important;
+}
+
+.dispute-card-item {
+  background: var(--bg-color);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 12px;
+  border-left: 4px solid #e17055;
+}
+.dispute-q {
+  font-weight: 800;
+  font-size: 0.88rem;
+  color: #d63031;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+.dispute-a {
+  font-size: 0.82rem;
+  color: var(--text-main);
+  line-height: 1.5;
+  background: var(--card-bg);
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+/* Yacht Dice Interactive Dice */
+.yacht-die {
+  user-select: none;
+  -webkit-user-select: none;
+  transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.yacht-die:hover {
+  transform: scale(1.08);
+}
+.yacht-die.kept {
+  background: #6c5ce7 !important;
+  color: #ffeaa7 !important;
+  border-color: #6c5ce7 !important;
+  box-shadow: 0 0 10px rgba(108, 92, 231, 0.5) !important;
+  transform: translateY(-4px) scale(1.05);
+}
+
+/* Yacht Score Cells */
+.yacht-score-cell {
+  transition: all 0.15s ease;
+}
+.yacht-score-cell:hover:not(.filled) {
+  border-color: var(--primary-color) !important;
+  background: rgba(108, 92, 231, 0.1) !important;
+  color: var(--primary-color) !important;
+}
+.yacht-score-cell.filled {
+  background: rgba(0,0,0,0.04) !important;
+  color: var(--text-main) !important;
+  font-weight: 800 !important;
+  cursor: default !important;
+}
+
+/* Tichu Scoreboard */
+.tichu-team-card {
+  transition: transform 0.2s ease;
+}
+.tichu-team-card:hover {
+  transform: scale(1.02);
+}
